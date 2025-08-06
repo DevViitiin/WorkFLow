@@ -1,0 +1,320 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<EditEmployee>:
+    name: 'EditEmployee'
+    md_bg_color: 1, 1, 1, 1
+
+    MDScrollView:
+        id: scroll_view
+        do_scroll_x: False
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [10, 10, 10, 10]
+            spacing: "10dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+
+            # Cabeçalho com botão de voltar
+            BoxLayout:
+                size_hint_y: None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.login()
+
+                MDLabel:
+                    text: 'Meu Perfil'
+                    font_style: 'Headline'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    role: 'medium'
+                    bold: False
+                    pos_hint: {'center_x': 0.2}
+                    halign: 'center'
+
+            # Seção da imagem de perfil
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: "150dp"
+                padding: "10dp"
+                spacing: "10dp"
+
+                MDBoxLayout:
+                    size_hint: None, None
+                    size: "130dp", "130dp"
+                    pos_hint: {'center_x': 0.5}
+
+                    MDRelativeLayout:
+                        AsyncImage:
+                            id: perfil
+                            source: root.avatar
+                            allow_stretch: True
+                            keep_ratio: True
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                        MDIconButton:
+                            icon: 'camera-plus'
+                            theme_font_size: 'Custom'
+                            theme_icon_color: 'Custom'
+                            icon_color: 'white'
+                            on_release: root.open_gallery()
+                            font_size: '27dp'
+                            theme_bg_color: 'Custom'
+                            md_bg_color: get_color_from_hex('#00b894')
+                            pos_hint: {'center_x': 0.76, 'center_y': 0.15}
+
+            # Seção de edição de perfil
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                spacing: '15dp'
+                padding: [10, 10, 10, 10]
+
+                # Título da seção
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    spacing: '10dp'
+
+                    MDBoxLayout:
+                        size_hint_y: None
+                        height: "40dp"
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+
+                        MDLabel:
+                            text: 'Editar Perfil'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            font_style: 'Title'
+                            role: 'large'
+                            bold: True
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: "40dp"
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        spacing: 5
+
+                        MDIcon:
+                            icon: 'account'
+                            theme_icon_color: 'Custom'
+                            icon_color: get_color_from_hex('#00b894')
+                            pos_hint: {'center_y': 0.6}
+
+                        MDLabel:
+                            text: 'Informações pessoais'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            font_style: 'Title'
+                            role: 'medium'
+                            bold: True
+                            pos_hint: {'center_y': 0.5}
+
+                # Campo Nome Completo
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: "80dp"
+                    spacing: '10dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+
+                    MDLabel:
+                        text: 'Nome completo'
+                        halign: 'left'
+                        size_hint_y: None
+                        height: "20dp"
+
+                    MDTextField:
+                        id: name_user
+                        mode: "outlined"
+                        theme_bg_color: 'Custom'
+                        fill_color_normal: 1, 1, 1, 1
+                        theme_line_color: "Custom"
+                        line_color_normal: get_color_from_hex('#C4CAD0')
+                        line_color_focus: 'cyan'
+                        radius: [15,]
+                        size_hint_y: None
+                        height: "60dp"
+
+                        MDTextFieldHintText:
+                            text: 'Digite o seu nome completo'
+
+                # Campo Cargo
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: "90dp"
+                    spacing: '10dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    spacing: '5dp'
+
+                    MDLabel:
+                        text: 'Cargo'
+                        halign: 'left'
+                        size_hint_y: None
+                        height: "20dp"
+
+                    MDCard:
+                        id: card_function
+                        size_hint_y: None
+                        height: "60dp"
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#00b894')
+                        on_release: root.menu2.open()
+
+                        MDRelativeLayout:
+                            MDLabel:
+                                id: function
+                                text: 'Selecione uma profissão'
+                                theme_text_color: 'Custom'
+                                text_color: 'white'
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.6, 'center_y': 0.5}
+
+                            MDIcon:
+                                icon: 'arrow-down'
+                                theme_icon_color: 'Custom'
+                                icon_color: 'white'
+                                pos_hint: {'center_x': 0.9, 'center_y': 0.5}
+
+                # Campo Email
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: "80dp"
+                    spacing: '10dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+
+                    MDLabel:
+                        text: 'Email'
+                        halign: 'left'
+                        size_hint_y: None
+                        height: "20dp"
+
+                    MDTextField:
+                        id: email
+                        mode: "outlined"
+                        theme_bg_color: 'Custom'
+                        fill_color_normal: 1, 1, 1, 1
+                        theme_line_color: "Custom"
+                        line_color_normal: get_color_from_hex('#C4CAD0')
+                        line_color_focus: 'cyan'
+                        radius: [15,]
+                        size_hint_y: None
+                        height: "60dp"
+
+                        MDTextFieldHintText:
+                            text: 'Digite o seu email'
+
+                # Campo Telefone
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: "80dp"
+                    spacing: '10dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+
+                    MDLabel:
+                        text: 'Número de Telefone'
+                        halign: 'left'
+                        size_hint_y: None
+                        height: "20dp"
+
+                    MDTextField:
+                        id: telefone
+                        mode: "outlined"
+                        theme_bg_color: 'Custom'
+                        fill_color_normal: 1, 1, 1, 1
+                        theme_line_color: "Custom"
+                        line_color_normal: get_color_from_hex('#C4CAD0')
+                        line_color_focus: 'cyan'
+                        radius: [15,]
+                        on_text: root.on_text_two(self, self.text)
+                        size_hint_y: None
+                        height: "60dp"
+
+                        MDTextFieldHintText:
+                            text: 'Digite o seu número de telefone'
+
+                # Espaço extra para garantir rolagem até o final
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: '50dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+
+                    MDCard:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#00b894')
+                        theme_line_color: 'Custom'
+                        line_color: get_color_from_hex('#00b894')
+                        on_release: root.step_one()
+
+                        MDRelativeLayout:
+                            MDIcon:
+                                icon: 'border-color'
+                                theme_icon_color: 'Custom'
+                                icon_color: get_color_from_hex('#00b894')
+                                pos_hint: {'center_x': 0.2 ,'center_y': 0.5}
+
+                            MDLabel:
+                                text: 'Editar Perfil'
+                                theme_text_color: 'Custom'
+                                text_color: 'white'
+                                bold: True
+                                halign: 'center'
+                                pos_hint: {'center_x': 0.53 ,'center_y': 0.48}
+
+                # Espaço extra para garantir rolagem até o final
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: '50dp'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+
+                    MDCard:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 1, 1, 1, 1
+                        theme_line_color: 'Custom'
+                        line_color: get_color_from_hex('#00b894')
+                        size_hint: 1, 1
+                        on_release: root.next_page()
+
+                        MDRelativeLayout:
+                            MDLabel:
+                                text: 'Proxima etapa'
+                                theme_text_color: 'Custom'
+                                text_color: get_color_from_hex('#00b894')
+                                bold: True
+                                halign: 'center'
+                                pos_hint: {'center_x': 0.53 ,'center_y': 0.5}
+
+                            MDIcon:
+                                icon: 'arrow-right-thin'
+                                theme_icon_color: 'Custom'
+                                icon_color: get_color_from_hex('#00b894')
+                                pos_hint: {'center_x': 0.3 ,'center_y': 0.5}
