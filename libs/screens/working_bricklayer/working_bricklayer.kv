@@ -1,0 +1,277 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+<WorkingBricklayer>:
+    name: 'WorkingBricklayer'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#7692FF')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: dp(30)
+                    height: '60dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    on_release: root.cancel()
+
+                MDLabel:
+                    text: 'Ajustando Empreita'
+                    font_style: 'Headline'
+                    height: '60dp'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    valign: 'center'
+                    padding: [0, 10, 0, 0]
+                    pos_hint: {'center_x': 0.5 }
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.15
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            spacing: "20dp"
+            adaptive_height: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.78}
+
+            MDLabel:
+                text: 'Prazo para finalizar o serviço:'
+                theme_text_color: 'Custom'
+                text_color: 'black'
+                bold: True
+
+            # Substituindo MDTextField por MDCard com MDLabel
+            MDBoxLayout:
+                size_hint: 1, None
+                height: "48dp"
+
+                MDCard:
+                    size_hint: 1, 1
+                    padding: [12, 0, 12, 0]
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#D0F4EA')
+                    on_release: root.show_modal_date_picker()
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+
+                        MDLabel:
+                            id: data_picker
+                            text: 'Selecione uma data'
+                            theme_text_color: "Secondary"
+                            size_hint_x: 0.9
+                            valign: 'center'
+
+                        MDIconButton:
+                            icon: 'calendar'
+                            pos_hint: {'center_y': 0.5}
+                            size_hint_x: 0.1
+                            theme_icon_color: 'Custom'
+                            icon_color: 'black'
+
+            MDLabel:
+                text: 'Data limite para conclusão do serviço'
+                theme_text_color: 'Custom'
+                text_color: 'grey'
+
+        # Substituído MDCard por um MDBoxLayout com sombra
+        MDBoxLayout:
+            size_hint: 0.9, None
+            height: "130dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.45, 'top': 0.7}
+            padding: "16dp"
+            shadow_softness: 8
+            shadow_offset: (0, 4)
+            shadow_radius: 10
+            radius: [10, 10, 10, 10]
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: "8dp"
+
+                MDLabel:
+                    text: 'Tipo de serviço que será prestado:'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    adaptive_height: True
+
+                # MDBoxLayout com comportamento clicável usando BoxLayout e MDFloatLayout
+                MDFloatLayout:
+                    size_hint: 1, None
+                    height: "48dp"
+
+                    # Botão transparente que cobre toda a área e captura o evento de clique
+                    MDIconButton:
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: 1, 1
+                        icon: ''  # Ícone vazio
+                        on_release: root.menu.open()
+                        theme_icon_color: 'Custom'
+                        icon_color: [0, 0, 0, 0]  # Transparente
+
+                    # MDBoxLayout visível
+                    MDBoxLayout:
+                        id: work
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        radius: [8,]
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        padding: ["12dp", 0, 0, 0]
+
+                        # Adicionando borda para manter aparência visual
+                        canvas.before:
+                            Color:
+                                rgba: 0.9, 0.9, 0.9, 1
+                            Line:
+                                rounded_rectangle: (self.x, self.y, self.width, self.height, 8)
+                                width: 1
+
+                        MDBoxLayout:
+                            orientation: 'horizontal'
+
+                            MDLabel:
+                                id: text_work
+                                text: 'Selecione o tipo de serviço'
+                                theme_text_color: "Secondary"
+                                size_hint_x: 0.9
+
+                            MDIconButton:
+                                icon: 'arrow-down'
+                                pos_hint: {'center_y': 0.5}
+                                size_hint_x: 0.1
+                                theme_icon_color: 'Custom'
+                                icon_color: 'black'
+
+        # Substituído MDCard por MDBoxLayout
+        MDBoxLayout:
+            size_hint: 0.92, 0.12
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.43}
+            # Adicionando sombra ou efeito visual através do canvas
+            canvas.before:
+                Color:
+                    rgba: 0.95, 0.95, 0.95, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: salary
+                    size_hint: 1, None
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+                    theme_line_color: 'Custom'
+                    line_color_normal: 'white'
+                    line_color_focus: get_color_from_hex('#00ABE7')
+                    input_filter: 'float'
+                    radius: [15,]
+
+                    MDTextFieldLeadingIcon:
+                        icon: 'currency-brl'
+                        theme_icon_color: 'Custom'
+                        icon_color_normal: get_color_from_hex('#00ABE7')
+                        icon_color_focus: get_color_from_hex('#00ABE7')
+
+                    MDTextFieldHintText:
+                        text: 'Salario'
+                        theme_text_color: 'Custom'
+                        text_color_focus: get_color_from_hex('#00ABE7')
+
+                    MDTextFieldHelperText:
+                        text: "Total que o prestador já recebeu como adiantamento"
+                        theme_text_color: 'Custom'
+                        text_color: 'grey'
+                        mode: "persistent"
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.12}
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            spacing: dp(5)
+            md_bg_color: 'white'
+            padding: [15, 0, 15, 0]
+
+            # Substituído MDCard por MDBoxLayout para o botão Cancelar
+            MDBoxLayout:
+                size_hint: 0.4, 0.7
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [5, 5, 5, 5]
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Cancelar'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        halign: 'center'
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.08}
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            spacing: dp(5)
+            md_bg_color: 'white'
+            padding: [15, 0, 15, 0]
+
+            MDCard:
+                id: cancel
+                style: 'elevated'
+                size_hint: 0.45, 0.8
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                on_release: root.cancel()
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Cancelar'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        halign: 'center'
+            MDCard:
+                id: save
+                style: 'elevated'
+                size_hint: 0.45, 0.8
+                theme_bg_color: 'Custom'
+                md_bg_color: 0, 0, 1, 1
+                on_release: root.verification_data()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Salvar'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        halign: 'center'
