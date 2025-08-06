@@ -1,6 +1,7 @@
 import os
 
-def corrigir_long_em_pys(raiz):
+def corrigir_long_em_buildozer():
+    raiz = ".buildozer/android/platform/build"
     for dirpath, _, filenames in os.walk(raiz):
         for filename in filenames:
             if filename.endswith('.py'):
@@ -17,4 +18,4 @@ def corrigir_long_em_pys(raiz):
                     print(f'⚠️ Erro ao ler {caminho}: {e}')
 
 if __name__ == "__main__":
-    corrigir_long_em_pys(".")
+    corrigir_long_em_buildozer()
