@@ -1,0 +1,128 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<NotificationPage>:
+    name: 'NotificationPage'
+    md_bg_color: 'white'
+
+    MDFloatLayout:
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#1C5D99')
+            size_hint: 1, 0.25
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            MDRelativeLayout:
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.85}
+                    on_release: root.return_()
+
+                MDIcon:
+                    icon: 'chat-processing'
+                    theme_font_size: 'Custom'
+                    font_size: '50dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+
+                MDLabel:
+                    text: 'Pagamento Pendente'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    theme_font_size: 'Custom'
+                    font_size: '20sp'
+                    halign: 'center'
+                    bold: True
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+                MDLabel:
+                    text: 'Confirmação necessária'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    theme_font_size: 'Custom'
+                    font_size: '15sp'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            padding: [dp(2), dp(2)]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            size_hint_x: 0.95
+            md_bg_color: [0.95, 0.97, 1, 0.1]  # Cor de fundo levemente azulada
+            radius: [dp(12), dp(12), dp(12), dp(12)]
+
+            MDLabel:
+                text: 'Existe um pagamento pendente de confirmação. Caso tenha recebido, confirme abaixo. Se houver dúvidas, entre em contato com o contratante.'
+                theme_text_color: 'Custom'
+                text_color: [0.1, 0.11, 0.23, 1]  # Cor escura para melhor legibilidade
+                theme_font_size: 'Custom'
+                font_size: '14sp'  # Tamanho maior para melhor leitura
+                halign: 'center'
+                valign: 'middle'
+                line_height: 1.5  # Espaçamento entre linhas
+                padding: [dp(2), dp(2)]
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.37}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#1C5D99')
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#1C5D99')
+                size_hint: 1, 1
+                on_release: root.confirm_payment()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Confirmar recebimento'
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.48}
+
+                    MDIcon:
+                        icon: 'check-circle'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('00FF62')
+                        pos_hint: {'center_x': 0.15 ,'center_y': 0.5}
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.27}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#3772FF')
+                size_hint: 1, 1
+                on_release: root.show_contact_dialog()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Entrar em contato'
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#3772FF')
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.48}
+
+                    MDIcon:
+                        icon: 'phone'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'red'
+                        pos_hint: {'center_x': 0.2 ,'center_y': 0.5}
