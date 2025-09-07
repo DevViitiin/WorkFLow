@@ -1,0 +1,237 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+<WithoutContractor>:
+    name: 'WithoutContractor'
+    md_bg_color: 'white'
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            radius: [20, ]
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#DFFFD6')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            radius: [20, ]
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'top': 0.85}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, None
+                height: '60dp'
+                padding: [20, 0, 15, 0]
+
+                MDLabel:
+                    text: f'Olá, {root.employee_name}'
+                    font_style: 'Title'
+                    role: 'large'
+                    bold: True
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                    halign: 'left'
+
+                MDLabel:
+                    text: f'Bem vindo ao Portal de Serviços'
+                    font_style: 'Label'
+                    role: 'large'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    halign: 'left'
+
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            radius: [20, ]
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 10, 10]
+            spacing: 10
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'top': 0.75}
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: '40dp'
+                spacing: 5
+                padding: [15, 0, 15, 0]
+                theme_bg_color: 'Custom'
+
+                MDIcon:
+                    icon: 'alert-circle'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'red'
+                    pos_hint: {'center_y': 0.5}
+                    theme_font_size: 'Custom'
+                    font_size: '33dp'
+
+                MDLabel:
+                    text: f'Atenção'
+                    font_style: 'Title'
+                    role: 'medium'
+                    bold: True
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, None
+                height: '135dp'
+                padding: [0, 0, 15, 0]
+                theme_bg_color: 'Custom'
+
+                MDRelativeLayout:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                        padding: [20, 0]
+                        spacing: 10
+
+                        MDLabel:
+                            text: 'Você ainda não está associado a nenhum contratante no sistema.Para continuar, solicite um serviço clicando no botão abaixo.'
+                            font_style: 'Label'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            role: 'medium'
+                            adaptive_height: True
+                            pos_hint: {'center_x': 0.5}
+                            halign: 'left'
+
+                    MDButton:
+                        style: 'tonal'
+                        theme_height: 'Custom'
+                        height: '40dp'
+                        theme_width: 'Custom'
+                        width: '280dp'
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#7189FF')
+                        on_release: root.add_request()
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+                        MDButtonText:
+                            text: 'Solicitar serviço'
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            bold: True
+                            font_style: 'Title'
+                            role: 'small'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            radius: [20, ]
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 10, 10]
+            spacing: 10
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'top': 0.45}
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: '40dp'
+                spacing: 5
+                padding: [15, 0, 15, 0]
+                theme_bg_color: 'Custom'
+
+                MDLabel:
+                    text: f'Oque acontece depois?'
+                    font_style: 'Title'
+                    role: 'medium'
+                    bold: True
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, None
+                height: '90dp'
+                padding: [0, 0, 15, 0]
+                theme_bg_color: 'Custom'
+
+                MDRelativeLayout:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                        padding: [20, 0]
+                        spacing: 10
+
+                        MDLabel:
+                            text: 'Após solicitar um serviço, aguarde a aprovação de um contratante para ter acesso completo ao sistema.'
+                            font_style: 'Label'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            role: 'medium'
+                            adaptive_height: True
+                            pos_hint: {'center_x': 0.5}
+                            halign: 'left'
+
+        MDNavigationBar:
+            animation: True  # Desativa a animação
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+
+            MDNavigationItem:
+                id: payment
+                active: root.current_nav_state == 'payment'
+                on_release: root.perfil()
+
+                MDNavigationItemIcon:
+                    icon: 'cash-multiple'
+                    theme_icon_color: 'Custom'
+                    icon_color_active: 'blue'
+
+            MDNavigationItem:
+                id: vacancy
+                active: root.current_nav_state == 'vacancy'
+                on_release: root.vacancy()
+
+                MDNavigationItemIcon:
+                    icon: 'magnify'
+                    theme_icon_color: 'Custom'
+                    icon_color_active: 'blue'
+
+            MDNavigationItem:
+                id: notification
+                active: root.current_nav_state == 'notification'
+                on_release: root.req()
+
+                MDNavigationItemIcon:
+                    icon: 'email-outline'
+                    theme_icon_color: 'Custom'
+                    icon_color_active: 'blue'
+
+
+            MDNavigationItem:
+                id: perfil
+                active: root.current_nav_state == 'perfil'
+                on_release: root.perfil()
+
+                MDNavigationItemIcon:
+                    icon: 'account-outline'
+                    theme_icon_color: 'Custom'
+                    icon_color_active: 'blue'
+

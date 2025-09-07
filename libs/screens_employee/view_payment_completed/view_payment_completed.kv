@@ -1,0 +1,243 @@
+<ViewPaymentCompleted>:
+    name: 'ViewPaymentCompleted'
+    md_bg_color: 'white'
+
+    MDFloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 0.15
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#0197F6')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+            radius: [0, 0, 15, 15]
+
+            MDRelativeLayout:
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    on_release: root.return_to_review()
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.5}
+
+                MDLabel:
+                    text: 'Visualizar pagamento'
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True
+                    theme_font_size: 'Custom'
+                    font_size: '20sp'
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.65}
+
+                MDLabel:
+                    text: 'Verifique os dados de pagamento enviado'
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    theme_font_size: 'Custom'
+                    font_size: '13sp'
+                    pos_hint: {'center_x': 0.35, 'center_y': 0.4}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.5, 'top': 0.8}
+            radius: [15, 15, 15, 15]
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                MDRelativeLayout:
+
+                    MDLabel:
+                        id: option
+                        text: 'Mês'
+                        theme_text_color: 'Custom'
+                        text_color: 'grey'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+
+                    MDLabel:
+                        id: month
+                        text: 'Maio'
+                        theme_text_color: 'Custom'
+                        text_color: 'blue'
+                        theme_font_size: 'Custom'
+                        font_size: '17sp'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDRelativeLayout:
+
+                    MDLabel:
+                        text: 'Dia do pagamento'
+                        theme_text_color: 'Custom'
+                        text_color: 'grey'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+
+                    MDLabel:
+                        id: day
+                        text: '4'
+                        theme_text_color: 'Custom'
+                        text_color: 'blue'
+                        theme_font_size: 'Custom'
+                        font_size: '17sp'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.5, 'top': 0.7}
+            radius: [15, 15, 15, 15]
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Funcionario'
+                    theme_text_color: 'Custom'
+                    text_color: 'grey'
+                    halign: 'left'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.75}
+
+                MDIcon:
+                    icon: 'account-hard-hat-outline'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'blue'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.35}
+
+                MDLabel:
+                    id: name
+                    text: 'Ayanokoji'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    theme_font_size: 'Custom'
+                    font_size: '18sp'
+                    halign: 'left'
+                    pos_hint: {'center_x': 0.65, 'center_y': 0.35}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.05
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.5, 'top': 0.58}
+            radius: [15, 15, 15, 15]
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Detalhamento do Pagamento'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    halign: 'left'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 0.6
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            spacing: 5
+            pos_hint: {'center_x': 0.5, 'top': 0.52}
+            radius: [15, 15, 15, 15]
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDScrollView:
+                    size_hint: 1, 1
+                    do_scroll_x: False
+
+                    MDBoxLayout:
+                        id: valleys
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'orange'
+
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDRelativeLayout:
+
+                    MDBoxLayout:
+                        size_hint: 1, 0.3
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        pos_hint: {'center_x': 0.5, 'top': 1}
+
+                        MDRelativeLayout:
+
+                            MDDivider:
+                                size_hint_x: 0.9
+                                color: 'grey'
+                                direction: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'top': 1}
+
+                            MDLabel:
+                                text: 'Valor liquido'
+                                theme_font_size: 'Custom'
+                                font_size: '18sp'
+                                theme_text_color: 'Custom'
+                                text_color: 'black'
+                                bold: True
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+
+                            MDLabel:
+                                id: remainder
+                                theme_font_size: 'Custom'
+                                font_size: '18sp'
+                                theme_text_color: 'Custom'
+                                text_color: 'green'
+                                bold: True
+                                halign: 'right'
+                                pos_hint: {'center_x': 0.45, 'center_y': 0.5}
+
+                    MDBoxLayout:
+                        size_hint: 1, 0.5
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+                        MDRelativeLayout:
+
+                            MDLabel:
+                                text: 'Metodo de pagamento'
+                                theme_text_color: 'Custom'
+                                theme_font_size: 'Custom'
+                                font_size: '15sp'
+                                text_color: 'grey'
+                                bold: True
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.55, 'center_y': 0.65}
+
+                            MDLabel:
+                                id: method
+                                text: 'Mensal'
+                                theme_text_color: 'Custom'
+                                theme_font_size: 'Custom'
+                                font_size: '15sp'
+                                text_color: 'blue'
+                                bold: True
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.6, 'center_y': 0.3}
+
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+
