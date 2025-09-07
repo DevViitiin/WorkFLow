@@ -73,7 +73,7 @@ class AddEmployeePassword(MDScreen):
     def on_refresh_failure(self, req, result):
         print("❌ Erro ao renovar token:", result)
         self.show_error('O token não foi renovado')
-        Clock.schedule_once(self.show_error('Refaça login no aplicativo'), 1.5)
+        Clock.schedule_once(self.show_message('Refaça login no aplicativo'), 1.5)
 
     def hashed_password(self):
         print('Error: ', self.ids.email.error)
@@ -128,4 +128,5 @@ class AddEmployeePassword(MDScreen):
         employee_avatar.refresh_id = self.refresh_token
         employee_avatar.password = self.ids.password.text
         self.ids.password.text = ''
+
         screen_manager.current = 'EmployeeAvatar'
