@@ -1,0 +1,233 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<InitScreen>:
+    name: 'Init'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDLabel:
+            text: 'Bem-Vindo'
+            font_style: 'Headline'
+            role: 'small'
+            theme_font_size: 'Custom'
+            font_size: '30sp'
+            theme_text_color: 'Custom'
+            text_color: 'blue'
+            bold: True
+            halign: 'center'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.77}
+
+        MDLabel:
+            text: 'Faça login para acessar sua conta'
+            font_style: 'Headline'
+            role: 'small'
+            theme_font_size: 'Custom'
+            font_size: '14sp'
+            theme_text_color: 'Custom'
+            text_color: 'grey'
+            halign: 'center'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.72}
+
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {"center_y": 0.6, "center_x": 0.5}
+            size_hint: 0.75, 0.1
+            theme_bg_color: "Custom"
+            md_bg_color: "white"
+            md_bg_color_disabled: "white"
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: email
+                    theme_line_color: 'Custom'
+                    line_color_normal: 'black'
+                    line_color_focus: 'blue'
+                    theme_text_color: 'Custom'
+                    text_color_focus: 'black'
+                    text_color_normal: 'grey'
+                    pos_hint: {"center_y": 0.65, "center_x": 0.5}
+                    size_hint: 1, None
+                    icon_right: "account"
+                    input_type: "mail"
+                    keyboard_suggestions: True
+                    write_tab: False
+                    validator: 'email'
+                    mode: "outlined"
+                    radius: 15, 15, 15, 15
+
+                    MDTextFieldLeadingIcon:
+                        icon: "email"
+                        theme_icon_color: 'Custom'
+                        icon_color_normal: 'black'
+                        icon_color_focus: 'blue'
+
+                    MDTextFieldHintText:
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        text_color_focus: 'grey'
+                        text: 'Email'
+
+                MDLabel:
+                    id: nome_errado
+                    text: ''
+                    theme_text_color: 'Custom'
+                    font_style: 'Title'
+                    role: 'small'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+                    halign: 'right'
+
+        MDBoxLayout:
+            size_hint: 0.75, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {"center_y": 0.49, "center_x": 0.5}
+            theme_bg_color: "Custom"
+            keyboard_suggestions: True
+            write_tab: False
+            md_bg_color: "white"
+            md_bg_color_disabled: "white"
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: senha
+                    theme_line_color: 'Custom'
+                    line_color_normal: 'black'
+                    line_color_focus: 'blue'
+                    theme_text_color: 'Custom'
+                    text_color_focus: 'black'
+                    text_color_normal: 'grey'
+                    pos_hint: {"center_y": 0.65, "center_x": 0.5}
+                    size_hint: 1, None
+                    icon_right: "account"
+                    mode: "outlined"
+                    radius: 15, 15, 15, 15
+
+                    MDTextFieldLeadingIcon:
+                        icon: "lock"
+                        theme_icon_color: 'Custom'
+                        icon_color_normal: 'black'
+                        icon_color_focus: 'blue'
+
+                    MDTextFieldHintText:
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        text_color_focus: 'blue'
+                        text: 'Senha'
+
+                MDLabel:
+                    id: senha_errada
+                    text: ''
+                    theme_text_color: 'Custom'
+                    font_style: 'Title'
+                    role: 'small'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+                    halign: 'right'
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {"center_y": 0.4, "center_x": 0.5}
+            size_hint: 0.75, 0.07
+            padding: [2,]
+            spacing: 5
+
+
+            MDCard:
+                id: contractor_card
+                theme_line_color: 'Custom'
+                line_color: 'white'
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                # Evite efeitos de animação adicionais
+                ripple_behavior: False
+                on_release: root.state_contractor()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        id: text_contractor
+                        text: 'Contratante'
+                        # Correção importante: use theme_text_color, não theme_line_color
+                        theme_text_color: 'Custom'
+                        text_color: 0, 0, 0, 1
+                        halign: 'center'
+                        bold: True
+                        font_size: '14sp'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            MDCard:
+                id: employee_card
+                theme_line_color: 'Custom'
+                line_color: 'white'
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                # Evite efeitos de animação adicionais
+                ripple_behavior: False
+                on_release: root.state_employee()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        id: employee_text
+                        text: 'Funcionário'
+                        theme_text_color: 'Custom'
+                        text_color: 0, 0, 0, 1
+                        halign: 'center'
+                        bold: True
+                        font_size: '14sp'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDBoxLayout:
+            size_hint: 0.75, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            ripple_behavior: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: 0, 0, 1, 1
+                theme_line_color: 'Custom'
+                line_color: 0, 0, 1, 1
+                size_hint: 1, 1
+                on_release: root.etapa1()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Fazer Login'
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.48}
+
+                    MDIcon:
+                        icon: 'account'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'white'
+                        pos_hint: {'center_x': 0.3 ,'center_y': 0.5}
+
+        MDBoxLayout:
+            size_hint: 0.75, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            ripple_behavior: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.21}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: 'blue'
+                size_hint: 1, 1
+                on_release: root.register()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Criar uma conta'
+                        theme_text_color: 'Custom'
+                        text_color: 'blue'
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.5}
+

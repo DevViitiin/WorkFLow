@@ -1,0 +1,144 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<RegisterContractor>:
+    name: 'RegisterContractor'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+
+        MDLabel:
+            text: 'Criar conta para'
+            font_style: 'Headline'
+            role: 'large'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.84}
+            halign: 'center'
+
+        MDLabel:
+            text: 'Contratante'
+            font_style: 'Headline'
+            role: 'large'
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: get_color_from_hex('#00b894')
+            pos_hint: {'center_x': 0.5, 'center_y': 0.77}
+            halign: 'center'
+
+        AsyncImage:
+            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1742645722/contractor-icon-improved_boeh4z.png'
+            size_hint: 0.5, 0.2
+            pos_hint: {"center_x": 0.5, 'center_y': 0.62}
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: email
+                    input_type: "mail"
+                    keyboard_suggestions: True
+                    write_tab: False
+                    validator: 'email'
+                    size_hint: 1, 0.9
+                    validator: "email"
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+
+                    MDTextFieldHintText:
+                        text: 'Email'
+
+                    MDTextFieldLeadingIcon:
+                        icon: "email"
+
+                MDLabel:
+                    id: erro1
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: senha
+                    keyboard_suggestions: True
+                    write_tab: False
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+                    MDTextFieldHintText:
+                        text: 'senha'
+
+                    MDTextFieldLeadingIcon:
+                        icon: "lock"
+
+                MDLabel:
+                    id: erro2
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#00b894')
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#00b894')
+                size_hint: 1, 1
+                on_release: root.etapa1()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Cadastrar contratante'
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.48}
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.13}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#00b894')
+                size_hint: 1, 1
+                on_release: root.voltar()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Tela anterior'
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#00b894')
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.53 ,'center_y': 0.5}
+
+                    MDIcon:
+                        icon: 'arrow-right-thin'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('#00b894')
+                        pos_hint: {'center_x': 0.3 ,'center_y': 0.5}
