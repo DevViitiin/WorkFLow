@@ -1,0 +1,266 @@
+<HiringProfile>:
+    name: 'HiringProfile'
+    md_bg_color: 1, 1, 1, 1
+
+    MDFloatLayout:
+
+        MDIconButton:
+            icon: 'arrow-left'
+            theme_font_size: 'Custom'
+            font_size: '30dp'
+            theme_icon_color: 'Custom'
+            icon_color: 'black'
+            pos_hint: {'center_x': 0.1, 'center_y': 0.95}
+            on_release: root.back()
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.35
+            padding: "10dp"
+            spacing: "10dp"
+
+            pos_hint: {'center_x': 0.5, 'center_y': 0.89}
+
+            # Container da imagem - Fixo e centralizado
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 0.6
+                padding: "10dp"
+
+                MDBoxLayout:
+                    size_hint: None, None
+                    size: "130dp", "130dp"
+                    pos_hint: {'center_x': 0.5}
+
+                    AsyncImage:
+                        id: perfil
+                        source: root.avatar
+                        allow_stretch: True
+                        keep_ratio: True
+
+        MDBoxLayout:
+            size_hint: 1, 0.08
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.69}
+            md_bg_color: 1, 1, 1, 1
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: root.employee_name
+                    font_style: 'Title'
+                    role: 'large'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.68}
+
+                MDLabel:
+                    text: root.employee_function
+                    font_style: 'Title'
+                    role: 'small'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.16
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.54}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 0, 10, 0]
+                spacing: '5dp'
+
+                MDIcon:
+                    icon: 'cellphone'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'grey'
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: root.employee_telephone
+                    pos_hint: {'center_y': 0.5}
+                    theme_font_size: 'Custom'
+                    font_size: '15sp'
+
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 0, 10, 0]
+                spacing: '5dp'
+
+                MDIcon:
+                    icon: 'email'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'grey'
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: root.employee_mail
+                    pos_hint: {'center_y': 0.5}
+                    theme_font_size: 'Custom'
+                    font_size: '15sp'
+
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 0, 10, 0]
+                spacing: '5dp'
+
+                MDIcon:
+                    icon: 'map-marker-outline'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'grey'
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: f"{root.state}, {root.city}"
+                    pos_hint: {'center_y': 0.5}
+                    theme_font_size: 'Custom'
+                    font_size: '15sp'
+
+        MDBoxLayout:
+            size_hint: 0.8, 0.05
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.1
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.38}
+            spacing: 20
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                padding: [10, 0, 10, 0]
+                spacing: '5dp'
+
+                MDIcon:
+                    icon: 'book-open-page-variant'
+                    theme_icon_color: 'Custom'
+                    icon_color: 0, 0, 1, 1
+                    pos_hint: {'center_y': 0.6}
+
+                MDLabel:
+                    text: 'Resumo Profissional'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    pos_hint: {'center_y': 0.5}
+
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 10, 10, 10]
+                spacing: '5dp'
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: root.employee_summary
+                        font_style: 'Label'
+                        role: 'large'
+                        theme_font_size: 'Custom'
+                        font_size: '13sp'
+                        pos_hint: {'center_y': 1}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.15
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+            md_bg_color: 1, 1, 1, 1
+            spacing: 10
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 0, 10, 0]
+                spacing: '5dp'
+
+                MDIcon:
+                    icon: 'medal'
+                    theme_icon_color: 'Custom'
+                    icon_color: 0, 0, 1, 1
+                    pos_hint: {'center_y': 0.6}
+
+                MDLabel:
+                    text: 'Habilidades'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    pos_hint: {'center_y': 0.5}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [10, 0, 10, 0]
+
+
+                MDRelativeLayout:
+                    MDScrollView:
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+                        do_scroll_y: False
+                        do_scroll_x: True
+                        size_hint: 1, 1
+
+                        MDBoxLayout:
+                            id: main_scroll
+                            orientation: "horizontal"
+                            size_hint_x: None  # Importante para permitir a rolagem horizontal
+                            width: self.minimum_width
+                            theme_bg_color: 'Custom'
+                            md_bg_color: 1, 1, 1, 1
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.08}
+            size_hint: 0.9, 0.08
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            spacing: dp(5)
+            md_bg_color: 'white'
+            padding: [15, 0, 15, 0]
+
+            MDCard:
+                style: 'elevated'
+                size_hint: 0.45, 0.8
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                on_release: root.dispense()
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Dispensar'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        halign: 'center'
+
+            MDCard:
+                style: 'elevated'
+                size_hint: 0.45, 0.8
+                theme_bg_color: 'Custom'
+                md_bg_color: 0, 0, 1, 1
+                on_release: root.recruit()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Recrutar'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        halign: 'center'
