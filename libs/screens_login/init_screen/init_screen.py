@@ -56,6 +56,29 @@ class InitScreen(MDScreen):
             "email": self.ids.email.text
         }
 
+        headers = {
+            "Content-Type": "application/json",
+            "X-Firebase-Locale": "pt-BR"   # força idioma português
+        }
+
+        def success(req, result):
+            self.show_success("E-mail de redefinição enviado em português!")
+
+        def error(req, error):
+            self.show_error(f"Erro: {error}")
+
+        def failure(req, result):
+            self.show_error(f"Falha: {result}")
+
+        UrlRequest(
+            url,
+            req_body=json.dumps(payload),
+            req_headers=headers,
+            on_success=success,
+            on_error=error,
+            on_failure=failure
+        )
+
         headers = {"Content-Type": "application/json"}
 
         def sucesso(req, resultado):
