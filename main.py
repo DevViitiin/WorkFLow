@@ -1,3 +1,12 @@
+import os
+os.environ["KIVY_NO_CONSOLELOG"] = "1"
+os.environ["KIVY_NO_FILELOG"] = "1"
+os.environ["KIVY_NO_ARGS"] = "1"
+os.environ["KIVY_NO_CONFIG"] = "1"
+
+# Desabilita a splash padrão do Kivy
+os.environ["KIVY_NO_SPLASH"] = "1"
+
 from kivy.clock import Clock
 from kivy.uix.image import AsyncImage
 from kivymd.app import MDApp
@@ -168,3 +177,4 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
 
 MainApp().run()
+
