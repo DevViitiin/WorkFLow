@@ -172,9 +172,11 @@ class MainApp(MDApp):
 
         # Telas de inicio (login e cadastro)
         Builder.load_file('libs/screens_login/choice_account/choice_account.kv')
+        Builder.load_file('libs/screens_login/splash_screen/splash_screen.kv')
         Builder.load_file('libs/screens_login/init_screen/init_screen.kv')
         Builder.load_file('libs/screens_login/register_contractor/register_contractor.kv')
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
 
 MainApp().run()
+
 
