@@ -49,15 +49,17 @@ from libs.screens_login.init_screen.init_screen import InitScreen
 from libs.screens.functions_screen.functions_screen import FunctionsScreen
 from libs.screens_login.register_contractor.register_contractor import RegisterContractor
 from libs.screens_login.register_funcionario.register_funcionario import RegisterFuncionario
-
+from libs.screens_login.splash_screen.splash_screen import SplashScreen
 
 class MainApp(MDApp):
 
     def build(self):
         self.load_all_kv_files()
+        Window.size = (350, 650)
         self.screenmanager = MDScreenManager()
 
         # Parte do cadastro ou login inicial
+        self.screenmanager.add_widget(SplashScreen(name='SplashScreen'))
         self.screenmanager.add_widget(InitScreen(name='Init'))
         self.screenmanager.add_widget(AddEmployeePassword(name='AddEmployeePassword'))
         self.screenmanager.add_widget(ConfirmPaymentEmployee(name='ConfirmPaymentEmployee'))
@@ -114,6 +116,7 @@ class MainApp(MDApp):
         if platform == 'android':
             if not check_permission(Permission.READ_EXTERNAL_STORAGE):
                 request_permissions([Permission.READ_EXTERNAL_STORAGE])
+        pass
 
     def load_all_kv_files(self):
         Builder.load_file('libs/screens/edit_profile/edit_profile.kv')
@@ -164,6 +167,4 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_login/register_contractor/register_contractor.kv')
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
 
-
 MainApp().run()
-
