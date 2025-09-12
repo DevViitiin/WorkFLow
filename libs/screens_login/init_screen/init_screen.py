@@ -19,7 +19,7 @@ class InitScreen(MDScreen):
     Permite login como funcionário ou contratante, além de oferecer
     opção para registro de novos usuários.
     """
-    logo = "https://res.cloudinary.com/dh7ixbnzc/image/upload/v1757677779/a-modern-logo-design-for-a-construction-_rTLcAT8eTSOBn0GCfdHWwQ_LW_ZvToNSpmvMtwMOX0iHw-removebg-preview_l3iyui.png"
+    logo = "https://res.cloudinary.com/dh7ixbnzc/image/upload/v1757715627/ChatGPT_Image_12_de_set._de_2025_19_20_23_f5n3ij.png"
     carregado = False
     api1 = "AIzaSyA3vFR2WgCdB"
     api2 = "syIIL1k9teQNZTi4ZAzhtg"
