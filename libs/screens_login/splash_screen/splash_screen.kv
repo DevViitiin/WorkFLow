@@ -1,0 +1,11 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<SplashScreen>:
+    name: "SplashScreen"
+    md_bg_color: "white"
+
+    MDFloatLayout:
+        AsyncImage:
+            id: logo
+           
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
