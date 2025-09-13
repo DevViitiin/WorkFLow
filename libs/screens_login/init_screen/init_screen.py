@@ -19,7 +19,7 @@ class InitScreen(MDScreen):
     Permite login como funcionário ou contratante, além de oferecer
     opção para registro de novos usuários.
     """
-    logo = "https://res.cloudinary.com/dh7ixbnzc/image/upload/v1757715627/ChatGPT_Image_12_de_set._de_2025_19_20_23_f5n3ij.png"
+    logo = "https://res.cloudinary.com/dsmgwupky/image/upload/v1757731316/logo-removebg-preview_sqstg8.png"
     carregado = False
     api1 = "AIzaSyA3vFR2WgCdB"
     api2 = "syIIL1k9teQNZTi4ZAzhtg"
@@ -61,22 +61,13 @@ class InitScreen(MDScreen):
             "X-Firebase-Locale": "pt-BR"   # força idioma português
         }
 
-        def success(req, result):
-            self.show_success("E-mail de redefinição enviado em português!")
-
-        def error(req, error):
-            self.show_error(f"Erro: {error}")
-
-        def failure(req, result):
-            self.show_error(f"Falha: {result}")
-
         UrlRequest(
             url,
             req_body=json.dumps(payload),
             req_headers=headers,
-            on_success=success,
-            on_error=error,
-            on_failure=failure
+            on_success=self.success,
+            on_error=self.error,
+            on_failure=self.failure
         )
 
         headers = {"Content-Type": "application/json"}
@@ -101,6 +92,38 @@ class InitScreen(MDScreen):
             on_error=erro,
             on_failure=falha
         )
+    
+    def success(self, req, result):
+        self.show_message("E-mail de redefinição enviado em português!")
+
+    def error(self, req, error):
+        self.show_error(f"Erro: {error}")
+
+    def failure(self, req, result):
+        self.show_error(f"Falha: {result}")
+
+    def show_message(self, message, color='#2196F3'):
+        """Display a snackbar message"""
+        MDSnackbar(
+            MDSnackbarText(
+                text=message,
+                theme_text_color='Custom',
+                text_color='white',
+                bold=True,
+                halign='center'
+            ),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            halign='center',
+            size_hint_x=0.8,
+            theme_bg_color='Custom',
+            background_color=get_color_from_hex(color)
+        ).open()
+
+    def show_error(self, error_message):
+        """Display an error message"""
+        self.show_message(error_message, color='#FF0000')
+        print(f"Error: {error_message}")
 
     def state_contractor(self):
         """Seleciona o perfil de contratante e aplica as mudanças visuais."""
@@ -213,39 +236,6 @@ class InitScreen(MDScreen):
         login.perfil = perfil
         login.nome = name
         self.manager.current = 'LoginScreen'
-
-    def show_message(self, message, color='#2196F3'):
-        """
-        Exibe uma mensagem na interface através de um snackbar.
-
-        Args:
-            message: A mensagem a ser exibida
-            color: A cor de fundo do snackbar
-        """
-        MDSnackbar(
-            MDSnackbarText(
-                text=message,
-                theme_text_color='Custom',
-                text_color='white',
-                bold=True
-            ),
-            y=dp(24),
-            pos_hint={"center_x": 0.5},
-            halign='center',
-            size_hint_x=0.94,
-            theme_bg_color='Custom',
-            background_color=get_color_from_hex(color),
-            duration=3  # Duração da exibição do snackbar em segundos
-        ).open()
-
-    def show_error(self, error_message):
-        """
-        Exibe uma mensagem de erro através de um snackbar vermelho.
-
-        Args:
-            error_message: A mensagem de erro a ser exibida
-        """
-        self.show_message(error_message, color='#FF0000')
 
     def etapa1(self):
         """
