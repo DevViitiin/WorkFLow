@@ -1,7 +1,6 @@
 import ast
 import json
 from datetime import datetime
-
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty
@@ -373,7 +372,7 @@ class RequestAccept(MDScreen):
         screenmanager.transition = SlideTransition(direction='left')
         screenmanager.current = 'RequestsVacancy'
 
-    def _navigate_back_two(self):
+    def _navigate_back_two(self, *args):
         """
         Método auxiliar para navegar de volta à tela de requisições.
         """
@@ -403,3 +402,15 @@ class RequestAccept(MDScreen):
         print('Finalizado com sucesso')
         self._show_snackbar("Contratante dispensado com sucesso", "green")
         self._navigate_back()
+
+    def back(self, *args):
+        app = MDApp.get_running_app()
+        screenmanager = app.root
+        request = screenmanager.get_screen('RequestsVacancy')
+        request.key = self.key
+        request.api_key = self.api_key
+        request.local_id = self.local_id
+        request.refresh_token = self.refresh_token
+        request.token_id = self.token_id
+        screenmanager.transition = SlideTransition(direction='left')
+        screenmanager.current = 'RequestsVacancy'
