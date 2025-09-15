@@ -238,7 +238,7 @@ class EditEmployeeTwo(MDScreen):
                 caller=self.ids.card_state,
                 items=menu_itens,
                 position='bottom',
-                pos_hint={'center_x': 0.5}
+                pos_hint={'center_x': 0.5, 'center_y': 0.5}
             )
         except Exception as e:
             self.logger.error(f"Erro ao criar menu de estados: {e}")
