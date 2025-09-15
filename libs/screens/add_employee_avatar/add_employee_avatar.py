@@ -122,22 +122,23 @@ class EmployeeAvatar(MDScreen):
     def check_and_request_permissions(self):
         # Lista das permissões que você precisa
         needed_permissions = [
-             Permission.WRITE_EXTERNAL_STORAGE,
-             Permission.READ_EXTERNAL_STORAGE,
-         ]
-
-        #Verifica quais ainda não estão concedidas
+            Permission.WRITE_EXTERNAL_STORAGE,
+            Permission.READ_EXTERNAL_STORAGE,
+        ]
+    
+        # Verifica quais ainda não estão concedidas
         missing_permissions = [p for p in needed_permissions if not check_permission(p)]
-
-        #Se tiver faltando, solicita
+    
+        # Se tiver faltando, solicita
         if missing_permissions:
-             request_permissions(missing_permissions)
-             self.show_error('Conceda as permissões necessarias')
-             Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
-             self.ids.image_card.disable = True
-         else:
-             print("Todas as permissões já foram concedidas!")  
-             self.ids.image_card.disable = False
+            request_permissions(missing_permissions)
+            self.show_error('Conceda as permissões necessarias')
+            Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
+            self.ids.image_card.disable = True
+        else:
+            print("Todas as permissões já foram concedidas!")  
+            self.ids.image_card.disable = False
+
 
     def on_enter(self):
         self.verific_token()
@@ -498,4 +499,5 @@ class EmployeeAvatar(MDScreen):
         employee_avatar.refresh_id = self.refresh_token
         employee_avatar.password = self.password
         screen_manager.current = 'AddEmployeePassword'
+
 
