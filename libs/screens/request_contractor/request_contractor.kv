@@ -1,0 +1,132 @@
+
+<RequestContractor>:
+    name: 'RequestContractor'
+    md_bg_color: 'white'
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#7692FF')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDLabel:
+                    text: 'Solicitações'
+                    font_style: 'Headline'
+                    height: '60dp'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    valign: 'center'
+                    padding: [0, 10, 0, 0]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDNavigationBar:
+            animation: True  # Desativa a animação
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.5, 'top': 0.88}
+
+
+            MDNavigationItem:
+                id: request
+                active: root.tab_nav_state == 'request'
+                on_release: root.workflow('request')
+
+                MDNavigationItemLabel:
+                    text: 'Enviadas'
+                    theme_text_color: 'Custom'
+                    text_color_active: 'blue'
+
+
+            MDNavigationItem:
+                id: decline
+                active: root.tab_nav_state == 'decline'
+                on_release: root.workflow('decline')
+
+                MDNavigationItemLabel:
+                    text: 'Recusadas'
+                    theme_text_color: 'Custom'
+                    text_color_active: 'blue'
+
+            MDNavigationItem:
+                id: received
+                active: root.tab_nav_state == 'received'
+                on_release: root.workflow('received')
+
+                MDNavigationItemLabel:
+                    text: 'Recebidas'
+                    theme_text_color: 'Custom'
+                    text_color_active: 'blue'
+
+        MDScrollView:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            do_scroll_x: False
+            size_hint: 0.85, 0.65
+            theme_bg_color: 'Custom'
+
+            MDBoxLayout:
+                id: main_scroll
+                spacing: 10
+                padding: [5,]
+                adaptive_height: True
+                orientation: "vertical"
+
+    MDNavigationBar:
+        animation: False
+        theme_bg_color: 'Custom'
+        md_bg_color: 'white'
+
+        MDNavigationItem:
+            id: table
+            active: root.current_nav_state == 'table'
+            on_release: root.bricklayer()
+
+            MDNavigationItemIcon:
+                id: icon_table
+                icon: 'table'
+                theme_icon_color: 'Custom'
+                icon_color: 0.5, 0.5, 0.5, 1  # cor padrão
+
+        MDNavigationItem:
+            id: search
+            active: root.current_nav_state == 'search'
+            on_release: root.search()
+
+            MDNavigationItemIcon:
+                id: icon_search
+                icon: 'magnify'
+                theme_icon_color: 'Custom'
+                icon_color: 0.5, 0.5, 0.5, 1
+
+        MDNavigationItem:
+            id: request
+            active: root.current_nav_state == 'request'
+
+            MDNavigationItemIcon:
+                id: icon_request
+                icon: 'clipboard-list'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
+
+        MDNavigationItem:
+            id: perfil
+            active: root.current_nav_state == 'perfil'
+            on_release: root.passo()
+
+            MDNavigationItemIcon:
+                id: icon_perfil
+                icon: 'account-outline'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
