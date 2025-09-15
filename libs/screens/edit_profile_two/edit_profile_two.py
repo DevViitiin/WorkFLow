@@ -418,7 +418,7 @@ class EditProfileTwo(MDScreen):
     def previous(self, *args):
         app = MDApp.get_running_app()
         screen_manager = app.root
-        edit = screen_manager.screen_manager.get_screen('EditProfile')
+        edit = screen_manager.get_screen('EditProfile')
         edit.token_id = self.token_id
         edit.local_id = self.local_id
         edit.refresh_token = self.refresh_token
