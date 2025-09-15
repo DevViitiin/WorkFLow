@@ -395,7 +395,7 @@ class EditProfileEmployee(MDScreen):
         if self.employee_name and self.key:
             if self.has_changes():
                 if self.ids.name.text != self.employee_name:
-                   self.check_name()
+                    self.check_name()
                 else:
                     self.etapa3()
             else:
@@ -456,7 +456,7 @@ class EditProfileEmployee(MDScreen):
                 'work_days_week3': '[]',
                 'work_days_week4': '[]'
             }
-
+    
         else:
             data = {
                 'Name': self.ids.name.text,
@@ -465,13 +465,14 @@ class EditProfileEmployee(MDScreen):
                 'salary': self.salary,
                 'avatar': self.ids.perfil.source
             }
-
+    
         UrlRequest(
             url,
             method='PATCH',
             req_body=json.dumps(data),
             on_success=self.saved_successfully
         )
+        
     def saved_successfully(self, instance, data: Dict[str, Any], *args) -> None:
         """Callback executado quando os dados são salvos com sucesso."""
         print(f"Dados salvos com sucesso: {data}")
@@ -506,6 +507,7 @@ class EditProfileEmployee(MDScreen):
     def back_evaluation(self, *args):
         self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Evaluation'
+
 
 
 
