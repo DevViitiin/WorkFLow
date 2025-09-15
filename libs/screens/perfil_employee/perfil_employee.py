@@ -8,7 +8,7 @@ from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivy.metrics import dp
-
+from kivymd.app import MDApp
 
 class PerfilEmployee(MDScreen):
     avatar = StringProperty()
@@ -183,5 +183,12 @@ class PerfilEmployee(MDScreen):
     def back(self, *args):
         self.ids.card.md_bg_color = 'blue'
         self.ids.text_label.text = 'Contratar agora'
+        app = MDApp.get_running_app()
+        screen = app.root
+        contractor = screen.get_screen('VacancyContractor')
+        contractor.local_id = self.local_id
+        contractor.token_id = self.token_id
+        contractor.refresh_token = self.refresh_token
+        contractor.api_key = self.api_key
         self.manager.transition = SlideTransition(direction='left')
         self.manager.current = 'VacancyContractor'
