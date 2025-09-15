@@ -533,3 +533,4 @@ class EditProfile(MDScreen):
 
         self.manager.current = 'Perfil'
 
+
