@@ -642,6 +642,7 @@ class VacancyContractor(MDScreen):
             perfil.key_contractor = self.key_contractor
             perfil.key_requests = self.request_key
             perfil.state = info['state']
+            self.cont = 0
             perfil.token_id = self.token_id
             perfil.refresh_token = self.refresh_token
             perfil.local_id = self.local_id
@@ -691,6 +692,7 @@ class VacancyContractor(MDScreen):
         bricklayer.token_id = self.token_id
         bricklayer.refresh_token = self.refresh_token
         bricklayer.api_key = self.api_key
+        self.cont = 0
         bricklayer.local_id = self.local_id
         bricklayer.username = self.username
         bricklayer.ids.table.active = True
@@ -711,6 +713,7 @@ class VacancyContractor(MDScreen):
         bricklayer.local_id = self.local_id
         bricklayer.refresh_token = self.refresh_token
         bricklayer.ids.table.active = False
+        self.cont = 0
         bricklayer.ids.perfil.active = False
         bricklayer.ids.search.active = False
         bricklayer.ids.request.active = True
@@ -720,6 +723,7 @@ class VacancyContractor(MDScreen):
 
     def passo(self, *args):
         app = MDApp.get_running_app()
+        self.cont = 0
         screen_manager = app.root
         bricklayer = screen_manager.get_screen('Perfil')
         bricklayer.ids.table.active = False
