@@ -83,11 +83,11 @@ class EditProfile(MDScreen):
             Permission.WRITE_EXTERNAL_STORAGE,
             Permission.READ_EXTERNAL_STORAGE,
         ]
-
-        #Verifica quais ainda não estão concedidas
+    
+        # Verifica quais ainda não estão concedidas
         missing_permissions = [p for p in needed_permissions if not check_permission(p)]
-
-        #Se tiver faltando, solicita
+    
+        # Se tiver faltando, solicita
         if missing_permissions:
             request_permissions(missing_permissions)
             self.show_error('Conceda as permissões necessarias')
@@ -532,3 +532,4 @@ class EditProfile(MDScreen):
             self.remove_widget(self.card)
 
         self.manager.current = 'Perfil'
+
