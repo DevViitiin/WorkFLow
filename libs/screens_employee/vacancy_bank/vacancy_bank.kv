@@ -1,0 +1,165 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<VacancyBank>:
+    name: 'VacancyBank'
+    md_bg_color: 'white'
+
+    MDFloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#7692FF')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDLabel:
+                    text: 'Oportunidades'
+                    font_style: 'Headline'
+                    height: '60dp'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    valign: 'center'
+                    padding: [0, 10, 0, 0]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.95, 0.1
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'top': 0.85}
+
+            MDTextField:
+                id: tp
+                radius: [20,]
+                on_text: root.search(self, self.text)
+
+                MDTextFieldLeadingIcon:
+                    icon: "magnify"
+
+                MDTextFieldHintText:
+                    id: hint
+                    text: ''
+                    padding: [10, 0, 0, 0]
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.95, 0.07
+            padding: [10, 10, 0, 0]
+            spacing: "10dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'top': 0.74}
+
+            MDChip:
+                id: loc
+                type: "input"
+                theme_bg_color: 'Custom'
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#7692FF')
+                md_bg_color: get_color_from_hex('#7692FF')
+                _no_ripple_effect: True
+                on_release: root.loc()
+
+                pos_hint: {'center_y': 0.8}
+
+                MDChipText:
+                    id: loc_text
+                    text: "Localização"
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    font_style: 'Label'
+                    role: 'medium'
+                    bold: True
+
+            MDChip:
+                id: func
+                type: "input"
+                theme_bg_color: 'Custom'
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#7692FF')
+                _no_ripple_effect: True
+                on_release: root.func()
+                pos_hint: {'center_y': 0.8}
+
+                MDChipText:
+                    id: func_text
+                    text: "Função"
+                    theme_text_color: 'Custom'
+                    text_color: get_color_from_hex('#7692FF')
+                    font_style: 'Label'
+                    role: 'medium'
+                    bold: True
+
+        MDScrollView:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            do_scroll_x: False
+            theme_bg_color: 'Custom'
+            size_hint: 0.9, 0.5
+            on_scroll_y: root.check_scroll(self)
+
+            MDBoxLayout:
+                id: main_scroll
+                spacing: 2
+                adaptive_height: True
+                orientation: "vertical"
+
+    MDNavigationBar:
+        animation: True  # Desativa a animação
+        theme_bg_color: 'Custom'
+        md_bg_color: 'white'
+
+        MDNavigationItem:
+            id: payment
+            active: root.current_nav_state == 'payment'
+            on_release: root.requests()
+
+            MDNavigationItemIcon:
+                icon: 'cash-multiple'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
+
+        MDNavigationItem:
+            id: vacancy
+            active: root.current_nav_state == 'vacancy'
+
+            MDNavigationItemIcon:
+                icon: 'magnify'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
+
+        MDNavigationItem:
+            id: notification
+            active: root.current_nav_state == 'notification'
+            on_release: root.req()
+
+            MDNavigationItemIcon:
+                icon: 'email-outline'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
+
+        MDNavigationItem:
+            id: perfil
+            active: root.current_nav_state == 'perfil'
+            on_release: root.perfil()
+
+            MDNavigationItemIcon:
+                icon: 'account-outline'
+                theme_icon_color: 'Custom'
+                icon_color_active: 'blue'
