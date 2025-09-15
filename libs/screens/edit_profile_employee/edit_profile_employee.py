@@ -39,6 +39,7 @@ class EditProfileEmployee(MDScreen):
     menu = ObjectProperty(None)
     # Firebase url
     FIREBASE_URL = 'https://obra-7ebd9-default-rtdb.firebaseio.com'
+
     def __init__(self, *args, **kwargs):
         """Inicializa a tela de edição de perfil."""
         super().__init__(*args, **kwargs)
@@ -142,7 +143,7 @@ class EditProfileEmployee(MDScreen):
         else:
             print('Sem token')
             self.verific_token()
-        
+
         print('Local id aqui: ', self.local_id)
         self.ids.name.text = self.employee_name
         self.ids.scale.text = self.scale
@@ -201,7 +202,7 @@ class EditProfileEmployee(MDScreen):
         else:
             # bloqueia o botão
             self.ids.image_card.disabled = True
-            print("Sem permissão, botão bloqueado!")    
+            print("Sem permissão, botão bloqueado!")
 
     def verific_token(self, *args):
         print('🔎 verificando token...')
@@ -224,7 +225,7 @@ class EditProfileEmployee(MDScreen):
         """Display an error message"""
         self.show_message(error_message, color='#FF0000')
         print(f"Error: {error_message}")
-    
+
     def show_message(self, message, color='#2196F3'):
         """Display a snackbar message"""
         MDSnackbar(
@@ -271,7 +272,6 @@ class EditProfileEmployee(MDScreen):
         self.show_error('O token não foi renovado')
         Clock.schedule_once(lambda dt: self.show_error('Refaça login no aplicativo'), 1)
 
-
     def _reset_payment_cards(self) -> None:
         """Reseta as cores de todos os cartões de método de pagamento."""
         cards = ['card_week', 'card_day', 'card_month', 'card_bricklayer']
@@ -294,7 +294,6 @@ class EditProfileEmployee(MDScreen):
             self.ids.scale.text = ''
 
     def replace_numbers(self, instance, text: str) -> None:
-
         """Formata o valor do salário para o padrão brasileiro."""
         try:
             # Try to set locale, but handle the case where it fails
@@ -398,10 +397,10 @@ class EditProfileEmployee(MDScreen):
     def has_changes(self) -> bool:
         """Verifica se houve alterações nos dados do funcionário."""
         return (
-                self.ids.name.text != self.employee_name or
-                self.ids.scale.text != self.scale or
-                str(self.salary) != str(self.ids.salary.text).replace('.', '').replace(',', '.') or
-                self.method != self.method_salary
+            self.ids.name.text != self.employee_name or
+            self.ids.scale.text != self.scale or
+            str(self.salary) != str(self.ids.salary.text).replace('.', '').replace(',', '.') or
+            self.method != self.method_salary
         )
 
     def save(self) -> None:
@@ -415,7 +414,7 @@ class EditProfileEmployee(MDScreen):
                     self.etapa3()
             else:
                 self.show_snackbar()
-                
+
     def check_name(self):
         url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/.json?auth={self.token_id}'
         UrlRequest(
@@ -471,7 +470,6 @@ class EditProfileEmployee(MDScreen):
                 'work_days_week3': '[]',
                 'work_days_week4': '[]'
             }
-
         else:
             data = {
                 'Name': self.ids.name.text,
@@ -487,6 +485,7 @@ class EditProfileEmployee(MDScreen):
             req_body=json.dumps(data),
             on_success=self.saved_successfully
         )
+
     def saved_successfully(self, instance, data: Dict[str, Any], *args) -> None:
         """Callback executado quando os dados são salvos com sucesso."""
         print(f"Dados salvos com sucesso: {data}")
@@ -521,5 +520,3 @@ class EditProfileEmployee(MDScreen):
     def back_evaluation(self, *args):
         self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Evaluation'
-
-
