@@ -7,7 +7,7 @@ import cloudinary.api
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-#from android.permissions import request_permissions, check_permission, Permission
+from android.permissions import request_permissions, check_permission, Permission
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty, get_color_from_hex
 from kivy.uix.image import AsyncImage
@@ -75,27 +75,27 @@ class EditProfile(MDScreen):
         self.event_token = Clock.schedule_interval(self.verific_token, 300)
         self.screen_finalize()
         self.update_ui_from_properties()
-        #self.check_and_request_permissions()
+        self.check_and_request_permissions()
 
-    #def check_and_request_permissions(self):
-    #    # Lista das permissões que você precisa
-    #    needed_permissions = [
-    #        Permission.WRITE_EXTERNAL_STORAGE,
-    #        Permission.READ_EXTERNAL_STORAGE,
-    #    ]
+    def check_and_request_permissions(self):
+        # Lista das permissões que você precisa
+        needed_permissions = [
+            Permission.WRITE_EXTERNAL_STORAGE,
+            Permission.READ_EXTERNAL_STORAGE,
+        ]
 
         #Verifica quais ainda não estão concedidas
-    #    missing_permissions = [p for p in needed_permissions if not check_permission(p)]
+        missing_permissions = [p for p in needed_permissions if not check_permission(p)]
 
-    # Se tiver faltando, solicita
-    #    if missing_permissions:
-    #        request_permissions(missing_permissions)
-    #        self.show_error('Conceda as permissões necessarias')
-    #        Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
-    #        self.ids.image_card.disable = True
-    #    else:
-    #        print("Todas as permissões já foram concedidas!")  
-    #        self.ids.image_card.disable = False
+        #Se tiver faltando, solicita
+        if missing_permissions:
+            request_permissions(missing_permissions)
+            self.show_error('Conceda as permissões necessarias')
+            Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
+            self.ids.image_card.disable = True
+        else:
+            print("Todas as permissões já foram concedidas!")  
+            self.ids.image_card.disable = False
 
     def verific_token(self, *args):
         print('🔎 verificando token...')
@@ -530,4 +530,5 @@ class EditProfile(MDScreen):
         # Clean up and transition
         if hasattr(self, 'card') and self.card in self.children:
             self.remove_widget(self.card)
+
         self.manager.current = 'Perfil'
