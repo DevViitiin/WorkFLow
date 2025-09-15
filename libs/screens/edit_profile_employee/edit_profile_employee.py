@@ -174,20 +174,35 @@ class EditProfileEmployee(MDScreen):
             Permission.WRITE_EXTERNAL_STORAGE,
             Permission.READ_EXTERNAL_STORAGE,
         ]
-    
+
         # Verifica quais ainda não estão concedidas
         missing_permissions = [p for p in needed_permissions if not check_permission(p)]
-    
+
         # Se tiver faltando, solicita
         if missing_permissions:
             request_permissions(missing_permissions)
+            print("Solicitando permissões:", missing_permissions)
             self.show_error('Conceda as permissões necessarias')
             Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
             self.ids.image_card.disable = True
         else:
-            print("Todas as permissões já foram concedidas!")  
+            print("Todas as permissões já foram concedidas!")
             self.ids.image_card.disable = False
-            
+
+    def check_storage_permissions(self):
+        # verifica se as duas permissões existem
+        has_write = check_permission(Permission.WRITE_EXTERNAL_STORAGE)
+        has_read = check_permission(Permission.READ_EXTERNAL_STORAGE)
+
+        if has_write and has_read:
+            # habilita o botão
+            self.ids.image_card.disabled = False
+            print("Permissões concedidas, botão liberado!")
+        else:
+            # bloqueia o botão
+            self.ids.image_card.disabled = True
+            print("Sem permissão, botão bloqueado!")    
+
     def verific_token(self, *args):
         print('🔎 verificando token...')
         UrlRequest(
@@ -395,7 +410,7 @@ class EditProfileEmployee(MDScreen):
         if self.employee_name and self.key:
             if self.has_changes():
                 if self.ids.name.text != self.employee_name:
-                    self.check_name()
+                   self.check_name()
                 else:
                     self.etapa3()
             else:
@@ -456,7 +471,7 @@ class EditProfileEmployee(MDScreen):
                 'work_days_week3': '[]',
                 'work_days_week4': '[]'
             }
-    
+
         else:
             data = {
                 'Name': self.ids.name.text,
@@ -465,14 +480,13 @@ class EditProfileEmployee(MDScreen):
                 'salary': self.salary,
                 'avatar': self.ids.perfil.source
             }
-    
+
         UrlRequest(
             url,
             method='PATCH',
             req_body=json.dumps(data),
             on_success=self.saved_successfully
         )
-        
     def saved_successfully(self, instance, data: Dict[str, Any], *args) -> None:
         """Callback executado quando os dados são salvos com sucesso."""
         print(f"Dados salvos com sucesso: {data}")
@@ -507,8 +521,4 @@ class EditProfileEmployee(MDScreen):
     def back_evaluation(self, *args):
         self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Evaluation'
-
-
-
-
 
