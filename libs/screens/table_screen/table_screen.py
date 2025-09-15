@@ -243,7 +243,7 @@ class TableScreen(MDScreen):
             detail_screen.token_id = self.token_id
             detail_screen.refresh_token = self.refresh_token
             detail_screen.local_id = self.local_id
-            detail_screen.api_key = StringProperty()
+            detail_screen.api_key = self.api_key
             self.manager.transition = SlideTransition(direction='left')
             self.manager.current = "Evaluation"
 
@@ -254,7 +254,7 @@ class TableScreen(MDScreen):
         screen_manager = app.root
         perfil = screen_manager.get_screen('Add')
         perfil.token_id = self.token_id
-        perfil.api_key = self.api_key
+        perfil.api_key = str(self.api_key)
         perfil.local_id = self.local_id
         perfil.refresh_token = self.refresh_token
         perfil.contractor = self.username
@@ -273,7 +273,7 @@ class TableScreen(MDScreen):
         bricklayer.token_id = self.token_id
         bricklayer.loal_id = self.local_id
         bricklayer.refresh_token = self.refresh_token
-        bricklayer.api_key = self.api_key
+        bricklayer.api_key = str(self.api_key)
         bricklayer.ids.search.active = True
         bricklayer.ids.request.active = False
         bricklayer.current_nav_state = 'search'
@@ -292,7 +292,7 @@ class TableScreen(MDScreen):
         bricklayer.token_id = self.token_id
         bricklayer.loal_id = self.local_id
         bricklayer.refresh_token = self.refresh_token
-        bricklayer.api_key = self.api_key
+        bricklayer.api_key = str(self.api_key)
         bricklayer.current_nav_state = 'request'
         bricklayer.name_contractor = self.username
         screen_manager.current = 'RequestContractor'
@@ -311,6 +311,6 @@ class TableScreen(MDScreen):
         bricklayer.token_id = self.token_id
         bricklayer.loal_id = self.local_id
         bricklayer.refresh_token = self.refresh_token
-        bricklayer.api_key = self.api_key
+        bricklayer.api_key = str(self.api_key)
         screen_manager.transition = SlideTransition(direction='left')
         screen_manager.current = 'Perfil'
