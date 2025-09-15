@@ -25,19 +25,6 @@ class EditEmployee(MDScreen):
 
     Esta classe gerencia a edição e atualização das informações pessoais e
     profissionais do funcionário, incluindo nome, função, contatos e avatar.
-
-    Attributes:
-        employee_name (StringProperty): Nome do funcionário.
-        employee_function (StringProperty): Função do funcionário.
-        employee_mail (StringProperty): Email do funcionário.
-        employee_telephone (StringProperty): Telefone do funcionário.
-        avatar (StringProperty): URL da imagem do avatar do funcionário.
-        key (StringProperty): Chave única de identificação do funcionário.
-        employee_summary (StringProperty): Resumo profissional do funcionário.
-        skills (StringProperty): Habilidades do funcionário em formato de string.
-        dont (str): Controle de disponibilidade de recursos.
-        city (StringProperty): Cidade do funcionário.
-        state (StringProperty): Estado do funcionário.
     """
     employee_name = StringProperty()
     employee_function = StringProperty()
@@ -65,73 +52,28 @@ class EditEmployee(MDScreen):
 
     # Lista de profissões disponíveis
     AVAILABLE_FUNCTIONS = [
-            # Profissionais de nível superior
-            "Engenheiro Civil",
-            "Engenheiro de Produção Civil",
-            "Engenheiro de Estruturas",
-            "Engenheiro de Transportes",
-            "Engenheiro de Geotecnia",
-            "Engenheiro de Saneamento",
-            "Engenheiro de Segurança do Trabalho",
-            "Engenheiro Hidráulico",
-            "Engenheiro de Materiais",
-            "Engenheiro Ambiental",
-            "Arquiteto e Urbanista",
-            "Tecnólogo em Construção Civil",
-            "Tecnólogo em Estruturas",
-            "Tecnólogo em Edificações",
-
-            # Profissionais técnicos
-            "Técnico em Edificações",
-            "Técnico em Construção Civil",
-            "Técnico em Estradas",
-            "Técnico em Geoprocessamento",
-            "Técnico em Saneamento",
-            "Técnico em Segurança do Trabalho",
-            "Técnico em Topografia",
-            "Técnico em Materiais de Construção",
-
-            # Mão de obra especializada
-            "Mestre de Obras",
-            "Contramestre de Obras",
-            "Pedreiro",
-            "Azulejista",
-            "Carpinteiro de Obras",
-            "Carpinteiro de Esquadrias",
-            "Armador de Ferragens",
-            "Encanador",
-            "Eletricista de Obras",
-            "Pintor de Obras",
-            "Gesseiro",
-            "Vidraceiro",
-            "Caldeireiro de Estruturas Metálicas",
-            "Montador de Estruturas Metálicas",
-            "Soldador de Estruturas",
-            "Rejuntador",
-
-            # Outros relacionados
-            "Servente de Obras",
-            "Operador de Betoneira",
-            "Operador de Máquinas Pesadas",
-            "Topógrafo",
-            "Calceteiro",
-            "Impermeabilizador",
-            "Escorador",
-            "Ladrilheiro",
-            "Marceneiro de Obras",
-            "Serralheiro",
-            "Apontador de Obras",
-            "Pavimentador"
-        ]
+        "Engenheiro Civil", "Engenheiro de Produção Civil", "Engenheiro de Estruturas",
+        "Engenheiro de Transportes", "Engenheiro de Geotecnia", "Engenheiro de Saneamento",
+        "Engenheiro de Segurança do Trabalho", "Engenheiro Hidráulico", "Engenheiro de Materiais",
+        "Engenheiro Ambiental", "Arquiteto e Urbanista", "Tecnólogo em Construção Civil",
+        "Tecnólogo em Estruturas", "Tecnólogo em Edificações", "Técnico em Edificações",
+        "Técnico em Construção Civil", "Técnico em Estradas", "Técnico em Geoprocessamento",
+        "Técnico em Saneamento", "Técnico em Segurança do Trabalho", "Técnico em Topografia",
+        "Técnico em Materiais de Construção", "Mestre de Obras", "Contramestre de Obras",
+        "Pedreiro", "Azulejista", "Carpinteiro de Obras", "Carpinteiro de Esquadrias",
+        "Armador de Ferragens", "Encanador", "Eletricista de Obras", "Pintor de Obras",
+        "Gesseiro", "Vidraceiro", "Caldeireiro de Estruturas Metálicas",
+        "Montador de Estruturas Metálicas", "Soldador de Estruturas", "Rejuntador",
+        "Servente de Obras", "Operador de Betoneira", "Operador de Máquinas Pesadas",
+        "Topógrafo", "Calceteiro", "Impermeabilizador", "Escorador", "Ladrilheiro",
+        "Marceneiro de Obras", "Serralheiro", "Apontador de Obras", "Pavimentador"
+    ]
 
     def __init__(self, **kwargs):
         """
         Inicializa a classe EditEmployee.
 
         Configura o Cloudinary e inicializa os menus.
-
-        Args:
-            **kwargs: Argumentos de palavra-chave para passar para a classe pai.
         """
         try:
             super().__init__(**kwargs)
@@ -151,8 +93,6 @@ class EditEmployee(MDScreen):
     def on_enter(self):
         """
         Método chamado quando a tela é exibida.
-
-        Preenche os campos do formulário com os dados atuais do funcionário.
         """
         print(f'Local id: {self.local_id}')
         try:
@@ -169,12 +109,11 @@ class EditEmployee(MDScreen):
             # Preencher campos
             if self.employee_name != "Não definido":
                 self.ids.name_user.text = self.employee_name or ""
-                
+
             self.ids.perfil.source = self.avatar or ""
 
             # Mapear IDs para propriedades
             field_mapping = {
-                
                 'email': self.employee_mail,
                 'telefone': self.employee_telephone,
                 'function': self.employee_function
@@ -192,30 +131,30 @@ class EditEmployee(MDScreen):
             logging.error(f"Erro ao carregar dados do funcionário: {str(e)}")
             logging.error(traceback.format_exc())
             self.show_error("Erro ao carregar dados do funcionário")
-        
+
         self.verific_token()
         self.event_token = Clock.schedule_interval(self.verific_token, 300)
         self.check_and_request_permissions()
 
-     def check_and_request_permissions(self):
-         # Lista das permissões que você precisa
-         needed_permissions = [
-             Permission.WRITE_EXTERNAL_STORAGE,
-             Permission.READ_EXTERNAL_STORAGE,
-         ]
+    def check_and_request_permissions(self):
+        """
+        Verifica e solicita permissões necessárias.
+        """
+        needed_permissions = [
+            Permission.WRITE_EXTERNAL_STORAGE,
+            Permission.READ_EXTERNAL_STORAGE,
+        ]
 
-         #Verifica quais ainda não estão concedidas
-         missing_permissions = [p for p in needed_permissions if not check_permission(p)]
+        missing_permissions = [p for p in needed_permissions if not check_permission(p)]
 
-         # Se tiver faltando, solicita
-         if missing_permissions:
-             request_permissions(missing_permissions)
-             self.show_error('Conceda as permissões necessarias')
-             Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
-             self.ids.image_card.disable = True
-         else:
-             print("Todas as permissões já foram concedidas!")  
-             self.ids.image_card.disable = False
+        if missing_permissions:
+            request_permissions(missing_permissions)
+            self.show_error('Conceda as permissões necessárias')
+            Clock.schedule_once(lambda dt: self.show_error('Para poder definir novas fotos de perfil'), 1.5)
+            self.ids.image_card.disable = True
+        else:
+            print("Todas as permissões já foram concedidas!")  
+            self.ids.image_card.disable = False
 
     def verific_token(self, *args):
         print('🔎 verificando token...')
@@ -229,11 +168,10 @@ class EditEmployee(MDScreen):
 
     def on_failure(self, req, result):
         print('❌ Token inválido, tentando atualizar...', result)
-        self.refresh_id_token()  # chama atualização
+        self.refresh_id_token()
 
     def on_success(self, req, result):
         print('✅ Token válido, usuário encontrado:')
-
 
     # --- ATUALIZAÇÃO DO TOKEN ---
     def refresh_id_token(self):
@@ -256,7 +194,7 @@ class EditEmployee(MDScreen):
 
     def on_refresh_success(self, req, result):
         self.token_id = result["id_token"]
-        self.refresh_token = result["refresh_token"]  # Firebase pode mandar de novo
+        self.refresh_token = result["refresh_token"]
         print("🔄 Token renovado com sucesso:", self.token_id)
 
     def on_refresh_failure(self, req, result):
@@ -267,16 +205,12 @@ class EditEmployee(MDScreen):
     def menu_functions(self):
         """
         Cria o menu dropdown para seleção de função profissional.
-
-        Configura o menu com as opções de profissões disponíveis.
         """
         try:
-            # Verificar se o ID necessário existe
             if not hasattr(self.ids, 'card_function'):
                 logging.error("ID 'card_function' não encontrado")
                 return
 
-            # Criar itens do menu
             menu_itens = []
             for position, state in enumerate(self.AVAILABLE_FUNCTIONS, 1):
                 row = {
@@ -289,7 +223,6 @@ class EditEmployee(MDScreen):
                 }
                 menu_itens.append(row)
 
-            # Criar o menu
             self.menu2 = MDDropdownMenu(
                 caller=self.ids.card_function,
                 items=menu_itens,
@@ -297,7 +230,6 @@ class EditEmployee(MDScreen):
                 width_mult=5,
                 max_height='400dp',
                 pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                # Adicionando personalizações estéticas
                 elevation=8,
                 radius=[10, 10, 10, 10],
                 border_margin=12,
@@ -311,6 +243,27 @@ class EditEmployee(MDScreen):
             logging.error(f"Erro ao criar menu de funções: {str(e)}")
             logging.error(traceback.format_exc())
             self.show_error("Erro ao carregar menu de funções")
+
+    def replace_function(self, text):
+        """
+        Atualiza o campo de função com a opção selecionada.
+        """
+        try:
+            if not hasattr(self.ids, 'function'):
+                logging.error("ID 'function' não encontrado")
+                return
+
+            self.ids.function.text = text
+            self.ids.function.text_color = get_color_from_hex('#FFFB46')
+
+            if self.menu2:
+                self.menu2.dismiss()
+            else:
+                logging.warning("Menu não está inicializado")
+
+        except Exception as e:
+            logging.error(f"Erro ao atualizar função: {str(e)}")
+            self.show_error("Erro ao selecionar função")
 
     def replace_function(self, text):
         """
@@ -804,3 +757,4 @@ class EditEmployee(MDScreen):
         except Exception as e:
 
             logging.error(f"Erro no método on_pre_leave: {str(e)}")
+
