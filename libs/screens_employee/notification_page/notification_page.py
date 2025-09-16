@@ -310,7 +310,7 @@ class NotificationPage(MDScreen):
             result: Resultado da atualização (dados atualizados do funcionário).
         """
         print('Pagamento confirmado: ', result)
-        app = MDApp.get_running_run()
+        app = MDApp.get_running_app()
         screenmanager = app.root
         request = screenmanager.get_screen('ReviewScreen')
         request.api_key = self.api_key
@@ -326,7 +326,7 @@ class NotificationPage(MDScreen):
 
         :return:
         """
-        app = MDApp.get_running_run()
+        app = MDApp.get_running_app()
         screenmanager = app.root
         request = screenmanager.get_screen('ReviewScreen')
         request.api_key = self.api_key
