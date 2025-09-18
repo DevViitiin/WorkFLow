@@ -2,10 +2,12 @@ import ast
 import json
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivy.metrics import dp
+from babel.numbers import format_currency
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty, DictProperty
 from kivy.uix.screenmanager import SlideTransition
 from kivy.utils import get_color_from_hex
+from datetime import datetime
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.chip import MDChipText, MDChip
@@ -15,6 +17,371 @@ from kivymd.uix.screen import MDScreen
 from babel.numbers import format_currency
 from kivy.clock import Clock
 
+class PaymentCardBricklayer(MDBoxLayout):
+    refresh_token = StringProperty()
+    payments = StringProperty()
+    valleys = StringProperty()
+    name = StringProperty()
+    salary = NumericProperty()
+    key_contractor = StringProperty()
+    local_id = StringProperty()
+    token_id = StringProperty()
+    api_Key = StringProperty
+    type = StringProperty()
+    time = StringProperty()
+    value_salary = StringProperty()
+    state = StringProperty()
+    month = StringProperty()
+    numb = 1
+    days = StringProperty()
+    confirm_payment = StringProperty()
+    color_line = StringProperty()
+    color_text = StringProperty()
+    
+    def __init__(self, **kwargs):
+        self.valleys = kwargs.pop('valleys')
+        self.payments = kwargs.pop('payments')
+        self.key_contractor = kwargs.pop('key_contractor')
+        self.refresh_token = kwargs.pop('refresh_token')
+        self.local_id = kwargs.pop('local_id')
+        self.api_key = kwargs.pop('api_key')
+        self.token_id = kwargs.pop('token_id')
+        self.type = kwargs.pop('type')
+        self.month = kwargs.pop('month')
+        self.name = kwargs.pop('name')
+        self.salary = kwargs.pop('salary')
+        self.time = kwargs.pop('time')
+        self.state = kwargs.pop('state')
+        self.days = kwargs.pop('days')
+        self.value_salary = kwargs.pop('value_salary')
+        self.confirm_payment = kwargs.pop('confirm_payment')
+        self.color_line = kwargs.pop('color_line')
+        self.color_text = kwargs.pop('color_text')
+        self.numb = datetime.now().month
+        
+        # Set default card settings
+        kwargs.update({
+            'orientation': 'horizontal',
+            'size_hint_y': None,
+            'height': dp(150),
+            'theme_bg_color': 'Custom',
+        })
+        super().__init__(**kwargs)
+        self.build()
+    
+    def build(self):
+        self.clear_widgets()
+
+        # Green indicator box on left
+        green_box = MDBoxLayout(
+            theme_bg_color='Custom',
+            radius=[15, 0, 0, 15],
+            md_bg_color= get_color_from_hex(self.color_line)
+        )
+        self.add_widget(green_box)
+
+        # Content area on right
+        content_layout = MDBoxLayout(
+            orientation='vertical',
+            theme_bg_color='Custom',
+            radius=[0, 15, 15, 0],
+            size_hint_x=None,
+            width=dp(290)
+        )
+        self.add_widget(content_layout)
+
+        # Header area with title and status chip
+        header_layout = MDBoxLayout(
+            orientation='horizontal',
+            theme_bg_color='Custom',
+            md_bg_color='white',
+            spacing=10,
+            padding=[2, ]
+        )
+        content_layout.add_widget(header_layout)
+
+        # Title box
+        title_box = MDBoxLayout(
+            orientation='horizontal',
+            theme_bg_color='Custom',
+            padding=[5]
+        )
+        header_layout.add_widget(title_box)
+
+        # Title label
+        title_label = MDLabel(
+            text=f'Data de inicio: {self.time}',
+            font_style='Label',
+            role='large',
+            theme_text_color='Custom',
+            text_color='black',
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            halign='left'
+        )
+        title_box.add_widget(title_label)
+
+        # Status chip container
+        status_box = MDBoxLayout(
+            orientation='horizontal',
+            theme_bg_color='Custom'
+        )
+        header_layout.add_widget(status_box)
+
+        # Status chip
+        status_layout = MDRelativeLayout()
+        status_box.add_widget(status_layout)
+
+        chip_text = MDChipText(
+            text=f'{self.state}',
+            theme_text_color='Custom',
+            text_color=get_color_from_hex(f'{self.color_text}'),
+            pos_hint={'center_x': 0.45, 'center_y': 0.5},
+            halign='center',
+            bold=True
+        )
+
+        status_chip = MDChip(
+            chip_text,
+            size_hint=(0.4, 0.75),
+            theme_bg_color='Custom',
+            md_bg_color=get_color_from_hex(f"{self.color_line}"),
+            pos_hint={"right": .9, "center_y": .5}
+        )
+        status_layout.add_widget(status_chip)
+
+        # Middle info section
+        info_layout = MDBoxLayout(
+            orientation='horizontal',
+            theme_bg_color='Custom',
+            padding=[5, 0, 0, 0]
+        )
+        content_layout.add_widget(info_layout)
+
+        # Type info
+        type_box = MDBoxLayout(
+            orientation='vertical',
+            theme_bg_color='Custom',
+            padding=[5]
+        )
+        info_layout.add_widget(type_box)
+
+        type_label = MDLabel(
+            text='Tipo',
+            font_style='Body',
+            role='small',
+            theme_text_color='Custom',
+            text_color='grey',
+            pos_hint={'center_x': 0.5, 'center_y': 0.8},
+            halign='left'
+        )
+        type_box.add_widget(type_label)
+
+        type_value = MDLabel(
+            text=f'{self.type}',
+            font_style='Body',
+            role='medium',
+            theme_text_color='Custom',
+            text_color=get_color_from_hex('#41463D'),
+            pos_hint={'center_x': 0.5, 'center_y': 0.4},
+            halign='left'
+        )
+        type_box.add_widget(type_value)
+
+        # Date info
+        date_box = MDBoxLayout(
+            orientation='vertical',
+            theme_bg_color='Custom',
+            padding=[5]
+        )
+        info_layout.add_widget(date_box)
+
+        date_label = MDLabel(
+            text='Prazo',
+            font_style='Body',
+            role='small',
+            theme_text_color='Custom',
+            text_color='grey',
+            pos_hint={'center_x': 0.4, 'center_y': 0.8},
+            halign='right'
+        )
+        date_box.add_widget(date_label)
+
+        date_value = MDLabel(
+            text=f'{self.days} dias',
+            font_style='Body',
+            role='medium',
+            theme_text_color='Custom',
+            text_color=get_color_from_hex('#41463D'),
+            pos_hint={'center_x': 0.4, 'center_y': 0.4},
+            halign='right'
+        )
+        date_box.add_widget(date_value)
+
+        # Amount section
+        amount_box = MDBoxLayout(
+            theme_bg_color='Custom',
+            padding=[10, 0, 0, 0]
+        )
+        content_layout.add_widget(amount_box)
+
+        amount_label = MDLabel(
+            text=f'{self.value_salary}',
+            font_style='Title',
+            role='medium',
+            theme_text_color='Custom',
+            text_color='black',
+            bold=True,
+            pos_hint={'center_x': 0.5, 'center_y': 0.4},
+            halign='left'
+        )
+        amount_box.add_widget(amount_label)
+
+        # Details button section
+        details_box = MDBoxLayout(
+            theme_bg_color='Custom'
+        )
+        content_layout.add_widget(details_box)
+
+        details_layout = MDRelativeLayout()
+        details_box.add_widget(details_layout)
+
+        details_text = MDChipText(
+            text="Detalhes",
+            theme_text_color='Custom',
+            text_color='black',
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            halign='center',
+            bold=True
+        )
+
+        details_chip = MDChip(
+            details_text,
+            theme_bg_color='Custom',
+            md_bg_color=[1, 1, 1, 1],
+            pos_hint={"center_x": .5, "center_y": .5}
+        )
+        details_layout.add_widget(details_chip)
+
+        # Bind click event for details button
+        # Bind click event for details button
+        details_chip.bind(on_release=self.on_details_click)
+
+    def on_details_click(self, instance):
+        """Handle click on the Details button"""
+        if self.state in 'Pendente':
+            #print(f"Details clicked for payment: {self.week} - {self.month}, {self.payment_amount}")
+            print(f'Key do funcionario: {self.local_id}')
+            UrlRequest(
+                url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{self.local_id}/.json?auth={self.token_id}',
+                on_success=self.confirm_payments
+
+            )
+        else:
+            app = MDApp.get_running_app()
+            screenmanager = app.root
+            confirm = screenmanager.get_screen('ViewPaymentBricklayer')
+            confirm.date = self.time
+            confirm.payments = self.payments
+            confirm.salary_completed = f"{self.value_salary}"
+            confirm.name_employee = self.name
+            confirm.salary_discounted = f"{self.salary}"
+            confirm.month = self.month
+            confirm.days = self.days
+            confirm.api_key = self.api_key
+            confirm.numb = self.numb
+            confirm.valleys = self.valleys
+            screenmanager.transition = SlideTransition(direction='left')
+            screenmanager.current = 'ViewPaymentBricklayer'
+        # Add additional functionality here as needed
+        
+    def confirm_payments(self, req, result):
+        accept = []
+        print('confirme')
+        try:
+            confirm = ast.literal_eval(result['confirm_payments'])
+            if confirm:
+                for payment in confirm:
+                    print(f'pagamentos aguardando confirmação: {payment}')
+                    print(payment['numb'], payment['Month'])
+                    print(self.numb, self.month)
+                    if self.numb == payment['numb'] and self.month in payment['Month']:
+                        print('Pagamento confirmado pelo contratante')
+                        UrlRequest(
+                            url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{self.key_contractor}/.json?auth={self.token_id}',
+                            on_success=lambda req, result, data=payment: self.two_confirm(req, result, data)
+
+                        )
+                        break
+                    else:
+                        print('Pagamento não confirmado pelo contratante')
+                        UrlRequest(
+                            url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{self.key_contractor}/.json?auth={self.token_id}',
+                            on_success=self.get_name
+
+                        )
+                        break
+            else:
+                print('Pagamento não confirmado pelo contratante')
+                UrlRequest(
+                    url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{self.key_contractor}/.json?auth={self.token_id}',
+                    on_success=self.get_name
+
+                )
+
+        except Exception as e:
+            print('Error inesperado aconteceu: {}'.format(e))
+
+    def two_confirm(self, req, resulti, info):
+        print(f'O nome do contratante é {resulti}')
+        UrlRequest(
+            url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{self.key_contractor}/.json?auth={self.token_id}',
+            on_success=lambda req, result, inf=info: self.get_name_two(req, result, inf)
+
+        )
+
+    def get_name_two(self, req, result, info):
+        telephone = ''
+        email = ''
+        telephone = result['telefone']
+        email = result['email']
+        print('rs', telephone)
+        print('rs', email)
+        """Agora eu vou pegar os dados do funcionario e mandar pra proxima tela"""
+        UrlRequest(
+            url=f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{self.local_id}/.json',
+            on_success=lambda req, result, telepho=telephone, mail=email, inf=info: self.finally_screen(req, result, telepho, mail, inf)
+
+        )
+
+    def finally_screen(self, req, result, telephone, email, info):
+        print('Contato do contratante: ', telephone, email)
+        print('Informações do funcionario: ', result)
+        print('Informações da confirmação: ', info)
+        print('Pagamentos confirmados: ', result['confirm_payments'])
+        app = MDApp.get_running_app()
+        screenmanager = app.root
+        confirm = screenmanager.get_screen('ConfirmPaymentBricklayer')
+        confirm.time = self.time
+        confirm.payments = self.payments
+        confirm.value_salary = self.value_salary
+        confirm.state = self.state
+        confirm.name_employee = self.name
+        confirm.salary_gross = self.salary
+        confirm.month = self.month
+        confirm.days = self.days
+        confirm.confirm_payment = result['confirm_payments']
+        confirm.token_id = self.token_id
+        confirm.method_salary = self.type
+        confirm.local_id = self.local_id
+        confirm.refresh_token = self.refresh_token
+        confirm.api_key = self.api_key
+        confirm.numb = self.numb
+        confirm.email = email
+        confirm.telephone = telephone
+        confirm.valleys = self.valleys
+        screenmanager.transition = SlideTransition(direction='left')
+        screenmanager.current = 'ConfirmPaymentBricklayer'
+    
 class PaymentCard(MDBoxLayout):
     """
     A card widget that displays payment information with a green indicator,
@@ -476,9 +843,9 @@ class ReviewScreen(MDScreen):
     employee_name = StringProperty()
     employee_function = StringProperty()
     method_salary = StringProperty()
-    token_id = StringProperty()
-    local_id = StringProperty()
-    api_key = StringProperty()
+    token_id = StringProperty('eyJhbGciOiJSUzI1NiIsImtpZCI6IjUwMDZlMjc5MTVhMTcwYWIyNmIxZWUzYjgxZDExNjU0MmYxMjRmMjAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vb2JyYS03ZWJkOSIsImF1ZCI6Im9icmEtN2ViZDkiLCJhdXRoX3RpbWUiOjE3NTgwMjIzODMsInVzZXJfaWQiOiJIUzBjY0VrUktFT3doR0FMZm5vZjJTak9Ec2cxIiwic3ViIjoiSFMwY2NFa1JLRU93aEdBTGZub2YyU2pPRHNnMSIsImlhdCI6MTc1ODAyMjM4MywiZXhwIjoxNzU4MDI1OTgzLCJlbWFpbCI6ImFrYW1lQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJha2FtZUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.rUxyaMz4lYoX_hkOxrgaAN5c_yV_GNMAbK26pzAPxh8ghsGbVEFF_qyft43-Z2lJikahztYg4p3MKoRD-aQPX4G0olG6jsta03Oes8orLnmOzvheR13VCrgUdz5pZdicfXLnz0pVBVLqTREKP0nV4OMaFbtd8D2X-9eau3SLMvNFdRuC0qdVwWIYbDQ0h5N40M7M6GXdd4E9lWlOPsEXafZNNF4Md3JWfjLq5A9gjk2L8pVG6qJEjZgdoFl-Mh1ZKIpdA85KEQ6OTGY5jpm5RIFJOZtIalKmrUSmwF5ymGoxDGOrpiK0DJTPWTKO6GUdD5r1LFgeqi3Cejng9ZrA3w')
+    local_id = StringProperty('HS0ccEkRKEOwhGALfnof2SjODsg1')
+    api_key = StringProperty('AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg')
     refresh_token = StringProperty()
     city = StringProperty()
     state = StringProperty()
@@ -487,9 +854,10 @@ class ReviewScreen(MDScreen):
     employee_telephone = StringProperty()
     employee_summary = StringProperty()
     data_contractor = StringProperty()
+    ultimate = StringProperty()
     skills = StringProperty()
     tot_salary = NumericProperty()
-    contractor_month = NumericProperty(6)
+    contractor_month = NumericProperty()
     contractor = StringProperty()
     request = BooleanProperty()
     FIREBASE_URL = 'https://obra-7ebd9-default-rtdb.firebaseio.com'
@@ -513,12 +881,12 @@ class ReviewScreen(MDScreen):
         self.month = datetime.today().month
         self.ids.main_scroll.clear_widgets()
         self.upload_payments()
-        self.verific_token()
-        self.event_token = Clock.schedule_interval(self.verific_token, 300)
+        #self.verific_token()
+        #self.event_token = Clock.schedule_interval(self.verific_token, 300)
 
     def on_leave(self, *args):
         if hasattr(self, 'event_token'):
-            self.event_token.cancel()
+            #self.event_token.cancel()
             print("⏱️ Clock do token cancelado ao sair da tela")
             
     def verific_token(self, *args):
@@ -577,10 +945,140 @@ class ReviewScreen(MDScreen):
             on_success=self.add_payments,
             on_error=self.usar_dados_teste,
             on_failure=self.usar_dados_teste
-        )
+        )    
 
+    def add_payment_bricklayer(self, req, result): 
+        print('Pagamentos recebidos: ', result['payments'], 'Pagamentos a serem confirmados: ', result['confirm_payments'])
+        payments = ast.literal_eval(result['payments'])
+        confirm_payments = result['confirm_payments']
+        #card = PaymentCardBricklayer()
+        #self.ids.main_scroll.add_widget(card)
+        
+        if payments:
+            payment = {}
+            for pay in payments:
+                payment = pay
+                
+            print('tem algum pagamento adicionar agora ')
+            # Converter string para objeto datetime
+            time = result['data_contractor']
+            try:
+                ultimate = result['ultimate']
+            except:
+                ultimate = result['data_contractor']
+                
+            d1 = datetime.strptime(payment['data'], "%d/%m/%Y")
+            d2 = datetime.strptime(ultimate, "%d/%m/%Y")
+            days = d2 - d1
+            valleys = ast.literal_eval(result['valleys'])
+            print(valleys)
+            tot_valley = 0
+            meses_numero = {
+                1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+                5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+                9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+            }
+            numb = datetime.now().month
+            month = meses_numero[numb]
+            print('Mês atual: ', month)
+            salary = float(result['salary'])
+            for valley in valleys:
+                print('Vales pegos: ', int(valley['value']))
+                value = int(valley['value'])
+                tot_valley += value
+            
+            print('O total de adiantamento pego foi: ', tot_valley)
+            print('Salario total: ', salary - tot_valley)
+            diferenca = salary - tot_valley
+            valor_formatado = format_currency(payment['value'], "BRL", locale="pt_BR")
+            card = PaymentCardBricklayer(
+                valleys=payment['valleys'],
+                key_contractor=result['contractor'],
+                refresh_token=self.refresh_token,
+                local_id=self.local_id,
+                month=payment['Month'],
+                name=result['Name'],
+                payments=result['payments'],
+                salary=payment['salary_completed'],
+                token_id=self.token_id,
+                value_salary=str(valor_formatado),
+                state='Pago',
+                type='Empreita',
+                days=f'{days.days}',
+                confirm_payment=f'{confirm_payments}',
+                time=f'{time}',
+                color_line="#33ff00",
+                color_text='#ffffff',
+                api_key=self.api_key
+            )
+            self.ids.main_scroll.add_widget(card)
+        else:
+            # Converter string para objeto datetime
+            time = result['data_contractor']
+            try:
+                ultimate = result['ultimate']
+            except:
+                ultimate = result['data_contractor']
+                
+            d1 = datetime.strptime(time, "%d/%m/%Y")
+            d2 = datetime.strptime(ultimate, "%d/%m/%Y")
+            days = d2 - d1
+            valleys = ast.literal_eval(result['valleys'])
+            print(valleys)
+            tot_valley = 0
+            meses_numero = {
+                1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+                5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+                9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+            }
+            numb = datetime.now().month
+            month = meses_numero[numb]
+            print('Mês atual: ', month)
+            salary = float(result['salary'])
+            for valley in valleys:
+                print('Vales pegos: ', int(valley['value']))
+                value = int(valley['value'])
+                tot_valley += value
+            
+            print('O total de adiantamento pego foi: ', tot_valley)
+            print('Salario total: ', salary - tot_valley)
+            diferenca = salary - tot_valley
+            valor_formatado = format_currency(diferenca, "BRL", locale="pt_BR")
+            card = PaymentCardBricklayer(
+                valleys=result['valleys'],
+                key_contractor=result['contractor'],
+                refresh_token=self.refresh_token,
+                local_id=self.local_id,
+                month=month,
+                name=result['Name'],
+                salary=result['salary'],
+                token_id=self.token_id,
+                payments=result['payments'],
+                value_salary=str(valor_formatado),
+                state='Pendente',
+                type='Empreita',
+                days=f'{days.days}',
+                confirm_payment=f'{confirm_payments}',
+                time=f'{time}',
+                color_line='#ff0000',
+                color_text='#ffffff',
+                api_key=self.api_key
+            )
+            self.ids.main_scroll.add_widget(card)
+            print('Não tem um pagamento adicionar como pendente')
+        
     def add_payments(self, instance, response):
         # Verificar se 'payments' existe no response
+        self.method_salary = response['method_salary']
+        print('Metodo de pagamento: ', self.method_salary)
+        if response['method_salary'] == 'Empreita':
+            print('Epreita saporra')
+            url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{self.local_id}/.json?auth={self.token_id}'
+            UrlRequest(
+                url,
+                on_success=self.add_payment_bricklayer,
+            )
+            return
         self.method_salary = response['method_salary']
         try:
             payments = ast.literal_eval(response['payments'])
@@ -623,7 +1121,7 @@ class ReviewScreen(MDScreen):
         if not payments:
             print("Nenhum pagamento para processar! Usando dados de teste...")
             payments = self.dados_teste
-
+        print('O pagamento enviado é: ', payments)
         # Dicionário para mapear nome do mês para número
         meses_numero = {
             'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4,
