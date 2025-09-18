@@ -1,12 +1,3 @@
-import os
-os.environ["KIVY_NO_CONSOLELOG"] = "1"
-os.environ["KIVY_NO_FILELOG"] = "1"
-os.environ["KIVY_NO_ARGS"] = "1"
-os.environ["KIVY_NO_CONFIG"] = "1"
-
-# Desabilita a splash padrão do Kivy
-os.environ["KIVY_NO_SPLASH"] = "1"
-
 from kivy.clock import Clock
 from kivy.uix.image import AsyncImage
 from kivymd.app import MDApp
@@ -59,21 +50,28 @@ from libs.screens.functions_screen.functions_screen import FunctionsScreen
 from libs.screens_login.register_contractor.register_contractor import RegisterContractor
 from libs.screens_login.register_funcionario.register_funcionario import RegisterFuncionario
 from libs.screens_login.splash_screen.splash_screen import SplashScreen
+from libs.screens_employee.confirm_payment_bricklayer.confirm_payment_bricklayer import ConfirmPaymentBricklayer
+from libs.screens_employee.view_payment_bricklayer.view_payment_bricklayer import ViewPaymentBricklayer
+
 
 class MainApp(MDApp):
 
     def build(self):
         self.load_all_kv_files()
+        Window.size = (350, 650)
         self.screenmanager = MDScreenManager()
 
         # Parte do cadastro ou login inicial
-        self.screenmanager.add_widget(SplashScreen(name='SplashScreen'))
         self.screenmanager.add_widget(InitScreen(name='Init'))
+        self.screenmanager.add_widget(ReviewScreen(name='ReviewScreen'))
+        self.screenmanager.add_widget(ViewPaymentBricklayer(name='ViewPaymentBricklayer'))
+        self.screenmanager.add_widget(ConfirmPaymentBricklayer(name='ConfirmPaymentBricklayer'))
+        self.screenmanager.add_widget(SplashScreen(name='SplashScreen'))
         self.screenmanager.add_widget(AddEmployeePassword(name='AddEmployeePassword'))
         self.screenmanager.add_widget(ConfirmPaymentEmployee(name='ConfirmPaymentEmployee'))
         self.screenmanager.add_widget(NotificationPage(name='NotificationPage'))
         self.screenmanager.add_widget(ViewPaymentCompleted(name='ViewPaymentCompleted'))
-        self.screenmanager.add_widget(ReviewScreen(name='ReviewScreen'))
+        
         self.screenmanager.add_widget(EvaluationScreen(name='Evaluation'))
         self.screenmanager.add_widget(RegisterFuncionario(name='RegisterFuncionario'))
         self.screenmanager.add_widget(RegisterContractor(name='RegisterContractor'))
@@ -124,9 +122,10 @@ class MainApp(MDApp):
         if platform == 'android':
             if not check_permission(Permission.READ_EXTERNAL_STORAGE):
                 request_permissions([Permission.READ_EXTERNAL_STORAGE])
-        pass
+        
 
     def load_all_kv_files(self):
+        Builder.load_file('libs/screens_employee/confirm_payment_bricklayer/confirm_payment_bricklayer.kv')
         Builder.load_file('libs/screens/edit_profile/edit_profile.kv')
         Builder.load_file('libs/screens/principal_screen/principal_screen.kv')
         Builder.load_file('libs/screens/edit_profile_two/edit_profile_two.kv')
@@ -148,6 +147,7 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens/edit_profile_employee/edit_profile_employee.kv')
         Builder.load_file('libs/screens/working_bricklayer/working_bricklayer.kv')
         Builder.load_file('libs/screens/report_bricklayer/report_bricklayer.kv')
+        Builder.load_file('libs/screens_employee/view_payment_bricklayer/view_payment_bricklayer.kv')
         Builder.load_file('libs/screens/vacancy_contractor/vacancy_contractor.kv')
         Builder.load_file('libs/screens/perfil_employee/perfil_employee.kv')
         Builder.load_file('libs/screens/request_contractor/request_contractor.kv')
@@ -171,12 +171,9 @@ class MainApp(MDApp):
 
         # Telas de inicio (login e cadastro)
         Builder.load_file('libs/screens_login/choice_account/choice_account.kv')
-        Builder.load_file('libs/screens_login/splash_screen/splash_screen.kv')
         Builder.load_file('libs/screens_login/init_screen/init_screen.kv')
+        Builder.load_file('libs/screens_login/splash_screen/splash_screen.kv')
         Builder.load_file('libs/screens_login/register_contractor/register_contractor.kv')
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
 
 MainApp().run()
-
-
-
