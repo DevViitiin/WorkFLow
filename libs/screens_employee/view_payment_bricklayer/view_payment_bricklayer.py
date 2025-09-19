@@ -80,7 +80,7 @@ class ViewPaymentBricklayer(MDScreen):
         self.upload_info()
 
     def upload_info(self):
-        self.ids.remainder.text = str(self.salary_discounted)
+        #self.ids.remainder.text = str(self.salary_discounted)
         self.ids.days.text = str(self.days)
         self.ids.month.text = str(self.date)
 
@@ -106,9 +106,9 @@ class ViewPaymentBricklayer(MDScreen):
         # Remove símbolo de moeda, espaços normais e especiais (\xa0), e troca vírgula por ponto
         valor_str = valor_str.replace("R$", "").replace("\xa0", "").replace(" ", "").replace(".", "").replace(",", ".")
         valor_str2 = valor_str2.replace("R$", "").replace("\xa0", "").replace(" ", "").replace(".", "").replace(",", ".")
-        self.ids.gross_salary.text = f"R${valor_str}"
+        self.ids.gross_salary.text = f"R${valor_str2}"
         self.ids.method.text = f'{self.method_salary}'
-        self.ids.remainder.text = f"R${valor_str2}"
+        self.ids.remainder.text = f"R${valor_str}"
 
     def load_advances(self, *args):
         """
