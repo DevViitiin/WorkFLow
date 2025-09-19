@@ -128,22 +128,20 @@ class ViewPaymentBricklayer(MDScreen):
             value (float): Valor do adiantamento
             redeemed_date (list): Lista com a data do adiantamento
         """
-       # Layout principal
+        # Layout principal
         main_box = MDBoxLayout(
             orientation='horizontal',
             theme_bg_color='Custom',
             md_bg_color='white',
-            size_hint_x=None,
+            size_hint_x=1,
             size_hint_y=None,
-            width=350,
-            height=60,
             pos_hint={'center_x': 0.5}
         )
 
         # Primeiro box layout (esquerda)
         left_box = MDBoxLayout(
             theme_bg_color='Custom',
-            padding=[10, 0, 0, 0]
+            halign=[10, 0, 0, 0]
         )
 
         left_relative = MDRelativeLayout()
@@ -169,12 +167,12 @@ class ViewPaymentBricklayer(MDScreen):
         right_relative = MDRelativeLayout()
 
         valor_label = MDLabel(
-            text=f"- {format_currency(value, 'BRL', locale='pt_BR')}",
+            text=f'- {format_currency(value, "BRL", locale="pt_BR")}',
             theme_text_color='Custom',
             text_color='red',
             theme_font_size='Custom',
             font_size='14sp',
-            pos_hint={'center_x': 0.4, 'center_y': 0.65},
+            pos_hint={'center_x': 0.4, 'center_y': 0.5},
             halign='right'
         )
 
@@ -184,12 +182,12 @@ class ViewPaymentBricklayer(MDScreen):
             text_color='grey',
             theme_font_size='Custom',
             font_size='12sp',
-            pos_hint={'center_x': 0.4, 'center_y': 0.1},
+            pos_hint={'center_x': 0.2, 'center_y': 0.35},
             halign='right'
         )
 
         right_relative.add_widget(valor_label)
-        right_relative.add_widget(data_label)
+        #right_relative.add_widget(data_label)
         right_box.add_widget(right_relative)
 
         # Adicionando os boxes ao layout principal
