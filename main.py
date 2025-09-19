@@ -58,7 +58,6 @@ class MainApp(MDApp):
 
     def build(self):
         self.load_all_kv_files()
-        Window.size = (350, 650)
         self.screenmanager = MDScreenManager()
 
         # Parte do cadastro ou login inicial
@@ -177,3 +176,4 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
 
 MainApp().run()
+
