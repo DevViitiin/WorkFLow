@@ -1,0 +1,217 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<ReportScreen>:
+    name: 'ReportScreen'
+    md_bg_color: get_color_from_hex('#F5F5F5')
+
+    MDFloatLayout:
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#ffffffff')
+            size_hint_y: 0.08
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            MDRelativeLayout:
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_bg_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'left': 0.95, 'center_y': 0.5}
+                    on_release: root.back_screen()
+
+                MDLabel:
+                    text: 'Fazer uma Denúncia'
+                    theme_text_color: 'Custom'
+                    font_style: 'Title'
+                    role: 'small'
+                    text_color: 'black'
+                    bold: True
+                    pos_hint: {'center_x': 0.65, 'center_y': 0.65}
+                    halign: 'left'
+                
+                MDLabel:
+                    text: 'Relate comportamentos inadequados de forma segura'
+                    theme_text_color: 'Custom'
+                    font_style: 'Label'
+                    role: 'small'
+                    text_color: 'grey'
+                    pos_hint: {'center_x': 0.65, 'center_y': 0.35}
+                    halign: 'left'
+
+        MDBoxLayout:
+            size_hint: 0.9, 0.15
+            radius: [5,]
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#E3F2FD')
+            pos_hint: {'center_x': 0.5, 'top': 0.9}
+            padding: [0, 0, 10, 0]
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Sua denúncia é anônima e segura'
+                    theme_text_color: 'Custom'
+                    font_style: 'Title'
+                    role: 'small'
+                    text_color: 'black'
+                    bold: True
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.75}
+                    halign: 'left' 
+                
+                MDLabel:
+                    text: 'Todas as informações serão analisadas pela nossa equipe de forma confidencial. Você pode acompanhar o status da sua denúncia pelo seu painel.'
+                    theme_text_color: 'Custom'
+                    font_style: 'Label'
+                    role: 'small'
+                    text_color: 'grey'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.4}
+                    halign: 'left'
+
+        MDLabel:
+            text: 'Quem você deseja denunciar?'
+            theme_text_color: 'Custom'
+            font_style: 'Title'
+            role: 'small'
+            text_color: 'black'
+            bold: True
+            pos_hint: {'center_x': 0.55, 'center_y': 0.7}
+            halign: 'left' 
+        
+        MDCard:
+            style: 'elevated'
+            elevation: 3
+            shadow_softness: 8
+            shadow_offset: (0, 2)
+            theme_line_color: 'Custom'
+            line_color_normal: (0.9, 0.9, 0.95, 1)
+            line_color_focus: (0.2, 0.5, 1, 1)
+            theme_bg_color: 'Custom'
+            md_bg_color: (1, 1, 1, 1)
+            radius: [16, 16, 16, 16]
+            ripple_behavior: True
+            size_hint: 0.9, 0.2
+            padding: [0, 0, 10, 0]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.56}
+            on_release: root.next_screen_contractor()
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'account-remove'
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    pos_hint: {'center_x': 0.15, 'center_y': 0.8}
+                    theme_icon_color: 'Custom'
+                    icon_color: get_color_from_hex('#ff1100ff')
+                
+                MDLabel:
+                    text: 'Denunciar Contratante'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    font_style: 'Title'
+                    role: 'medium'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.53}
+                    halign: 'left'
+                
+                MDLabel:
+                    text: 'Relate comportamentos inadequados, assédio, discriminação ou não cumprimento de acordos por parte de um contratante'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.28}
+                    halign: 'left'
+                
+                MDIcon:
+                    icon: 'arrow-right'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'grey'
+                    pos_hint: {'right': 0.95, 'center_y': 0.7}
+        
+        MDCard:
+            style: 'elevated'
+            elevation: 3
+            shadow_softness: 8
+            shadow_offset: (0, 2)
+            theme_line_color: 'Custom'
+            line_color_normal: (0.9, 0.9, 0.95, 1)
+            line_color_focus: (0.2, 0.5, 1, 1)
+            theme_bg_color: 'Custom'
+            md_bg_color: (1, 1, 1, 1)
+            radius: [16, 16, 16, 16]
+            ripple_behavior: True
+            size_hint: 0.9, 0.2
+            padding: [0, 0, 10, 0]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.34}
+            on_release: root.next_screen_employee()
+
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'account-group'
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    pos_hint: {'center_x': 0.15, 'center_y': 0.8}
+                    theme_icon_color: 'Custom'
+                    icon_color: get_color_from_hex('#086bffff')
+                
+                MDLabel:
+                    text: 'Denunciar Funcionário'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    font_style: 'Title'
+                    role: 'medium'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.53}
+                    halign: 'left'
+                
+                MDLabel:
+                    text: 'Relate comportamentos inadequados, assédio, discriminação ou não cumprimento de acordos por parte de um contratante'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.28}
+                    halign: 'left'
+                
+                MDIcon:
+                    icon: 'arrow-right'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'grey'
+                    pos_hint: {'right': 0.95, 'center_y': 0.7}
+        
+        MDBoxLayout:
+            style: 'elevated'
+            elevation: 3
+            theme_bg_color: 'Custom'
+            md_bg_color: (1, 1, 1, 1)
+            radius: [16, 16, 16, 16]
+            size_hint: 0.9, 0.22
+            padding: [20, 10, 10, 20]
+            spacing: 10
+            pos_hint: {'center_x': 0.5, 'center_y': 0.12}
+            orientation: 'vertical'
+
+            MDLabel:
+                text: 'O que acontece após a denúncia?'
+                bold: True
+                font_style: 'Label'
+                halign: 'center'
+
+            MDLabel:
+                text: '1. Sua denúncia é recebida de forma anônima e segura.'
+                font_style: 'Label'
+                role: 'small'
+                halign: 'left'
+
+            MDLabel:
+                text: '2. Nossa equipe analisa todas as informações em até 48 horas.'
+                font_style: 'Label'
+                role: 'small'
+                halign: 'left'
+
+            MDLabel:
+                text: '3. Medidas apropriadas são tomadas conforme a gravidade.'
+                font_style: 'Label'
+                role: 'small'
+                halign: 'left'
+
+                

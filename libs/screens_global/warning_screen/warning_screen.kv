@@ -1,0 +1,248 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<WarningScreen>:
+    name: 'WarningScreen'
+    md_bg_color: 'white'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        theme_bg_color: 'Custom'
+        md_bg_color: 'white'
+        spacing: 10
+
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#FFD449')
+
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'alert'
+                    theme_font_size: 'Custom'
+                    font_size: '38dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+                
+                MDLabel:
+                    text: 'Advertência Oficial'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    font_style: 'Title'
+                    role: 'large'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                
+                MDBoxLayout:
+                    id: warning_bg
+                    theme_bg_color: 'Custom'
+                    size_hint: 0.35, 0.2
+                    radius: [10,]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            id: warning_text
+                            text: 'Infração Leve'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            markup: True
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    
+        MDBoxLayout:
+            orientation: 'vertical'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            size_hint_y: 0.5
+            padding: [10, 0, 10, 0]
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    size_hint_x: 0.15
+
+                    MDRelativeLayout:
+                        MDIcon:
+                            icon: 'calendar'
+                            theme_icon_color: 'Custom'
+                            icon_color: get_color_from_hex('#1B2CC1')
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Data da Ocorrência'
+                            theme_text_color: 'Custom'
+                            bold: True
+                            halign: 'left'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            text_color: get_color_from_hex('#1B2CC1')
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                MDRelativeLayout:
+                    MDLabel:
+                        id: data 
+                        text: '04/10/2025'
+                        theme_text_color: 'Custom'
+                        bold: True
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.53, 'center_y': 0.55}
+                        text_color: get_color_from_hex('#E3170A')
+                    
+                    MDDivider:
+                        size_hint_x: 1
+                        orientation: 'horizontal'
+                        theme_divider_color: "Custom"
+                        color: get_color_from_hex('#8d8d8dff')
+                        pos_hint: {'center_x': 0.5, 'down': 1}
+        
+        MDBoxLayout:
+            orientation: 'vertical'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            size_hint_y: 0.5
+            padding: [10, 0, 10, 0]
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    size_hint_x: 0.15
+
+                    MDRelativeLayout:
+                        MDIcon:
+                            icon: 'calendar'
+                            theme_icon_color: 'Custom'
+                            icon_color: get_color_from_hex('#1B2CC1')
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Motivo'
+                            theme_text_color: 'Custom'
+                            bold: True
+                            halign: 'left'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            text_color: get_color_from_hex('#1B2CC1')
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                MDRelativeLayout:
+                    MDLabel:
+                        id: motive
+                        text: 'Uso de linguagem inadequada no chat público'
+                        theme_text_color: 'Custom'
+                        bold: True
+                        font_style: "Label"
+                        role: 'medium'
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.53, 'center_y': 0.55}
+                        text_color: get_color_from_hex('#000000ff')
+                    
+                    MDDivider:
+                        size_hint_x: 1
+                        orientation: 'horizontal'
+                        theme_divider_color: "Custom"
+                        color: get_color_from_hex('#8d8d8dff')
+                        pos_hint: {'center_x': 0.5, 'down': 1}
+        
+        MDBoxLayout:
+            orientation: 'vertical'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            padding: [10, 0, 10, 0]
+            size_hint_y: 0.6
+            spacing: 5
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    size_hint_x: 0.15
+
+                    MDRelativeLayout:
+                        MDIcon:
+                            icon: 'account-voice'
+                            theme_icon_color: 'Custom'
+                            icon_color: get_color_from_hex('#1B2CC1')
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Descrição detalhada'
+                            theme_text_color: 'Custom'
+                            bold: True
+                            halign: 'left'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            text_color: get_color_from_hex('#1B2CC1')
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+
+                MDRelativeLayout:
+                    MDLabel:
+                        id: description
+                        text: 'Durante uma interação no chat, foi detectada a utilização de palavras ofensivas contra outro usuário. Pedimos que mantenha a cordialidade para evitar novas infrações.'
+                        theme_text_color: 'Custom'
+                        bold: True
+                        font_style: 'Label'
+                        role: 'medium'
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.53, 'center_y': 0.6}
+                        text_color: get_color_from_hex('#000000ff')
+
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+
+            MDRelativeLayout:
+                MDCard:
+                    style: "elevated"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    padding: "4dp"
+                    size_hint: 0.5, 0.25
+                    # Sets custom properties.
+                    theme_shadow_color: "Custom"
+                    shadow_color: get_color_from_hex('#FE7F2D')
+                    theme_bg_color: "Custom"
+                    md_bg_color: get_color_from_hex('#FFD449')
+                    md_bg_color_disabled: "grey"
+                    theme_shadow_offset: "Custom"
+                    shadow_offset: (1, -2)
+                    theme_shadow_softness: "Custom"
+                    shadow_softness: 1
+                    theme_elevation_level: "Custom"
+                    elevation_level: 2
+                    on_release: root.next_screen()
+                    RelativeLayout:
+
+                        MDLabel:
+                            text: "Estou ciente"
+                            adaptive_size: True
+                            color: get_color_from_hex('#1B2CC1')
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            pos: "12dp", "12dp"
+                            bold: True
