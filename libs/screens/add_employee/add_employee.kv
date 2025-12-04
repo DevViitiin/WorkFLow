@@ -1,0 +1,378 @@
+<AddEmployee>:
+    name: 'Add'
+    md_bg_color: 1, 1, 1, 1
+
+    MDFloatLayout:
+        id: principal
+
+        MDIconButton:
+            icon: 'account-circle'
+            theme_font_size: 'Custom'
+            font_size: '40dp'
+            theme_icon_color: 'Custom'
+            icon_color: get_color_from_hex('#9333ea')
+            pos_hint: {'center_x': 0.1, 'center_y': 0.95}
+
+        MDLabel:
+            text: 'Cadastro de Funcionário'
+            font_style: 'Title'
+            role: 'large'
+            theme_text_color: 'Custom'
+            text_color: get_color_from_hex('#a855f7')
+            halign: 'center'
+            bold: True
+            pos_hint: {'center_x': 0.55, 'center_y': 0.95}
+
+    # Linha de separação entre cabeçalho e conteúdo
+    MDDivider:
+        height: "1dp"
+        color: get_color_from_hex('#CDC7E5')
+        pos_hint: {'center_x': 0.5, 'center_y': 0.9}
+
+    # Área do conteúdo (antigo MDCard 2)
+    MDRelativeLayout:
+        size_hint: 1, 0.85
+        pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+
+        MDBoxLayoutWithGradient:
+            theme_bg_color: 'Custom'
+            padding: [8, 10, 8, 0]
+            size_hint: 0.95, 0.13  # Ajustado para melhor proporção
+            radius: [15,]
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'top': 1}
+            spacing: 5  # Adicionado espaçamento entre elementos
+
+            # Conteúdo do MDBoxLayoutWithGradient com spacing
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+
+                MDIconButton:
+                    id: one
+                    icon: 'numeric-1-circle'
+                    theme_font_size: 'Custom'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    font_size: '40dp'
+                    pos_hint: {'center_x': 0.5}
+
+                MDLabel:
+                    text: 'Preencher'
+                    font_style: 'Title'
+                    role: 'small'
+                    halign: 'center'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    pos_hint: {'center_x': 0.5}
+
+            MDBoxLayout:
+                size_hint_x: 0.5
+                MDDivider:
+                    color: 'white'
+                    size_hint_x: 1
+                    divider_width: '3dp'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+
+                MDIconButton:
+                    id: three
+                    icon: 'numeric-3-circle'
+                    theme_icon_color: 'Custom'
+                    icon_color: get_color_from_hex('#4b5563')
+                    theme_font_size: 'Custom'
+                    font_size: '40dp'
+                    pos_hint: {'center_x': 0.5}
+
+                MDLabel:
+                    text: 'Confirmar'
+                    font_style: 'Title'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'small'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5}
+
+        # Campos de texto ajustados
+        MDTextField:
+            id: name
+            size_hint: 0.9, None
+            height: "48dp"  # Altura fixa para melhor visualização
+            pos_hint: {'center_x': 0.5, 'center_y': 0.79}
+            radius: [10,]
+
+            MDTextFieldLeadingIcon:
+                icon: 'account'
+
+            MDTextFieldHintText:
+                text: 'Nome do funcionário'
+
+        MDTextField:
+            id: value_salary
+            size_hint: 0.9, None
+            height: "48dp"  # Altura fixa para melhor visualização
+            pos_hint: {'center_x': 0.5, 'center_y': 0.67}  # Ajustado para melhor espaçamento
+            radius: [10,]
+            input_filter: 'float'
+
+            MDTextFieldLeadingIcon:
+                icon: 'currency-usd'
+
+            MDTextFieldHintText:
+                text: 'Valor do salário'
+
+        # Cards realinhados com espaçamento uniforme
+        MDCard:
+            id: card_salary
+            style: 'elevated'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.52}  # Posicionamento ajustado
+            size_hint: 0.9, 0.13  # Altura ajustada para uniformidade
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            md_bg_color: 'white'
+            theme_shadow_color: 'Custom'
+            shadow_color: 'grey'
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            on_release: root.menu.open()
+
+            MDRelativeLayout:
+                MDBoxLayout:
+                    size_hint: 1, 0.4
+                    orientation: 'horizontal'
+                    theme_bg_color: 'Custom'
+                    padding: [10, 0, 0, 0]
+                    radius: [15, 15, 0, 0]
+                    spacing: 10
+                    md_bg_color: get_color_from_hex('#3772FF')
+                    pos_hint: {'center_x': 0.5, 'top': 1}
+
+                    MDIcon:
+                        icon: 'cash'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'white'
+                        pos_hint: {'center_y': 0.5}
+                        padding: [0, 0, 0, 5]
+
+                    MDLabel:
+                        id: salary
+                        font_style: 'Label'
+                        role: 'large'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+
+                MDBoxLayout:
+                    size_hint: 1, 0.6
+                    orientation: 'vertical'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'
+                    radius: [0, 0, 10, 10]
+                    spacing: 5
+                    padding: [10, 10, 0, 10]
+
+                    MDLabel:
+                        text: 'Salário'
+                        font_style: 'Label'
+                        role: 'large'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        bold: True
+
+                    MDLabel:
+                        text: 'Definir o tipo de pagamento'
+                        font_style: 'Label'
+                        role: 'medium'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+
+        MDCard:
+            id: card_function
+            style: 'elevated'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.36}  # Posicionamento ajustado
+            size_hint: 0.9, 0.13  # Altura ajustada para uniformidade
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            md_bg_color: 'white'
+            theme_shadow_color: 'Custom'
+            shadow_color: 'grey'
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            on_release: root.menu2.open()
+
+            MDRelativeLayout:
+                MDBoxLayout:
+                    size_hint: 1, 0.4
+                    orientation: 'horizontal'
+                    theme_bg_color: 'Custom'
+                    padding: [10, 0, 0, 0]
+                    radius: [15, 15, 0, 0]
+                    spacing: 10
+                    md_bg_color: get_color_from_hex('#09E85E')
+                    pos_hint: {'center_x': 0.5, 'top': 1}
+
+                    MDIcon:
+                        icon: 'application'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'white'
+                        pos_hint: {'center_y': 0.5}
+                        padding: [0, 0, 0, 5]
+
+                    MDLabel:
+                        id: function
+                        font_style: 'Label'
+                        role: 'large'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+
+                MDBoxLayout:
+                    size_hint: 1, 0.6
+                    orientation: 'vertical'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'
+                    radius: [0, 0, 10, 10]
+                    spacing: 5
+                    padding: [10, 10, 0, 10]
+
+                    MDLabel:
+                        text: 'Função'
+                        font_style: 'Label'
+                        role: 'large'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        bold: True
+
+                    MDLabel:
+                        text: 'Definir o cargo e responsabilidades'
+                        font_style: 'Label'
+                        role: 'medium'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+
+        MDCard:
+            id: card_scale
+            style: 'elevated'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.20}  # Posicionamento ajustado
+            size_hint: 0.9, 0.13  # Altura ajustada para uniformidade
+            theme_bg_color: 'Custom'
+            radius: [10,]
+            md_bg_color: 'white'
+            theme_shadow_color: 'Custom'
+            shadow_color: 'grey'
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            on_release: root.menu_scale.open()
+
+            MDRelativeLayout:
+                MDBoxLayout:
+                    size_hint: 1, 0.4
+                    orientation: 'horizontal'
+                    theme_bg_color: 'Custom'
+                    padding: [10, 0, 0, 0]
+                    radius: [15, 15, 0, 0]
+                    md_bg_color: get_color_from_hex('6905C7')
+                    pos_hint: {'center_x': 0.5, 'top': 1}
+
+                    MDIcon:
+                        icon: 'calendar-blank-outline'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'white'
+                        pos_hint: {'center_y': 0.5}
+                        padding: [0, 0, 0, 5]
+
+                    MDLabel:
+                        id: scale
+                        font_style: 'Label'
+                        role: 'large'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+
+                MDBoxLayout:
+                    size_hint: 1, 0.6
+                    orientation: 'vertical'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'
+                    radius: [0, 0, 10, 10]
+                    spacing: 5
+                    padding: [10, 10, 0, 10]
+
+                    MDLabel:
+                        text: 'Escala'
+                        font_style: 'Label'
+                        role: 'large'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        bold: True
+
+                    MDLabel:
+                        text: 'Definir os dias de serviço'
+                        font_style: 'Label'
+                        role: 'medium'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+
+
+        MDCard:
+            theme_bg_color: 'Custom'
+            padding: [8, 10, 8, 0]
+            size_hint: 0.45, 0.07
+            md_bg_color: get_color_from_hex('#9333ea')
+            pos_hint: {'center_x': 0.27, 'top': 0.08}
+            spacing: 5
+            on_release: root.back_table()
+
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'arrow-left'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': .1, 'center_y': 0.63}
+
+                MDLabel:
+                    text: 'tela anterior'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    halign: 'center'
+                    font_style: 'Title'
+                    role: 'medium'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.55}
+
+        MDCard:
+            theme_bg_color: 'Custom'
+            padding: [8, 10, 8, 0]
+            size_hint: 0.45, 0.07
+            md_bg_color: get_color_from_hex('#9333ea')
+            pos_hint: {'center_x': 0.73, 'top': 0.08}
+            spacing: 5
+            on_release: root.checking_empty_fields()
+
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'content-save'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': .1, 'center_y': 0.63}
+
+                MDLabel:
+                    text: 'Proxima tela'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    halign: 'center'
+                    font_style: 'Title'
+                    role: 'medium'
+                    pos_hint: {'center_x': 0.6, 'center_y': 0.55}
