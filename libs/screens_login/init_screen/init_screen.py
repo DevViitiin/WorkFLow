@@ -2,6 +2,7 @@ import ast
 import json
 from functools import partial
 import bcrypt
+import socket
 from kivy.metrics import dp
 from kivy.properties import get_color_from_hex, StringProperty, Clock
 from kivy.uix.screenmanager import SlideTransition
@@ -10,15 +11,23 @@ from kivy.animation import Animation
 from kivymd.uix.screen import MDScreen
 from kivy.network.urlrequest import UrlRequest
 from kivymd.uix.snackbar import MDSnackbarText, MDSnackbar
+from configurations import firebase_url
+from configurations import DialogNoNet, DialogInfinityUpload, DialogErrorUnknow
 
 
 class InitScreen(MDScreen):
     """
-    Tela inicial do aplicativo que gerencia o login de usuários.
-
-    Permite login como funcionário ou contratante, além de oferecer
-    opção para registro de novos usuários.
+    Tela inicial do aplicativo que gerencia autenticação de usuários.
+    
+    Funcionalidades:
+    - Login de funcionários e contratantes
+    - Recuperação de senha via email
+    - Validação de credenciais
+    - Navegação para telas apropriadas baseado no tipo de usuário
     """
+    
+    # ==================== CONSTANTES E PROPRIEDADES ====================
+    
     logo = "https://res.cloudinary.com/dsmgwupky/image/upload/v1757731316/logo-removebg-preview_sqstg8.png"
     carregado = False
     api1 = "AIzaSyA3vFR2WgCdB"
@@ -26,28 +35,56 @@ class InitScreen(MDScreen):
     api_key = (api1 + api2 + 's')[:-1]
     key = StringProperty()
     name = False
+    can_nonet = True
+    can_net_login = True
+    can_net_login2 = True
     senha = ''
     type = ''
 
+    # ==================== INICIALIZAÇÃO ====================
+    
     def on_enter(self, *args):
-        """Método chamado quando a tela é exibida."""
+        """
+        Callback executado quando a tela é exibida.
+        
+        Inicializa componentes visuais e diálogos de erro.
+        """
         self.ids.image.source = self.logo
-        self.state_employee()
+        self.inf_dialog = DialogInfinityUpload()
+        self.nonet = DialogNoNet(
+            subtitle='Não foi possível enviar o email para realização da troca de senha, verifique sua internet e tente novamente',
+            callback=self.send_password_recovery_email
+        )
+        self.nonet_login = DialogNoNet(
+            subtitle='Não foi possível verificar as informações de login, verifique sua internet e tente novamente',
+            callback=self.authenticate_employee
+        )
+        self.select_employee_profile()
 
+        self.nonet_login2 = DialogNoNet(
+            subtitle='Não foi possível verificar as informações de login, verifique sua internet e tente novamente',
+            callback=self.authenticate_contractor
+        )
+        self.stranger_error = DialogErrorUnknow(self.name)
+        Clock.schedule_once(lambda dt: self.stranger_error.open(), 3)
 
-    """
-    Solução principal para o problema de transição em mobile:
-    1. Método de animação para evitar o "flash branco"
-    2. Implementação de cache para componentes visuais 
-    3. Correção de propriedades incorretas no KV
-    """
-
-    # ----- PARTE PYTHON -----
-
-    def send_password_verification(self, *args):
+    # ==================== RECUPERAÇÃO DE SENHA ====================
+    
+    def send_password_recovery_email(self, *args):
+        """
+        Envia email de recuperação de senha para o usuário.
+        
+        Valida o campo de email e faz requisição ao Firebase Auth
+        para enviar o email de redefinição de senha em português.
+        """
+        if not self.can_nonet:
+            self.can_nonet = True
+            self.nonet.dismiss()
+            self.inf_dialog.open()
+        
         if not self.ids.email.text:
-            self.show_error('Por favor preencha o email que será usado')
-            Clock.schedule_once(lambda dt: self.show_error('Para enviar a troca de senha'), 1.5)
+            self.show_error_message('Por favor preencha o email que será usado')
+            Clock.schedule_once(lambda dt: self.show_error_message('Para enviar a troca de senha'), 1.5)
             return
         
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={self.api_key}"
@@ -55,55 +92,396 @@ class InitScreen(MDScreen):
             "requestType": "PASSWORD_RESET",
             "email": self.ids.email.text
         }
-
         headers = {
             "Content-Type": "application/json",
-            "X-Firebase-Locale": "pt-BR"   # força idioma português
+            "X-Firebase-Locale": "pt-BR"
         }
+        
+        try:
+            UrlRequest(
+                url,
+                req_body=json.dumps(payload),
+                req_headers=headers,
+                on_success=self.on_email_sent_success,
+                on_error=self.on_connection_error,
+                on_failure=self.on_connection_error
+            )
+        except Exception as e:
+            print(f"[ERRO REDE] Falha ao enviar email de recuperação: {e}")
+            self.on_connection_error(None, None)
 
-        UrlRequest(
-            url,
-            req_body=json.dumps(payload),
-            req_headers=headers,
-            on_success=self.success,
-            on_error=self.error,
-            on_failure=self.failure
-        )
+    def on_email_sent_success(self, req, result):
+        """
+        Callback executado quando o email de recuperação é enviado com sucesso.
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta da API
+        """
+        self.can_nonet = True
+        self.show_success_message('Solicitação enviada com sucesso')
+        Clock.schedule_once(lambda dt: self.show_success_message('Verifique seu email'), 1.5)
+        print(f"Email de redefinição enviado: {result}")
 
-        headers = {"Content-Type": "application/json"}
+    def on_connection_error(self, req, result):
+        """
+        Callback executado quando há erro de conexão.
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta de erro
+        """
+        if self.can_nonet:
+            Clock.schedule_once(lambda dt: self.open_no_internet_dialog(), 1.5)
+            self.can_nonet = False
+        else:
+            print('[ERRO REDE] Não foi possível conectar, tente novamente')
 
-        def sucesso(req, resultado):
-            print("Email de redefinição enviado:", resultado)
-            self.show_message('Solicitação enviada com sucesso', "#00ff15")
-            Clock.schedule_once(lambda dt: self.show_message('Verifique seu email', "#00ff15"), 1.5)
-            # aqui você pode mostrar um Snackbar ou Popup avisando o usuário
+    def open_no_internet_dialog(self):
+        """Fecha o diálogo de carregamento e abre o diálogo de erro de internet."""
+        self.inf_dialog.dismiss()
+        self.nonet.open()
 
-        def erro(req, erro):
-            print("Erro na requisição:", erro)
-
-        def falha(req, resultado):
-            print("Falha ao enviar:", resultado)
-
-        UrlRequest(
-            url,
-            req_body=json.dumps(payload),
-            req_headers=headers,
-            on_success=sucesso,
-            on_error=erro,
-            on_failure=falha
-        )
+    # ==================== SELEÇÃO DE TIPO DE USUÁRIO ====================
     
-    def success(self, req, result):
-        self.show_message("E-mail de redefinição enviado em português!")
+    def select_contractor_profile(self):
+        """
+        Seleciona o perfil de contratante e aplica feedback visual.
+        
+        Atualiza as cores dos cards e define o tipo de usuário como 'Contratante'.
+        """
+        self.ids.employee_card.line_color = 'white'
+        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
+        anime.start(self.ids.contractor_card)
+        
+        self.ids.contractor_card.canvas.ask_update()
+        self.ids.employee_card.canvas.ask_update()
+        
+        self.type = 'Contratante'
 
-    def error(self, req, error):
-        self.show_error(f"Erro: {error}")
+    def select_employee_profile(self):
+        """
+        Seleciona o perfil de funcionário e aplica feedback visual.
+        
+        Atualiza as cores dos cards e define o tipo de usuário como 'Funcionario'.
+        """
+        self.ids.contractor_card.line_color = 'white'
+        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
+        anime.start(self.ids.employee_card)
+        
+        self.ids.employee_card.canvas.ask_update()
+        self.ids.contractor_card.canvas.ask_update()
+        
+        self.type = 'Funcionario'
 
-    def failure(self, req, result):
-        self.show_error(f"Falha: {result}")
+    # Mantém compatibilidade com código KV
+    state_contractor = select_contractor_profile
+    state_employee = select_employee_profile
+
+    # ==================== VALIDAÇÃO DE LOGIN ====================
+    
+    def start_login_process(self):
+        """
+        Inicia o processo de login validando os campos de entrada.
+        
+        Verifica:
+        - Se um tipo de usuário foi selecionado
+        - Se o email foi preenchido
+        - Se a senha foi preenchida
+        
+        Redireciona para o fluxo apropriado baseado no tipo de usuário.
+        """
+        try:
+            if not self.type:
+                self.show_error_message('Selecione o tipo de conta para efetuar o login')
+                return
+            
+            if not self.ids.email.text:
+                self.ids.email.focus = True
+                self.show_error_message('Insira seu email de usuário')
+                return
+            
+            if not self.ids.senha.text:
+                self.ids.senha.focus = True
+                self.show_error_message('Insira sua senha')
+                return
+            
+            if self.type == 'Contratante':
+                self.authenticate_contractor()
+            else:
+                self.authenticate_employee()
+                
+        except Exception as e:
+            self.stranger_error.open()
+
+    # Mantém compatibilidade
+    etapa1 = start_login_process
+
+    # ==================== AUTENTICAÇÃO DE FUNCIONÁRIO ====================
+    
+    def authenticate_employee(self):
+        """
+        Autentica um funcionário usando Firebase Authentication.
+        
+        Envia credenciais para o Firebase e processa a resposta.
+        Em caso de sucesso, busca os dados completos do funcionário.
+        """
+        if not self.can_net_login:
+            self.nonet_login.dismiss()
+            self.inf_dialog.open()
+            self.can_net_login = True
+        
+        print('[LOGIN] Autenticando funcionário...')
+        
+        api_key = "AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg"
+        email = self.ids.email.text
+        password = self.ids.senha.text
+        
+        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
+        payload = {
+            "email": email,
+            "password": password,
+            "returnSecureToken": True
+        }
+        headers = {"Content-Type": "application/json"}
+        
+        try:
+            UrlRequest(
+                url,
+                req_body=json.dumps(payload),
+                req_headers=headers,
+                method='POST',
+                on_success=self.on_employee_auth_success,
+                on_error=partial(self.on_auth_error, callback=self.authenticate_employee),
+                on_failure=partial(self.on_auth_error, callback=self.authenticate_employee),
+                on_cancel=partial(self.on_auth_error, callback=self.authenticate_employee)
+            )
+        except Exception as e:
+            print(f"[ERRO REDE] Falha na autenticação do funcionário: {e}")
+            self.on_auth_error(None, None, self.authenticate_employee)
+
+    def on_employee_auth_success(self, req, result):
+        """
+        Callback executado após autenticação bem-sucedida do funcionário.
+        
+        Extrai tokens e busca dados completos do funcionário no Firebase Database.
+        
+        Args:
+            req: Objeto de requisição
+            result: Dados de autenticação (contém tokens)
+        """
+        print('[LOGIN] Autenticação bem-sucedida, buscando dados do funcionário...')
+        
+        id_token = result['idToken']
+        id_local = result['localId']
+        refresh = result['refreshToken']
+        
+        try:
+            UrlRequest(
+                f'{firebase_url()}/Funcionarios/{id_local}.json?auth={id_token}',
+                method='GET',
+                on_success=partial(self.load_employee_profile, token_id=id_token, local_id=id_local, refresh_token=refresh),
+                on_error=self.on_employee_not_found,
+                on_failure=self.on_employee_not_found,
+                on_cancel=self.on_employee_not_found,
+                req_headers={"Content-Type": "application/json"}
+            )
+        except Exception as e:
+            print(f"[ERRO REDE] Falha ao buscar dados do funcionário: {e}")
+            self.on_employee_not_found(None, None)
+
+    def on_employee_not_found(self, req, result):
+        """
+        Callback executado quando os dados do funcionário não são encontrados.
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta de erro
+        """
+        print('[ERRO] Funcionário não encontrado no banco de dados')
+        self.show_error_message("Usuário desconhecido, tente como contratante")
+
+    def on_auth_error(self, req, result=None, callback=None):
+        """
+        Callback executado quando há erro na autenticação.
+        
+        Trata diferentes tipos de erros (credenciais inválidas, sem internet, etc).
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta de erro
+            callback: Função de callback para retry
+        """
+        if result is None:
+            print('[ERRO REDE] Erro de conexão durante autenticação')
+            self.show_error_message("Erro de conexão, tente novamente")
+            if callback:
+                callback()
+            return
+        
+        print('='*50)
+        print('[ERRO AUTH]', result)
+        print('='*50)
+        
+        try:
+            if isinstance(result, dict) and 'error' in result:
+                if 'INVALID_LOGIN_CREDENTIALS' in result['error'].get('message', ''):
+                    self.show_error_message('As informações estão incorretas')
+                else:
+                    self.ids.email.error = True
+                    self.ids.email.text = ''
+                    self.show_error_message('Usuário inexistente')
+            else:
+                print("[ERRO REDE] Sem internet...")
+                Clock.schedule_once(lambda dt: self.close_no_internet_login_dialog(), 1.5)
+                self.can_net_login = False
+                
+        except socket.gaierror as e:
+            print(f"[ERRO REDE] Sem internet ou não foi possível resolver o endereço: {e}")
+            Clock.schedule_once(lambda dt: self.close_no_internet_login_dialog(), 1.5)
+            self.can_net_login = False
+
+        except Exception as e:
+            self.stranger_error.open()
+
+    def close_no_internet_login_dialog(self):
+        """Fecha o diálogo de carregamento e abre o diálogo de erro de conexão no login."""
+        self.inf_dialog.dismiss()
+        self.nonet_login.open()
+
+    # ==================== AUTENTICAÇÃO DE CONTRATANTE ====================
+    
+    def authenticate_contractor(self):
+        """
+        Autentica um contratante usando Firebase Authentication.
+        
+        Envia credenciais para o Firebase e processa a resposta.
+        Em caso de sucesso, busca os dados completos do contratante.
+        """
+        print('[LOGIN] Autenticando contratante...')
+        if not self.can_net_login2:
+            self.nonet_login2.dismiss()
+            self.inf_dialog.open()
+            self.can_net_login2 = True
+
+        api_key = "AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg"
+        email = self.ids.email.text
+        password = self.ids.senha.text
+        
+        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
+        payload = {
+            "email": email,
+            "password": password,
+            "returnSecureToken": True
+        }
+        headers = {"Content-Type": "application/json"}
+        
+        try:
+            UrlRequest(
+                url,
+                req_body=json.dumps(payload),
+                req_headers=headers,
+                method='POST',
+                on_success=self.on_contractor_auth_success,
+                on_error=self.on_contractor_auth_error,
+                on_failure=self.on_contractor_auth_error,
+                on_cancel=self.on_contractor_auth_error
+            )
+        except Exception as e:
+            print(f"[ERRO REDE] Falha na autenticação do contratante: {e}")
+            self.on_contractor_auth_error(None, None)
+
+    def on_contractor_auth_success(self, req, result):
+        """
+        Callback executado após autenticação bem-sucedida do contratante.
+        
+        Extrai tokens e busca dados completos do contratante no Firebase Database.
+        
+        Args:
+            req: Objeto de requisição
+            result: Dados de autenticação (contém tokens)
+        """
+        print('[LOGIN] Autenticação bem-sucedida, buscando dados do contratante...')
+        
+        refresh = result['refreshToken']
+        id_token = result['idToken']
+        id_local = result['localId']
+        
+        try:
+            UrlRequest(
+                f'{firebase_url()}/Users/{id_local}.json?auth={id_token}',
+                method='GET',
+                on_success=lambda req, result: self.load_contractor_profile(req, result, id_token, id_local, refresh),
+                on_error=self.on_contractor_not_found,
+                on_failure=self.on_contractor_not_found,
+                on_cancel=self.on_contractor_not_found,
+                req_headers={"Content-Type": "application/json"}
+            )
+        except Exception as e:
+            print(f"[ERRO REDE] Falha ao buscar dados do contratante: {e}")
+            self.on_contractor_not_found(None, None)
+
+    def on_contractor_auth_error(self, req, result):
+        """
+        Callback executado quando há erro na autenticação do contratante.
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta de erro
+        """
+        print('='*50)
+        print(f"[ERRO REDE] Sem internet")
+        Clock.schedule_once(lambda dt: self.close_no_internet_login_dialog2(), 1.5)
+        self.can_net_login_2 = False
+        print('='*50)
+        
+
+    def on_contractor_not_found(self, req, result):
+        """
+        Callback executado quando os dados do contratante não são encontrados.
+        
+        Args:
+            req: Objeto de requisição
+            result: Resposta de erro
+        """
+        print('[ERRO] Contratante não encontrado no banco de dados')
+        self.show_error_message("Usuário desconhecido, tente como funcionário")
+
+    def close_no_internet_login_dialog2(self):
+        """Fecha o diálogo de carregamento e abre o diálogo de erro de conexão no login."""
+        self.inf_dialog.dismiss()
+        self.nonet_login2.open()
+        self.can_net_login2 = False
+
+    # ==================== MENSAGENS DE FEEDBACK ====================
+    
+    def show_success_message(self, message):
+        """
+        Exibe uma mensagem de sucesso para o usuário.
+        
+        Args:
+            message: Texto da mensagem a ser exibida
+        """
+        self.show_message(message, color='#00ff15')
+
+    def show_error_message(self, message):
+        """
+        Exibe uma mensagem de erro para o usuário.
+        
+        Args:
+            message: Texto da mensagem de erro
+        """
+        self.show_message(message, color='#FF0000')
+        print(f"[ERRO] {message}")
 
     def show_message(self, message, color='#2196F3'):
-        """Display a snackbar message"""
+        """
+        Exibe uma snackbar com uma mensagem personalizada.
+        
+        Args:
+            message: Texto da mensagem
+            color: Cor de fundo da snackbar (hex)
+        """
         MDSnackbar(
             MDSnackbarText(
                 text=message,
@@ -115,371 +493,84 @@ class InitScreen(MDScreen):
             y=dp(24),
             pos_hint={"center_x": 0.5},
             halign='center',
-            size_hint_x=0.8,
+            size_hint_x=0.9,
             theme_bg_color='Custom',
             background_color=get_color_from_hex(color)
         ).open()
 
-    def show_error(self, error_message):
-        """Display an error message"""
-        self.show_message(error_message, color='#FF0000')
-        print(f"Error: {error_message}")
-
-    def state_contractor(self):
-        """Seleciona o perfil de contratante e aplica as mudanças visuais."""
-        # Aplica todas as mudanças de cores de uma vez
-        self.ids.employee_card.line_color = 'white'
-        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
-        anime.start(self.ids.contractor_card)
-
-        # Força uma atualização imediata do canvas
-        self.ids.contractor_card.canvas.ask_update()
-        self.ids.employee_card.canvas.ask_update()
-
-        # Define o tipo de usuário
-        self.type = 'Contratante'
-
-    def state_employee(self):
-        """Seleciona o perfil de funcionário e aplica as mudanças visuais."""
-        # Aplica todas as mudanças de cores de uma vez
-
-        self.ids.contractor_card.line_color = 'white'
-        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
-        anime.start(self.ids.employee_card)
-
-        # Força uma atualização imediata do canvas
-        self.ids.employee_card.canvas.ask_update()
-        self.ids.contractor_card.canvas.ask_update()
-
-        # Define o tipo de usuário
-        self.type = 'Funcionario'
-
-    def usuarios_carregados(self, req, result):
-        """
-        Processa os dados dos usuários após carregamento bem-sucedido.
-
-        Verifica se o nome de usuário existe na base de dados.
-
-        Args:
-            req: O objeto de requisição
-            result: Os dados retornados pelo Firebase
-        """
-        try:
-            if not result:
-                self.show_error("Não foi possível carregar os dados de usuários")
-                return
-
-            self.name = False
-            for cargo, nome in result.items():
-                if nome['name'] == str(self.ids.nome.text):
-                    self.name = True
-                    self.senha = nome['senha']
-                    self.key = cargo
-                    self.etapa2(self.senha)
-                    break
-
-            if not self.name:
-                self.ids.nome_errado.text = 'Usuário não cadastrado'
-                self.ids.nome.error = True
-        except Exception as e:
-            self.show_error(f"Erro ao processar dados: {e}")
-
-    def etapa2(self, hashd_password):
-        """
-        Verifica a senha do usuário.
-
-        Compara a senha fornecida com o hash armazenado no Firebase.
-
-        Args:
-            hashd_password: O hash da senha armazenada
-        """
-        try:
-            password_bytes = self.ids.senha.text.encode('utf-8')
-            user_password_bytes = hashd_password.encode('utf-8')
-
-            if bcrypt.checkpw(password_bytes, user_password_bytes):
-                self.show_message("Login realizado com sucesso!")
-            else:
-                self.ids.senha_errada.text = 'Senha incorreta'
-                self.ids.senha.error = True
-        except Exception as e:
-            self.show_error(f"Erro na verificação da senha: {e}")
+    # ==================== UTILIDADES ====================
+    
+    def clear_form_fields(self):
+        """Limpa todos os campos do formulário de login."""
+        self.ids.email.text = ''
+        self.ids.senha.text = ''
 
     def register(self):
         """
         Navega para a tela de registro de novo usuário.
+        
+        Reseta todos os campos e o estado visual dos cards antes de navegar.
         """
-        # resetando os cmapos
-        self.ids.senha.text = ''
-        self.ids.email.text = ''
+        self.clear_form_fields()
         self.type = ''
-
-        # Resetando o estado os cards
+        
         self.ids.contractor_card.md_bg_color = 'white'
         self.ids.text_contractor.text_color = 'black'
         self.ids.employee_card.md_bg_color = 'white'
         self.ids.employee_text.text_color = 'black'
-
+        
         self.manager.transition = SlideTransition(direction='left')
         self.manager.current = 'ChoiceAccount'
 
-    def go_to_next(self, perfil, name):
+
+    # ==================== CARREGAMENTO DE PERFIL FUNCIONÁRIO ====================
+    
+    def load_employee_profile(self, req, result, token_id, local_id, refresh_token):
         """
-        Navega para a próxima tela após o login.
-
-        Args:
-            perfil: O tipo de perfil do usuário
-            name: O nome do usuário
-        """
-        self.manager.transition = SlideTransition(direction='left')
-        login = self.manager.get_screen('LoginScreen')
-        login.perfil = perfil
-        login.nome = name
-        self.ids.email.text = ''
-        self.ids.senha.text = ''
-        self.manager.current = 'LoginScreen'
-
-    def etapa1(self):
-        """
-        Inicia o processo de login verificando os campos preenchidos.
-
-        Valida os campos de entrada e direciona para o fluxo adequado
-        baseado no tipo de usuário.
-        """
-        try:
-            # Verifica se um tipo de usuário foi selecionado
-            if not self.type:
-                self.show_error('Selecione o tipo de conta para efetuar o login')
-                return
-
-            # Verifica nome de usuário
-            if not self.ids.email.text:
-                self.ids.email.focus = True
-                self.show_error('Insira seu email de usuário')
-                return
-
-            # Verifica senha
-            if not self.ids.senha.text:
-                self.ids.senha.focus = True
-                self.show_error('Insira sua senha')
-                return
-
-            # Direciona para o fluxo adequado
-            if self.type == 'Contratante':
-                self.verificar_senha()
-            else:
-                self.senha_employee()
-        except Exception as e:
-            self.show_error(f"Erro ao iniciar login: {e}")
-
-    def senha_employee(self):
-        """
-        Verifica as credenciais de login para funcionários.
-        """
-        print('Verificar funcioanario')
-        api_key = "AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg"
-        email = f"{self.ids.email.text}"
-        password = f"{self.ids.senha.text}"
-
-        login_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        payload = {
-            "email": email,
-            "password": password,
-            "returnSecureToken": True
-        }
-
-        headers = {"Content-Type": "application/json"}
-
-        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        UrlRequest(
-            url,
-            req_body=json.dumps(payload),
-            req_headers=headers,
-            method='POST',
-            on_success=self.get_name,
-            on_error=self.email_exists,
-            on_failure=self.email_exists,
-            on_cancel=self.email_exists
-        )
-
-    def get_name(self, req, result):
-        print('Login feito, puxando os dados do funcionário...')
-        id_token = result['idToken']
-        id_local = result['localId']
-        refresh = result['refreshToken']
-
-        def sucesso(req, data):
-            print("Dados encontrados:", data)
-            self.data_found(req, data)
-
-        def erro(req, erro_result):
-            self.show_error(f"Usuario não encontrado tente como contratante")
-
-        UrlRequest(
-            f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{id_local}.json?auth={id_token}',
-            method='GET',
-            on_success=partial(self.next_perfil_employee, token_id=id_token, local_id=id_local, refresh_token=refresh),
-            on_error=erro,
-            on_failure=erro,
-            on_cancel=erro,
-            req_headers={"Content-Type": "application/json"}
-        )
+        Carrega o perfil completo do funcionário e redireciona para a tela apropriada.
         
-    def email_exists(self, req, result):
-        print('Erro: ', result)
-        if result['error']['message'] in 'INVALID_LOGIN_CREDENTIALS':
-            self.show_error('As informações inseridas estão incorretas')
-        else:
-            self.ids.email.error = True
-            self.ids.email.text = ''
-            self.show_error('Usuario inexistente')
-
-    def senhas_employee(self, req, result):
-        """
-        Processa os dados dos funcionários e verifica as credenciais.
-
-        Args:
-            req: O objeto de requisição
-            result: Os dados retornados pelo Firebase
-        """
-
-        print('Verificar funcioanario')
-        api_key = "AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg"
-        email = f"{self.ids.email.text}"
-        password = f"{self.ids.senha.text}"
-
-        login_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        payload = {
-            "email": email,
-            "password": password,
-            "returnSecureToken": True
-        }
-
-        headers = {"Content-Type": "application/json"}
-
-        def erro(req, erro_result):
-            self.show_error(f"Usuario não encontrado tente como Funcionário")
-
-        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        UrlRequest(
-            url,
-            req_body=json.dumps(payload),
-            req_headers=headers,
-            method='POST',
-            on_success=self.employees,
-            on_error=erro,
-            on_failure=erro,
-            on_cancel=erro
-        )
-
-    def employees(self, req, result):
-        print('Login feito, puxando os dados do funcionário...')
-        print(result)
-        refresh = result['refreshToken']
-        id_token = result['idToken']
-        id_local = result['localId']
-        print('Refresh token: ', refresh)
-
-        def sucesso(req, data):
-            print("Dados encontrados:", data)
-            self.next_perfil_employee(result, self.id_token, self.local_id, self.refresh_token)
-
-        def erro(req, erro_result):
-            self.show_error(f"Usuario não encontrado tente como contratante")
-
-        UrlRequest(
-            f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{id_local}.json?auth={id_token}',
-            method='GET',
-            on_success=partial(self.next_perfil_employee, token_id=id_token, local_id=id_local, refresh_token=refresh),
-            on_error=erro,
-            on_failure=erro,
-            on_cancel=erro,
-            req_headers={"Content-Type": "application/json"}
-        )
+        Verifica se o usuário tem suspensão, advertência ou banimento ativo.
+        Se não tiver, carrega os dados do perfil e navega para a tela principal.
         
-
-    def next_perfil_employee(self, req, result, token_id, local_id, refresh_token):
-        """
-        Prepara a tela de perfil do funcionário após login bem-sucedido.
-
         Args:
-            instance: O objeto de requisição
-            result: Os dados do perfil do funcionário
+            req: Objeto de requisição
+            result: Dados do perfil do funcionário
+            token_id: Token de autenticação
+            local_id: ID local do usuário
+            refresh_token: Token de renovação
         """
-        print('Consegui o token id eu sou o cara: ', local_id)
+        print(f'[LOGIN] Dados do funcionário carregados. Local ID: {local_id}')
+        
         try:
             if not result:
-                self.show_error("Não foi possível carregar, tente como contratante")
-                return
-            suspension = result.get('suspension')
-            print('One for all: ', suspension)
-            warnings = result.get('warnings', [])
-            ban = result.get('ban', [])
-            if '' not in (suspension['description'], suspension['init'], suspension['end']):
-                """Significa que o usuario recebeu uma suspensão portanto vamos redirecionar para a tela do mesmo"""
-                app = MDApp.get_running_app()
-                suspension = result.get('suspension', '')
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('SuspensionScreen')
-
-                # Atribuir as propriedades
-                perfil.motive = suspension['motive']
-                perfil.init = suspension['init']
-                perfil.end = suspension['end']
-
-                # Trocar de tela
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'SuspensionScreen'
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
-                return
-
-            elif '' not in (warnings['description'], warnings['type'], warnings['data'], warnings['motive']):
-                """Significa que o usuario recebeu uma advertência portanto vamos redirecionar para a tela do mesmo"""
-                app = MDApp.get_running_app()
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('WarningScreen')
-
-                # Atribuir as propriedades
-                perfil.motive = warnings['motive']
-                perfil.data = warnings['data']
-                perfil.data_user = result
-                perfil.type_user = 'employee'
-                perfil.type = warnings['type']
-                perfil.api_key = self.api_key
-                perfil.local_id = local_id
-                perfil.refresh_token = refresh_token
-                perfil.token_id = token_id
-                perfil.description = warnings['description']
-
-                # Trocar de tela
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'WarningScreen'
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
+                self.show_error_message("Usuário desconhecido, tente como contratante")
                 return
             
-            elif '' not in (ban['description'], ban['data'], ban['motive']):
-                app = MDApp.get_running_app()
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('BanScreen')
-
-                # Atribuir as propriedades
-                perfil.motive = ban['motive']
-                perfil.description = ban['description']
-
-                # Trocar de tela
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'BanScreen'
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
+            suspension = result.get('suspension', {})
+            warnings = result.get('warnings', {})
+            ban = result.get('ban', {})
+            
+            # Verifica suspensão
+            if '' not in (suspension.get('description', ''), suspension.get('init', ''), suspension.get('end', '')):
+                self.navigate_to_suspension_screen(suspension)
                 return
             
+            # Verifica advertência
+            elif '' not in (warnings.get('description', ''), warnings.get('type', ''), 
+                          warnings.get('data', ''), warnings.get('motive', '')):
+                self.navigate_to_warning_screen(warnings, result, 'employee', token_id, local_id, refresh_token)
+                return
+            
+            # Verifica banimento
+            elif '' not in (ban.get('description', ''), ban.get('data', ''), ban.get('motive', '')):
+                self.navigate_to_ban_screen(ban)
+                return
+            
+            # Login normal - carrega perfil do funcionário
             app = MDApp.get_running_app()
             screenmanager = app.root
             perfil = screenmanager.get_screen('PrincipalScreenEmployee')
-
-            # Atribui os dados do funcionário à tela de perfil
+            
             perfil.employee_name = result.get('Name', '')
             perfil.contractor = result.get('contractor', '')
             perfil.employee_function = result.get('function', '')
@@ -489,8 +580,8 @@ class InitScreen(MDScreen):
             perfil.avatar = result.get('avatar', '')
             perfil.city = result.get('city', '')
             perfil.api_key = self.api_key
-            perfil.salary = result['salary']
-            perfil.data_contractor = result['data_contractor']
+            perfil.salary = result.get('salary', '')
+            perfil.data_contractor = result.get('data_contractor', '')
             perfil.state = result.get('state', '')
             perfil.employee_summary = result.get('sumary', '')
             perfil.skills = result.get('skills', '[]')
@@ -498,160 +589,62 @@ class InitScreen(MDScreen):
             perfil.refresh_token = refresh_token
             perfil.token_id = token_id
             perfil.local_id = local_id
-            self.ids.email.text = ''
-            self.ids.senha.text = ''
-
-            print('O local id do employee: ', local_id)
-            print('O token id do employee: ', token_id)
-            # Navega para a tela principal do funcionário
+            
+            self.clear_form_fields()
             screenmanager.transition = SlideTransition(direction='right')
             screenmanager.current = 'PrincipalScreenEmployee'
+            
         except Exception as e:
-            print(e)
-            self.show_error(f"Erro ao carregar perfil: {e}")
+            self.stranger_error.open()
+
+    # ==================== CARREGAMENTO DE PERFIL CONTRATANTE ====================
     
-
-    def verificar_senha(self):
+    def load_contractor_profile(self, req, result, token_id, local_id, refresh_token):
         """
-        Verifica as credenciais de login para funcionários.
-        """
-        print('Verificar funcioanario')
-        api_key = "AIzaSyA3vFR2WgCdBsyIIL1k9teQNZTi4ZAzhtg"
-        email = f"{self.ids.email.text}"
-        password = f"{self.ids.senha.text}"
-
-        login_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        payload = {
-            "email": email,
-            "password": password,
-            "returnSecureToken": True
-        }
-
-        headers = {"Content-Type": "application/json"}
-
-        def erro(req, erro_result):
-            self.show_error(f"Usuario não encontrado tente como Funcionário")
-
-        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
-        UrlRequest(
-            url,
-            req_body=json.dumps(payload),
-            req_headers=headers,
-            method='POST',
-            on_success=self.contractors,
-            on_error=erro,
-            on_failure=erro,
-            on_cancel=erro
-        )
-
-    def contractors(self, req, result):
-        print('Login feito, puxando os dados do funcionário...')
-        print('rsrs:   ',result)
-        refresh = result['refreshToken']
-        id_token = result['idToken']
-        id_local = result['localId']
-        print('Refresh token: ', refresh)
-
-        def sucesso(req, data):
-            print("Dados encontrados:", data)
-            self.data_found(req, data)
-
-        def erro(req, erro_result):
-            self.show_error(f"Usuario não encontrado tente como contratante")
-
-        UrlRequest(
-            f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{id_local}.json?auth={id_token}',
-            method='GET',
-            on_success=lambda req, result, token_id=id_token, local_id=id_local, refresh_token=refresh: self.date(req, result, token_id, local_id,refresh_token),
-            on_error=erro,
-            on_failure=erro,
-            on_cancel=erro,
-            req_headers={"Content-Type": "application/json"}
-        )
-
-    def date(self, req, result, token_id, local_id, refresh_token):
-        print('Os resultados são: ', result)
-        self.next_perfil(result, token_id, local_id, refresh_token)
-
-    def next_perfil(self, result, token_id, local_id, refresh_token):
-        """
-        Prepara a tela de perfil do contratante após login bem-sucedido.
+        Carrega o perfil completo do contratante e redireciona para a tela apropriada.
+        
+        Verifica se o usuário tem suspensão, advertência ou banimento ativo.
+        Se não tiver, carrega os dados do perfil e navega para a tela principal.
         
         Args:
-            result: Os dados do perfil do contratante
-            token_id: Token de autenticação do Firebase
+            req: Objeto de requisição
+            result: Dados do perfil do contratante
+            token_id: Token de autenticação
             local_id: ID local do usuário
             refresh_token: Token de renovação
         """
+        print(f'[LOGIN] Dados do contratante carregados. Local ID: {local_id}')
+        
         try:
             if not result:
-                self.show_error("Conexão indisponivel, tente como funcionário")
+                self.show_error_message("Usuário desconhecido, tente como funcionário")
                 return
-
+            
             suspension = result.get('suspension', {})
             warnings = result.get('warnings', {})
             ban = result.get('ban', {})
             
             # Verifica suspensão
             if '' not in (suspension.get('description', ''), suspension.get('init', ''), suspension.get('end', '')):
-                app = MDApp.get_running_app()
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('SuspensionScreen')
-                
-                perfil.motive = suspension['motive']
-                perfil.init = suspension['init']
-                perfil.end = suspension['end']
-                
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'SuspensionScreen'
+                self.navigate_to_suspension_screen(suspension)
                 return
-
+            
             # Verifica advertência
             elif '' not in (warnings.get('description', ''), warnings.get('type', ''), 
-                        warnings.get('data', ''), warnings.get('motive', '')):
-                app = MDApp.get_running_app()
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('WarningScreen')
-                
-                perfil.motive = warnings['motive']
-                perfil.data = warnings['data']
-                perfil.data_user = result
-                perfil.type_user = 'contractor'
-                perfil.type = warnings['type']
-                perfil.api_key = self.api_key
-                perfil.local_id = local_id
-                perfil.refresh_token = refresh_token
-                perfil.token_id = token_id
-                perfil.description = warnings['description']
-                
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'WarningScreen'
+                          warnings.get('data', ''), warnings.get('motive', '')):
+                self.navigate_to_warning_screen(warnings, result, 'contractor', token_id, local_id, refresh_token)
                 return
             
             # Verifica banimento
             elif '' not in (ban.get('description', ''), ban.get('data', ''), ban.get('motive', '')):
-                app = MDApp.get_running_app()
-                screenmanager = app.root
-                perfil = screenmanager.get_screen('BanScreen')
-                
-                perfil.motive = ban['motive']
-                perfil.description = ban['description']
-                
-                self.manager.transition = SlideTransition(direction='right')
-                self.manager.current = 'BanScreen'
-                self.ids.email.text = ''
-                self.ids.senha.text = ''
+                self.navigate_to_ban_screen(ban)
                 return
             
-            # Login normal - passa tokens para AMBAS as telas
+            # Login normal - configura ambas as telas (Chat e Perfil)
             app = MDApp.get_running_app()
             screen_manager = app.root
             
-            # 1. Configura tela Chat (caso seja usada)
+            # Configura tela Chat
             chat_screen = screen_manager.get_screen('Chat')
             chat_screen.function = result.get('function', '')
             chat_screen.username = result.get('name', '')
@@ -667,7 +660,7 @@ class InitScreen(MDScreen):
             chat_screen.key = self.key
             chat_screen.api_key = self.api_key
             
-            # 2. Configura tela Perfil (IMPORTANTE: passar os tokens aqui também!)
+            # Configura tela Perfil
             perfil_screen = screen_manager.get_screen('Perfil')
             perfil_screen.function = result.get('function', '')
             perfil_screen.username = result.get('name', '')
@@ -683,22 +676,86 @@ class InitScreen(MDScreen):
             perfil_screen.key = self.key
             perfil_screen.api_key = self.api_key
             
-            # Limpa campos
-            self.ids.email.text = ''
-            self.ids.senha.text = ''
+            self.clear_form_fields()
             self.type = result.get('type', '')
-            
-            # Navega para a tela apropriada
-            self.login_variables()
+            self.navigate_to_main_screen()
             
         except Exception as e:
-            self.show_error(f"Erro ao carregar perfil: {e}")
-            print(f"Erro completo: {e}")
+            self.stranger_error.open()
 
-
-    def login_variables(self):
+    # ==================== NAVEGAÇÃO PARA TELAS ESPECIAIS ====================
+    
+    def navigate_to_suspension_screen(self, suspension):
         """
-        Redireciona para a tela apropriada após o login.
+        Navega para a tela de suspensão.
+        
+        Args:
+            suspension: Dados da suspensão do usuário
+        """
+        app = MDApp.get_running_app()
+        screenmanager = app.root
+        screen = screenmanager.get_screen('SuspensionScreen')
+        
+        screen.motive = suspension['motive']
+        screen.init = suspension['init']
+        screen.end = suspension['end']
+        
+        self.clear_form_fields()
+        self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'SuspensionScreen'
+
+    def navigate_to_warning_screen(self, warnings, user_data, user_type, token_id, local_id, refresh_token):
+        """
+        Navega para a tela de advertência.
+        
+        Args:
+            warnings: Dados da advertência
+            user_data: Dados completos do usuário
+            user_type: Tipo de usuário ('employee' ou 'contractor')
+            token_id: Token de autenticação
+            local_id: ID local do usuário
+            refresh_token: Token de renovação
+        """
+        app = MDApp.get_running_app()
+        screenmanager = app.root
+        screen = screenmanager.get_screen('WarningScreen')
+        
+        screen.motive = warnings['motive']
+        screen.data = warnings['data']
+        screen.data_user = user_data
+        screen.type_user = user_type
+        screen.type = warnings['type']
+        screen.api_key = self.api_key
+        screen.local_id = local_id
+        screen.refresh_token = refresh_token
+        screen.token_id = token_id
+        screen.description = warnings['description']
+        
+        self.clear_form_fields()
+        self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'WarningScreen'
+
+    def navigate_to_ban_screen(self, ban):
+        """
+        Navega para a tela de banimento.
+        
+        Args:
+            ban: Dados do banimento do usuário
+        """
+        app = MDApp.get_running_app()
+        screenmanager = app.root
+        screen = screenmanager.get_screen('BanScreen')
+        
+        screen.motive = ban['motive']
+        screen.description = ban['description']
+        
+        self.clear_form_fields()
+        self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'BanScreen'
+
+    def navigate_to_main_screen(self):
+        """
+        Redireciona para a tela principal apropriada após o login.
         
         Verifica o tipo de usuário e navega para a tela correspondente.
         """
@@ -706,17 +763,89 @@ class InitScreen(MDScreen):
             self.manager.transition = SlideTransition(direction='right')
             self.manager.current = 'Perfil'
         else:
-            # Adicione outros tipos se necessário
-            self.show_error("Tipo de usuário não reconhecido")
+            self.show_error_message("Tipo de usuário não reconhecido")
+
+    # ==================== NAVEGAÇÃO AUXILIAR ====================
+    
+    def go_to_next(self, perfil, name):
+        """
+        Navega para a próxima tela após o login.
+        
+        Args:
+            perfil: O tipo de perfil do usuário
+            name: O nome do usuário
+        """
+        self.manager.transition = SlideTransition(direction='left')
+        login = self.manager.get_screen('LoginScreen')
+        login.perfil = perfil
+        login.nome = name
+        self.clear_form_fields()
+        self.manager.current = 'LoginScreen'
 
     def page(self, instance):
         """
         Navega para a tela de perfil.
-
+        
         Args:
             instance: O widget que iniciou a navegação
         """
-        self.ids.email.text = ''
-        self.ids.senha.text = ''
+        self.clear_form_fields()
         self.manager.transition = SlideTransition(direction='left')
         self.manager.current = 'Perfil'
+
+    # ==================== MÉTODOS LEGADOS (COMPATIBILIDADE) ====================
+    
+    def usuarios_carregados(self, req, result):
+        """
+        Processa os dados dos usuários após carregamento bem-sucedido.
+        Verifica se o nome de usuário existe na base de dados.
+        
+        Args:
+            req: O objeto de requisição
+            result: Os dados retornados pelo Firebase
+        """
+        try:
+            if not result:
+                self.show_error_message("Não foi possível carregar os dados de usuários")
+                return
+
+            self.name = False
+            for cargo, nome in result.items():
+                if nome['name'] == str(self.ids.nome.text):
+                    self.name = True
+                    self.senha = nome['senha']
+                    self.key = cargo
+                    self.etapa2(self.senha)
+                    break
+
+            if not self.name:
+                self.ids.nome_errado.text = 'Usuário não cadastrado'
+                self.ids.nome.error = True
+        except Exception as e:
+            print(f"[ERRO] Erro ao processar dados de usuários: {e}")
+            self.show_error_message(f"Erro ao processar dados: {e}")
+
+    def etapa2(self, hashd_password):
+        """ 
+        Verifica a senha do usuário comparando com o hash armazenado.
+        
+        Args:
+            hashd_password: O hash da senha armazenada
+        """
+        try:
+            password_bytes = self.ids.senha.text.encode('utf-8')
+            user_password_bytes = hashd_password.encode('utf-8')
+
+            if bcrypt.checkpw(password_bytes, user_password_bytes):
+                self.show_message("Login realizado com sucesso!")
+            else:
+                self.ids.senha_errada.text = 'Senha incorreta'
+                self.ids.senha.error = True
+        except Exception as e:
+            print(f"[ERRO] Erro na verificação da senha: {e}")
+            self.show_error_message(f"Erro na verificação da senha: {e}")
+
+    # Aliases para compatibilidade com código KV
+    senha_employee = authenticate_employee
+    verificar_senha = authenticate_contractor
+    send_password_verification = send_password_recovery_email
