@@ -113,7 +113,7 @@ class MainApp(MDApp):
        
             if not check_permission(Permission.READ_EXTERNAL_STORAGE):
                 request_permissions([Permission.READ_EXTERNAL_STORAGE])
-        pass
+        pass 
 
     def on_stop(self):
         '''Executado quando o app fecha'''
