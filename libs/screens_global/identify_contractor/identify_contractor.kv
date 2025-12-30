@@ -1,0 +1,151 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+<IdentifyContractor>:
+    name: 'IdentifyContractor'
+    md_bg_color: 'white'
+
+    MDFloatLayout:
+        MDBoxLayout:
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#F2F2F2')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            MDRelativeLayout:
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.08, 'center_y': 0.35}
+                    on_release: root.back_screen()
+
+                MDLabel:
+                    text: 'Identificar Usuário'
+                    halign: 'left'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.66}
+                
+                MDLabel:
+                    text: 'Busque o usuário que deseja denunciar'
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'large'
+                    theme_text_color: 'Custom'
+                    text_color: 'grey'
+                    pos_hint: {'center_y': 0.22, 'center_x': 0.66}
+        
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.9, 0.1
+            radius: 15
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#D7EAFE')
+            pos_hint: {'center_x': 0.5, 'top': 0.85}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.2
+                
+                MDRelativeLayout:
+                    MDIcon:
+                        icon: 'magnify'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'black'
+                        theme_font_size: 'Custom'
+                        font_size: '25dp'
+                        pos_hint: {'center_x': 0.75, 'top': 0.95}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Busque pelo email'
+                        theme_text_color: 'Custom'
+                        font_style: 'Title'
+                        role: 'small'
+                        text_color: 'black'
+                        bold: True
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.55, 'center_y': 0.75}
+
+                    MDLabel:
+                        text: 'Digite o email do contratante ou funcionário que você deseja denunciar.'
+                        theme_text_color: 'Custom'
+                        font_style: 'Label'
+                        role: 'small'
+                        text_color: 'grey'
+                        bold: False
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.55, 'center_y': 0.3}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.9, 0.25
+            radius: 15
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#D7EAFE')
+            pos_hint: {'center_x': 0.5, 'top': 0.7}
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Email do Usuário *'
+                    theme_text_color: 'Custom'
+                    font_style: 'Title'
+                    role: 'small'
+                    text_color: 'black'
+                    bold: True
+                    halign: 'left'
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.85}
+                
+                MDTextField:
+                    id: email
+                    mode: "outlined"
+                    radius: [12,]
+                    size_hint_x: 0.9
+                    autocorrect: True
+                    size_hint_y: None
+                    height: dp(50)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.58}
+                    
+                    line_color_normal: app.theme_cls.primaryColor
+                    line_color_focus: app.theme_cls.primaryColor
+                    text_color_normal: app.theme_cls.onSurfaceColor
+                    text_color_focus: app.theme_cls.onSurfaceColor
+
+                    MDTextFieldLeadingIcon:
+                        icon: "email"
+                    
+                    MDTextFieldHintText:
+                        text: "exemplo@gmail.com"
+
+                    MDTextFieldHelperText:
+                        id: help_text
+                        text: ""
+                        mode: "persistent"
+                
+                MDCard:
+                    size_hint: 0.9, 0.25
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#6874E8')
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+                    on_release: root.step_one()
+                    
+                    MDRelativeLayout:
+
+                        MDIcon:
+                            icon: 'magnify'
+                            theme_icon_color: 'Custom'
+                            icon_color: 'white'
+                            pos_hint: {'center_x': 0.28, 'center_y': 0.5}
+
+                        MDLabel:
+                            id: search
+                            text: 'Buscar Usuário'
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            bold: True
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+                    

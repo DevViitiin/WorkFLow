@@ -1,0 +1,330 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex 
+
+<ReportContractor>:
+    name: 'ReportContractor'
+    md_bg_color: get_color_from_hex('#EDEDED')
+
+    MDFloatLayout:
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#ffffff')
+            size_hint: 1, 0.09
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                size_hint_x: 0.2
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: 'arrow-left'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'black'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        on_release: root.back_screen()   
+                                 
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                padding: [5, 0, 0, 0]
+                MDRelativeLayout:
+
+                    MDLabel:
+                        text: 'Denunciar Contratante'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        font_style: 'Title'
+                        role: 'medium'
+                        bold: True
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+
+                    MDLabel:
+                        text: 'Preencha as informações abaixo'
+                        theme_text_color: 'Custom'
+                        font_style: 'Body'
+                        role: 'medium'
+                        text_color: 'grey'
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            
+
+        MDScrollView:
+            adaptive_height: True
+            size_hint: 0.9, 0.75
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            do_scroll_x: False
+            radius: 15
+            
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                orientation: 'vertical'
+                adaptive_height: True
+                spacing: 10
+                radius: 15
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    size_hint_y: None
+                    height: '105dp'
+                    spacing: 10
+                    padding: [5,10, 5, 5]
+                    
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Motivo da denuncia'
+                            halign: 'left'
+                            font_style: 'Title'
+                            role: 'medium'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            bold: True
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.8}
+
+                        MDCard:
+                            id: motive_card
+                            theme_bg_color: 'Custom'
+                            md_bg_color: get_color_from_hex('#EDEDED')
+                            size_hint: 0.9, 0.5
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+                            on_release: root.open_menu()
+
+                            MDRelativeLayout:
+                                MDLabel:
+                                    id: motive_text
+                                    text: 'Selecione o motivo'
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    halign: 'left'
+                                    pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+
+                                MDIcon:
+                                    icon: 'arrow-down'
+                                    theme_icon_color: 'Custom'
+                                    icon_color: 'black'
+                                    pos_hint: {'right': 0.9, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    size_hint_y: None
+                    padding: [10, 0, 0, 0]
+                    height: '110dp'
+
+                    MDBoxLayout:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        padding: [5,]
+
+                        MDCard:
+                            id: minor
+                            theme_bg_color: 'Custom'
+                            radius: 15
+                            theme_line_color: 'Custom'
+                            line_color: 'black'
+                            md_bg_color: 'white'
+                            on_release: root.trade_color_minor()
+
+                            MDRelativeLayout:
+                                MDLabel:
+                                    id: minor_title
+                                    text: 'Leve'
+                                    font_style: 'Title'
+                                    role: 'small'
+                                    bold: True
+                                    halign: 'center'
+                                    valign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                                
+                                MDLabel:
+                                    text: 'Ele deu um vacilo ali, mas nada grave.'
+                                    font_style: 'Label'
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    role: 'small'
+                                    halign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+                    MDBoxLayout:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        padding: [5,]
+
+                        MDCard:
+                            id: moderator
+                            theme_bg_color: 'Custom'
+                            radius: 15
+                            theme_line_color: 'Custom'
+                            line_color: 'black'
+                            md_bg_color: 'white'
+                            on_release: root.trade_color_moderator()
+
+                            MDRelativeLayout:
+                                MDLabel:
+                                    id: moderator_title
+                                    text: 'Moderado'
+                                    font_style: 'Title'
+                                    role: 'small'
+                                    bold: True
+                                    halign: 'center'
+                                    valign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                                
+                                MDLabel:
+                                    text: 'Passou dos limites'
+                                    font_style: 'Label'
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    role: 'small'
+                                    halign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    
+                    MDBoxLayout:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        padding: [5,]
+
+                        MDCard:
+                            id: serious
+                            theme_bg_color: 'Custom'
+                            radius: 15
+                            theme_line_color: 'Custom'
+                            line_color: 'black'
+                            md_bg_color: 'white'
+                            on_release: root.trade_color_serious()
+
+                            MDRelativeLayout:
+                                MDLabel:
+                                    id: serious_title
+                                    text: 'Grave'
+                                    font_style: 'Title'
+                                    role: 'small'
+                                    bold: True
+                                    halign: 'center'
+                                    valign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                                
+                                MDLabel:
+                                    text: 'Situação pesada que precisa ser resolvida'
+                                    font_style: 'Label'
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    role: 'small'
+                                    halign: 'center'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+                
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    size_hint_y: None
+                    height: '105dp'
+                    spacing: 5
+                    padding: [5,]
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Quando aconteceu?'
+                            halign: 'left'
+                            font_style: 'Title'
+                            role: 'medium'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            bold: True
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.8}
+
+                        MDTextField:
+                            id: date
+                            pos_hint: {'center_x': 0.5, 'down': 0.8}
+                            size_hint_x: 0.9
+                            validator: "date"  
+                            autocorrect: True        
+                            date_format: "dd/mm/yyyy"
+                            on_text: root.format_date(self.text)
+
+                            MDTextFieldHintText:
+                                text: "mm/dd/yyyy"  
+                
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    size_hint_y: None
+                    height: '120dp'
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Descrição Detalhada do Ocorrido *'
+                            halign: 'left'
+                            font_style: 'Title'
+                            role: 'medium'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            bold: True
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.9}
+
+                        MDTextField:  
+                            id: description_field 
+                            mode: "filled"  
+                            size_hint_x: 0.9
+                            autocorrect: True 
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                            MDTextFieldHintText:
+                                text: 'Descreva em detalhes o ocorrido' 
+                                halign: 'center'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDBoxLayout:
+            size_hint: 0.9, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#EDEDED')
+            pos_hint: {'center_x': 0.5, 'center_y': 0.06}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#EDEDED')
+                padding: [5,]
+
+                MDCard:
+                    RelativeLayout:
+
+                        MDLabel:
+                            text: "cancelar"
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            font_style: 'Title'
+                            role: 'small'
+                            color: "grey"
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            bold: True
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#EDEDED')
+                padding: [5,]
+
+                MDCard:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ff0000ff')
+                    on_release: root.step_one()
+                    RelativeLayout:
+
+                        MDLabel:
+                            text: "Enviar Denúncia"
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            font_style: 'Title'
+                            role: 'small'
+                            color: "grey"
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            bold: True

@@ -1,0 +1,118 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+#: import dp kivy.metrics.dp
+
+<Chat>:
+    name: 'Chat'
+    md_bg_color: 'white'
+
+    MDRelativeLayout:
+
+        # Header
+        MDBoxLayout:
+            pos_hint: {'center_x': 0.5, 'top': 1}
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#ffffffff')
+            size_hint_y: 0.08
+
+            MDRelativeLayout:
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_icon_color: 'Custom'
+                    theme_font_size: 'Custom'
+                    font_size: '25dp'
+                    icon_color: 'grey'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.08}
+                    on_release: root.back()
+                
+                AsyncImage:
+                    size_hint: 0.75, 0.75
+                    source: root.perfil
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.22}
+                
+                MDLabel:
+                    text: root.name_user
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    font_style: 'Title'
+                    role: 'medium'
+                    halign: 'left'
+                    pos_hint: {'center_x': 0.83, 'center_y': 0.65}
+                
+                MDLabel:
+                    id: state
+                    text: 'Online'
+                    theme_text_color: 'Custom'
+                    text_color: 'grey'
+                    font_style: 'Title'
+                    role: 'small'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.39, 'center_y': 0.35}
+
+                MDIconButton:
+                    id: options
+                    icon: 'dots-vertical'
+                    theme_icon_color: 'Custom'
+                    theme_font_size: 'Custom'
+                    font_size: '25dp'
+                    icon_color: 'grey'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.9}
+                    on_release: root.menu.open()
+        
+        # Área de mensagens
+        MDScrollView:
+            id: scroll_view
+            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+            do_scroll_x: False
+            size_hint: 1, 0.8
+            padding: [0, 20, 0, 0]
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+                adaptive_height: True
+                theme_bg_color: 'Custom'
+                spacing: 20
+                padding: [10, 20, 10, 10]
+             
+        # Input de mensagem
+        MDBoxLayout:
+            pos_hint: {'center_x': 0.5, 'down': 1}
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#ffffffff')
+            size_hint_y: 0.1
+
+            MDRelativeLayout:
+
+                MDTextField:
+                    id: message_text
+                    mode: "filled"
+                    radius: [28,]
+                    multiline: False
+                    adaptive_height: True
+                    size_hint_x: 0.72
+                    size_hint_y: None
+                    height: dp(30)
+                    autocorrect: True
+                    font_style: 'Body'
+                    role: 'medium'
+                    theme_font_size: 'Custom'
+                    font_size: '10sp'
+                    pos_hint: {'center_x': 0.4, 'center_y': 0.75}
+
+                MDCard:
+                    mode: 'outlined'
+                    size_hint: 0.15, 0.7
+                    theme_bg_color: 'Custom'
+                    radius: [100, 70, 70, 100]
+                    md_bg_color: get_color_from_hex('#0032d8ff')
+                    pos_hint: {'center_y': 0.7, 'center_x': 0.88}
+                    on_release: root.add_message()
+                    padding: [10, 5, 5, 5]
+
+                    MDRelativeLayout:
+                        MDIcon:
+                            icon: 'send'
+                            theme_icon_color: 'Custom'
+                            icon_color: 'white'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}

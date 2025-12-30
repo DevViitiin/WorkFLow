@@ -1,0 +1,240 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<SuspensionScreen>:
+    name: 'SuspensionScreen'
+    md_bg_color: 1, 1, 1, 1
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDBoxLayout:
+            size_hint: 1, 0.17
+            md_bg_color: get_color_from_hex('#FBAF00')
+            size_hint_y: 0.12
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'alert-outline'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {"center_x": 0.5, 'center_y': 0.65}
+                    theme_font_size: 'Custom'
+                    font_size: '40dp'
+                
+                MDLabel:
+                    text: 'Conta Suspensa Temporariamente'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True
+                    font_style: 'Title'
+                    role: 'medium'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+        MDBoxLayout:
+            size_hint: 1, 0.17
+            md_bg_color: get_color_from_hex('#ffffffff')
+            pos_hint: {'top': 1, 'center_x': 0.5}
+            padding: [20, 20, 20, 20]
+
+            MDRelativeLayout:
+
+                MDBoxLayout:
+                    md_bg_color: get_color_from_hex('#ff5e00ff')
+                    padding: [5, 0, 0, 0]
+
+                    MDBoxLayout:
+                        md_bg_color: get_color_from_hex('#FFE5B4')
+                        padding: [5, 0, 0, 0]
+                        MDRelativeLayout:
+                            MDLabel:
+                                text: 'Motivo da Suspensão'
+                                halign: 'left'
+                                pos_hint: {'center_y': 0.8, 'center_x': 0.5}
+                            
+                            MDLabel:
+                                id: motive
+                                halign: 'left'
+                                font_style: 'Label'
+                                role: 'medium'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+
+        MDBoxLayout:
+            size_hint: 1, 0.17
+            md_bg_color: get_color_from_hex('#ffffffff')
+            pos_hint: {'top': 1, 'center_x': 0.5}
+            padding: [10, 10, 10, 10]
+
+            MDBoxLayout:
+                md_bg_color: get_color_from_hex('#ffffffff')
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'O que isso significa?'
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+                        bold: True
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.55, 'center_y': 0.85}
+                    
+                    MDLabel:
+                        text: 'Durante este período você não poderá acessar os serviços\nda plataforma. Por favor, revise e siga nossas regras para evitar novas suspensões ou penalidades mais severas.'
+                        halign: 'left'
+                        font_style: 'Label'
+                        role: 'medium'
+                        pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+                        theme_text_color: 'Custom'
+                        text_color: 'black'
+
+        MDBoxLayout:
+            size_hint: 1, 0.17
+            md_bg_color: get_color_from_hex('#ffffffff')
+            padding: [15, 0, 15, 0]
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: get_color_from_hex('#ffffffff')
+
+                MDBoxLayout:
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    MDBoxLayout:
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        size_hint_x: 0.15
+
+
+                        MDRelativeLayout:
+                            MDIcon:
+                                icon: 'clock-time-eight-outline'
+                                theme_icon_color: 'Custom'
+                                icon_color: 'grey'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDBoxLayout:
+                        md_bg_color: get_color_from_hex('#ffffffff')
+
+                        MDLabel:
+                            text: 'Período de Suspensão'
+                            pos_hint: {'left': 0.85, 'center_y': 0.5}
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    md_bg_color: get_color_from_hex('#ffffff9c')
+
+                    MDBoxLayout:
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        
+                        MDBoxLayout:
+                            md_bg_color: get_color_from_hex('#ffffffff')
+                            size_hint_x: 0.25
+                            MDRelativeLayout:
+                                MDIcon:
+                                    icon: 'calendar-blank-outline'
+                                    theme_icon_color: 'Custom'
+                                    icon_color: 'red'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                        MDBoxLayout:
+                            md_bg_color: get_color_from_hex('#ffffffff')
+                            MDRelativeLayout:
+                                MDLabel:
+                                    text: 'Início'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                                    theme_text_color: 'Custom'
+                                    text_color: 'grey'
+                                
+                                MDLabel:
+                                    id: init
+                                    text: '03/10/2025'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    bold: True
+
+                    MDBoxLayout:
+                        md_bg_color: get_color_from_hex('#ffffffff')
+                        MDBoxLayout:
+                            md_bg_color: get_color_from_hex('#ffffffff')
+                            size_hint_x: 0.25
+                            MDRelativeLayout:
+                                MDIcon:
+                                    icon: 'calendar-blank-outline'
+                                    theme_icon_color: 'Custom'
+                                    icon_color: get_color_from_hex('#00ff0dff')
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                        MDBoxLayout:
+                            md_bg_color: get_color_from_hex('#ffffffff')
+                            MDRelativeLayout:
+                                MDLabel:
+                                    text: 'Término'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                                    theme_text_color: 'Custom'
+                                    text_color: 'grey'
+                                
+                                MDLabel:
+                                    id: end
+                                    text: '10/10/2025'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                                    theme_text_color: 'Custom'
+                                    text_color: 'black'
+                                    bold: True
+
+                MDBoxLayout:
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    MDRelativeLayout:
+                        MDDivider:
+                            orientation: 'horizontal'
+                            size_hint_x: 1
+                            color: 'black'
+                            pos_hint: {'top': 1, 'center_x': 0.5}
+                        
+                        MDLabel:
+                            id: days
+                            halign: 'center'
+                            font_style: 'Title'
+                            role: 'small'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+
+
+        MDBoxLayout:
+            size_hint: 1, 0.17
+            md_bg_color: get_color_from_hex('#ffffffff')
+            pos_hint: {'top': 1, 'center_x': 0.5}
+
+            MDRelativeLayout:
+                MDCard:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#0278ffff')
+                    size_hint: 0.85, 0.3
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+                    on_release: root.dialog_email()
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Contatar suporte'
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                
+                MDCard:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffb6')
+                    size_hint: 0.85, 0.3
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                    on_release: root.back_screen()
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Sair'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                
+                MDButtonText:
+                    text: 'Ler diretrizes da comunidade'
+                    theme_text_color: 'Custom'
+                    text_color: 'blue'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+
+                    
