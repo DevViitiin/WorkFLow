@@ -47,7 +47,6 @@ from libs.screens_global.report_chat.report_chat import ReportChat
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 650)
         self.screenmanager = MDScreenManager()
         self.load_all_kv_files()
         # Parte do cadastro ou login iniciald
@@ -163,3 +162,4 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
         
 MainApp().run()
+
