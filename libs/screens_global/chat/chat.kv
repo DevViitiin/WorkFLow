@@ -4,15 +4,14 @@
 <Chat>:
     name: 'Chat'
     md_bg_color: 'white'
-
     MDRelativeLayout:
 
         # Header
         MDBoxLayout:
-            pos_hint: {'center_x': 0.5, 'top': 1}
+            pos_hint: {'center_x': 0.5, 'top': 0.98}
             theme_bg_color: 'Custom'
             md_bg_color: get_color_from_hex('#ffffffff')
-            size_hint_y: 0.08
+            size_hint_y: 0.09
 
             MDRelativeLayout:
                 MDIconButton:
@@ -62,16 +61,15 @@
         # Área de mensagens
         MDScrollView:
             id: scroll_view
-            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             do_scroll_x: False
-            size_hint: 1, 0.8
+            size_hint: 1, 0.78
             padding: [0, 20, 0, 0]
 
             MDBoxLayout:
                 id: main_scroll
                 orientation: "vertical"
                 adaptive_height: True
-                theme_bg_color: 'Custom'
                 spacing: 20
                 padding: [10, 20, 10, 10]
              
@@ -80,7 +78,7 @@
             pos_hint: {'center_x': 0.5, 'down': 1}
             theme_bg_color: 'Custom'
             md_bg_color: get_color_from_hex('#ffffffff')
-            size_hint_y: 0.1
+            size_hint_y: 0.08
 
             MDRelativeLayout:
 
@@ -91,24 +89,22 @@
                     multiline: False
                     adaptive_height: True
                     size_hint_x: 0.72
-                    size_hint_y: None
-                    height: dp(30)
                     autocorrect: True
                     font_style: 'Body'
-                    role: 'medium'
+                    role: 'large'
                     theme_font_size: 'Custom'
-                    font_size: '10sp'
+                    font_size: '14sp'
                     pos_hint: {'center_x': 0.4, 'center_y': 0.75}
 
                 MDCard:
                     mode: 'outlined'
-                    size_hint: 0.15, 0.7
+                    size_hint: 0.15, 0.9
                     theme_bg_color: 'Custom'
                     radius: [100, 70, 70, 100]
                     md_bg_color: get_color_from_hex('#0032d8ff')
                     pos_hint: {'center_y': 0.7, 'center_x': 0.88}
                     on_release: root.add_message()
-                    padding: [10, 5, 5, 5]
+                    
 
                     MDRelativeLayout:
                         MDIcon:
