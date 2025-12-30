@@ -1,0 +1,166 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex 
+
+<ReportedCreated>:
+    name: 'ReportedCreated'
+    md_bg_color: get_color_from_hex('#f9fafbec')
+
+    MDFloatLayout:
+
+        MDBoxLayout:
+            radius: [15,]
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#FFFFFF')
+            size_hint: 0.9, 0.9
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            MDRelativeLayout:
+                MDIcon:
+                    id: icon_success
+                    icon: 'checkbox-marked-circle'
+                    theme_icon_color: 'Custom'
+                    theme_font_size: 'Custom'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'top': 0.95}
+                    font_size: '110dp'
+                    icon_color: get_color_from_hex('#059669')
+                
+                MDLabel:
+                    text: 'Denúncia Criada com Sucesso!'
+                    theme_text_color: 'Custom'
+                    text_color: get_color_from_hex('#111827')
+                    halign: 'center'
+                    theme_font_size: 'Custom'
+                    font_size: '18sp'
+                    bold: True
+                    padding: [10,]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                
+                MDLabel:
+                    text: 'Sua denúncia foi registrada em nosso sistema e será analisada pela nossa equipe.'
+                    theme_text_color: 'Custom'
+                    text_color: get_color_from_hex('#4B5563')
+                    font_style: 'Body'
+                    role: 'small'
+                    halign: 'center'
+                    valign: 'center'
+                    padding: [15,]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#EAF4FF')
+                    size_hint: 0.9, 0.12
+                    radius: [15,]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDBoxLayout:
+                        size_hint_x: 0.3
+                        radius: [15, 0, 0, 15]
+
+                        MDRelativeLayout:
+                            MDIcon:
+                                icon: 'clock-time-four'
+                                theme_icon_color: 'Custom'
+                                theme_font_size: 'Custom'
+                                font_size: '40dp'
+                                icon_color: get_color_from_hex('#2563EB')
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    
+                    MDBoxLayout:
+                        radius: [0, 15, 15, 0]
+                        halign: [5, 0, 0, 0]
+
+                        MDRelativeLayout:
+                            MDLabel:
+                                text: 'Prazo de Análise'
+                                bold: True
+                                theme_text_color: 'Custom'
+                                text_color: get_color_from_hex('#111827')
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                            
+                            MDLabel:
+                                text: 'Sua denúncia será analisada em até 5 dias úteis.'
+                                bold: True
+                                font_style: 'Label'
+                                role: 'small'
+                                theme_text_color: 'Custom'
+                                text_color: get_color_from_hex('#4B5563')
+                                halign: 'left'
+                                padding: [0, 0, 0, 5]
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+                
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#EAF4FF')
+                    size_hint: 0.9, 0.12
+                    radius: [15,]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+
+                    MDBoxLayout:
+                        size_hint_x: 0.3
+                        radius: [15, 0, 0, 15]
+
+                        MDRelativeLayout:
+                            MDIcon:
+                                icon: 'email'
+                                theme_icon_color: 'Custom'
+                                theme_font_size: 'Custom'
+                                font_size: '40dp'
+                                icon_color: get_color_from_hex('#9333EA')
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    
+                    MDBoxLayout:
+                        radius: [0, 15, 15, 0]
+                        halign: [5, 0, 0, 0]
+
+                        MDRelativeLayout:
+                            MDLabel:
+                                text: 'Acompanhamento'
+                                bold: True
+                                theme_text_color: 'Custom'
+                                text_color: get_color_from_hex('#111827')
+                                halign: 'left'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                            
+                            MDLabel:
+                                text: 'Você receberá atualizações por e-mail sobre o andamento.'
+                                bold: True
+                                font_style: 'Label'
+                                role: 'small'
+                                theme_text_color: 'Custom'
+                                text_color: get_color_from_hex('#4B5563')
+                                halign: 'left'
+                                padding: [0, 0, 0, 5]
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                
+                MDCard:
+                    size_hint: 0.9, 0.08
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#53A548')
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+                    on_release: root.next_screen()
+                    MDLabel:
+                        text: 'Concluir denúncia'
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        halign: 'center'
+                        bold: True
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                
+                MDCard:
+                    size_hint: 0.9, 0.08
+                    theme_bg_color: 'Custom'
+                    theme_line_color: 'Custom'
+                    line_color: 'grey'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+                    on_release: root.created_other_reported()
+
+                    MDLabel:
+                        text: 'Fazer outra'
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#1F2937')
+                        halign: 'center'
+                        bold: True
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}

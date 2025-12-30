@@ -1,0 +1,214 @@
+<BanScreen>:
+    name: 'BanScreen'
+    md_bg_color: 'white'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        theme_bg_color: 'Custom'
+        md_bg_color: 'white'
+        spacing: 10
+
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('#E3170A')
+
+            MDRelativeLayout:
+                MDIcon:
+                    icon: 'account-off'
+                    theme_font_size: 'Custom'
+                    font_size: '38dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+                
+                MDLabel:
+                    text: 'Conta Suspensa'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    font_style: 'Title'
+                    role: 'large'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                
+                MDLabel:
+                    text: 'Acesso restrito ao sistema'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    markup: True
+                    font_style: 'Label'
+                    role: 'medium'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            size_hint_y: 0.45
+            padding: [10, 0, 10, 0]
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    size_hint_x: 0.15
+
+                    MDRelativeLayout:
+                        MDIcon:
+                            icon: 'hand-back-right-off'
+                            theme_icon_color: 'Custom'
+                            icon_color: get_color_from_hex('#E3170A')
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Motivo do Banimento'
+                            theme_text_color: 'Custom'
+                            bold: True
+                            halign: 'left'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            text_color: get_color_from_hex('#E3170A')
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+                MDRelativeLayout:
+                    MDLabel:
+                        id: motive 
+                        text: 'Violação dos Termos de Uso'
+                        theme_text_color: 'Custom'
+                        bold: True
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.53, 'center_y': 0.55}
+                        text_color: get_color_from_hex('#E3170A')
+                    
+                    MDDivider:
+                        size_hint_x: 1
+                        orientation: 'horizontal'
+                        theme_divider_color: "Custom"
+                        color: get_color_from_hex('#8d8d8dff')
+                        pos_hint: {'center_x': 0.5, 'down': 1}
+        
+        MDBoxLayout:
+            orientation: 'vertical'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            padding: [10, 0, 10, 0]
+            size_hint_y: 0.55
+            spacing: 5
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+
+                MDBoxLayout:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#ffffffff')
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Descrição Detalhada'
+                            theme_text_color: 'Custom'
+                            bold: True
+                            halign: 'left'
+                            pos_hint: {'center_x': 0.53, 'center_y': 0.5}
+                            text_color: get_color_from_hex('#E3170A')
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#ffffffff')
+
+                MDRelativeLayout:
+                    MDLabel:
+                        id: description
+                        text: 'Durante uma interação no chat, foi detectada a utilização de palavras ofensivas contra outro usuário. Pedimos que mantenha a cordialidade para evitar novas infrações.'
+                        theme_text_color: 'Custom'
+                        bold: True
+                        font_style: 'Label'
+                        role: 'medium'
+                        halign: 'left'
+                        pos_hint: {'center_x': 0.53, 'center_y': 0.65}
+                        text_color: get_color_from_hex('#000000ff')
+                    
+                    MDDivider:
+                        size_hint_x: 1
+                        orientation: 'horizontal'
+                        theme_divider_color: "Custom"
+                        color: get_color_from_hex('#8d8d8dff')
+                        pos_hint: {'center_x': 0.5, 'down': 1}
+
+        MDBoxLayout:
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+
+            MDRelativeLayout:
+                MDCard:
+                    style: "elevated"
+                    pos_hint: {"center_x": .75, "center_y": .6}
+                    padding: "4dp"
+                    size_hint: 0.4, 0.25
+                    theme_line_color: 'Custom'
+                    line_color: 'grey'
+                    theme_bg_color: "Custom"
+                    md_bg_color: get_color_from_hex('#ffffffff')
+                    on_release: root.out_app()
+                    RelativeLayout:
+
+                        MDIcon:
+                            icon: 'logout'
+                            theme_icon_color: 'Custom'
+                            icon_color: 'black'
+                            pos_hint: {'center_x': 0.35, 'center_y': 0.5}
+
+                        MDLabel:
+                            text: "sair"
+                            adaptive_size: True
+                            color: get_color_from_hex('#000000ff')
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+                            pos: "12dp", "12dp"
+                            bold: True
+
+                MDCard:
+                    style: "elevated"
+                    pos_hint: {"center_x": .27, "center_y": .6}
+                    padding: "4dp"
+                    size_hint: 0.5, 0.25
+                    theme_bg_color: "Custom"
+                    md_bg_color: get_color_from_hex('#2CEAA3')
+                    on_release: root.dialog_email()
+                    RelativeLayout:
+
+                        MDIcon:
+                            icon: 'email'
+                            theme_icon_color: 'Custom'
+                            icon_color: 'black'
+                            pos_hint: {'center_x': 0.12, 'center_y': 0.5}
+
+                        MDLabel:
+                            text: "Contatar suporte"
+                            adaptive_size: True
+                            font_style: 'Label'
+                            role: 'large'
+                            color: get_color_from_hex('#000000ff')
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+                            pos: "12dp", "12dp"
+                            bold: True
+                
+                MDLabel:
+                    text: 'Se você acredita que isso foi um erro, entre em contato\n com nossa equipe de suporte.'
+                    theme_text_color: 'Custom'
+                    bold: True
+                    font_style: 'Label'
+                    role: 'small'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.53, 'center_y': 0.3}
+                    text_color: get_color_from_hex('#686868ff')
