@@ -1,3 +1,5 @@
+from kivy.config import Config
+Config.set('graphics', 'clearcolor', '1, 1, 1, 1')
 from kivy.clock import Clock
 from kivy.uix.image import AsyncImage
 from kivymd.app import MDApp
@@ -50,10 +52,10 @@ class MainApp(MDApp):
         self.screenmanager = MDScreenManager()
         self.load_all_kv_files()
         # Parte do cadastro ou login iniciald
+        self.screenmanager.add_widget(SplashScreen(name='SplashScreen'))
         self.screenmanager.add_widget(InitScreen(name='Init'))
         self.screenmanager.add_widget(ReportChat(name='ReportChat'))
         self.screenmanager.add_widget(ListChatContractor(name='ListChatContractor'))
-        self.screenmanager.add_widget(SplashScreen(name='SplashScreen'))
         self.screenmanager.add_widget(ListChat(name='ListChat'))
         self.screenmanager.add_widget(Chat(name='Chat'))
         self.screenmanager.add_widget(PerfilEmployeeGlobal(name='PerfilEmployeeGlobal'))
@@ -162,4 +164,5 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_login/register_funcionario/register_funcionario.kv')
         
 MainApp().run()
+
 
