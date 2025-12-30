@@ -59,7 +59,7 @@ class MessageRight(MDBoxLayout):
         self.size_hint_y = None
         self.adaptive_height = True
         self.spacing = dp(8)
-        self.padding = [dp(40), 0, dp(8), 0]  # Margem maior à esquerda
+        self.padding = [dp(20), 0, dp(8), 0]  # Menos margem para textos maiores
         
         spacer = Widget(size_hint_x=1)
         self.add_widget(spacer)
@@ -67,7 +67,7 @@ class MessageRight(MDBoxLayout):
         balloon = MDBoxLayout(
             orientation='vertical',
             theme_bg_color='Custom',
-            md_bg_color=get_color_from_hex('#DCF8C6'),
+            md_bg_color=get_color_from_hex('#E3F2FD'),  # Azul claro suave
             padding=[dp(12), dp(8), dp(12), dp(8)],
             radius=[dp(18), dp(18), dp(4), dp(18)],
             size_hint_x=None,
@@ -85,27 +85,30 @@ class MessageRight(MDBoxLayout):
         
         # Calcular largura ideal baseada no texto
         def update_label_size(*args):
-            # Largura máxima: 80% da tela menos padding
-            max_width = Window.width * 0.8 - dp(32)
-            # Largura mínima: 20% da tela
-            min_width = Window.width * 0.2
+            # Largura máxima bem generosa
+            if Window.width < dp(600):  # Mobile
+                max_width = Window.width * 0.85 - dp(56)
+            else:  # Tablet/Desktop
+                max_width = min(Window.width * 0.7, dp(600))
             
             message_label.texture_update()
             text_width = message_label.texture_size[0]
             
-            # Ajustar largura do label
-            if text_width < min_width:
-                message_label.width = min_width
-            elif text_width > max_width:
+            # Sem largura mínima - totalmente fluido
+            if text_width > max_width:
                 message_label.width = max_width
+                message_label.text_size = (max_width, None)
             else:
-                message_label.width = text_width + dp(20)  # Margem interna
+                message_label.width = text_width + dp(20)
+                message_label.text_size = (text_width + dp(20), None)
             
-            message_label.text_size = (message_label.width, None)
-            balloon.width = message_label.width + dp(24)  # padding do balloon
+            balloon.width = message_label.width + dp(24)
         
+        # Apenas binds necessários - SEM balloon.bind!
         message_label.bind(text=update_label_size)
         Window.bind(size=update_label_size)
+        
+        # Chama imediatamente
         update_label_size()
         
         balloon.add_widget(message_label)
@@ -121,12 +124,12 @@ class MessageLeft(BoxLayout):
         self.size_hint_y = None
         self.adaptive_height = True
         self.spacing = dp(8)
-        self.padding = [dp(8), 0, dp(40), 0]  # Margem maior à direita
+        self.padding = [dp(8), 0, dp(20), 0]  # Menos margem para textos maiores
         
         balloon = MDBoxLayout(
             orientation='vertical',
             theme_bg_color='Custom',
-            md_bg_color=get_color_from_hex('#F1F0F0'),
+            md_bg_color=get_color_from_hex('#F5F5F5'),  # Cinza bem claro
             padding=[dp(12), dp(8), dp(12), dp(8)],
             radius=[dp(18), dp(18), dp(18), dp(4)],
             size_hint_x=None,
@@ -144,27 +147,30 @@ class MessageLeft(BoxLayout):
         
         # Calcular largura ideal baseada no texto
         def update_label_size(*args):
-            # Largura máxima: 80% da tela menos padding
-            max_width = Window.width * 0.8 - dp(32)
-            # Largura mínima: 20% da tela
-            min_width = Window.width * 0.2
+            # Largura máxima bem generosa
+            if Window.width < dp(600):  # Mobile
+                max_width = Window.width * 0.85 - dp(56)
+            else:  # Tablet/Desktop
+                max_width = min(Window.width * 0.7, dp(600))
             
             message_label.texture_update()
             text_width = message_label.texture_size[0]
             
-            # Ajustar largura do label
-            if text_width < min_width:
-                message_label.width = min_width
-            elif text_width > max_width:
+            # Sem largura mínima - totalmente fluido
+            if text_width > max_width:
                 message_label.width = max_width
+                message_label.text_size = (max_width, None)
             else:
                 message_label.width = text_width + dp(20)
+                message_label.text_size = (text_width + dp(20), None)
             
-            message_label.text_size = (message_label.width, None)
             balloon.width = message_label.width + dp(24)
         
+        # Apenas binds necessários - SEM balloon.bind!
         message_label.bind(text=update_label_size)
         Window.bind(size=update_label_size)
+        
+        # Chama imediatamente
         update_label_size()
         
         balloon.add_widget(message_label)
@@ -172,6 +178,7 @@ class MessageLeft(BoxLayout):
         
         spacer = Widget(size_hint_x=1)
         self.add_widget(spacer)
+        
 
 # ==================== TELA DE CHAT ====================
 
@@ -585,7 +592,6 @@ class Chat(MDScreen):
         msg = str(self.ids.message_text.text).strip().replace("'", '')
         
         if not msg:
-            self.show_error('A mensagem não pode estar vazia')
             return
         
         print('='*50)
@@ -813,7 +819,6 @@ class Chat(MDScreen):
             print('✓ Não há mais mensagens antigas para carregar')
             self.is_loading_more = False
             self.hide_loading_indicator()
-            self.show_message('Não há mais mensagens antigas', '#FF9800')
             return
         
         # Calcula o índice de início
