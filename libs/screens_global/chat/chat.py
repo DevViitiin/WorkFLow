@@ -50,135 +50,106 @@ from kivy.core.window import Window
 # ==================== COMPONENTES DE MENSAGEM ====================
 
 
+from kivy.core.window import Window
+
+from kivy.metrics import dp
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDLabel
+from kivy.utils import get_color_from_hex
+
+def adjust_balloon(container, label, balloon):
+    max_width = container.width * 0.8
+    padding_x = dp(24)
+
+    label.texture_update()
+    text_width = label.texture_size[0]
+
+    if text_width + padding_x <= max_width:
+        balloon.width = text_width + padding_x
+        label.width = text_width
+        label.text_size = (None, None)
+    else:
+        balloon.width = max_width
+        label.width = max_width - padding_x
+        label.text_size = (label.width, None)
+
+
 class MessageRight(MDBoxLayout):
-    """Balão de mensagem alinhado à direita (mensagens enviadas)"""
-    
-    def __init__(self, text="Meu irmão quer muito atuar nessa área", **kwargs):
+    def __init__(self, text="", **kwargs):
         super().__init__(**kwargs)
-        self.orientation = 'horizontal'
+
+        self.orientation = "horizontal"
+        self.size_hint_x = 1   # 🔥 OBRIGATÓRIO
         self.size_hint_y = None
         self.adaptive_height = True
-        self.spacing = dp(8)
-        self.padding = [dp(20), 0, dp(8), 0]  # Menos margem para textos maiores
-        
-        spacer = Widget(size_hint_x=1)
-        self.add_widget(spacer)
-        
-        balloon = MDBoxLayout(
-            orientation='vertical',
-            theme_bg_color='Custom',
-            md_bg_color=get_color_from_hex('#E3F2FD'),  # Azul claro suave
+        self.padding = [dp(40), dp(4), dp(8), dp(4)]
+
+        self.add_widget(Widget(size_hint_x=1))
+
+        self.balloon = MDBoxLayout(
+            adaptive_height=True,
+            size_hint_x=None,
             padding=[dp(12), dp(8), dp(12), dp(8)],
+            md_bg_color=get_color_from_hex("#E3F2FD"),
+            theme_bg_color="Custom",
             radius=[dp(18), dp(18), dp(4), dp(18)],
-            size_hint_x=None,
-            adaptive_height=True
         )
-        
-        message_label = MDLabel(
+
+        self.label = MDLabel(
             text=text,
-            font_style="Body",
-            role="large",
             adaptive_height=True,
-            size_hint_y=None,
-            size_hint_x=None
+            size_hint_x=None,
+            halign="left",
         )
-        
-        # Calcular largura ideal baseada no texto
-        def update_label_size(*args):
-            # Largura máxima bem generosa
-            if Window.width < dp(600):  # Mobile
-                max_width = Window.width * 0.85 - dp(56)
-            else:  # Tablet/Desktop
-                max_width = min(Window.width * 0.7, dp(600))
-            
-            message_label.texture_update()
-            text_width = message_label.texture_size[0]
-            
-            # Sem largura mínima - totalmente fluido
-            if text_width > max_width:
-                message_label.width = max_width
-                message_label.text_size = (max_width, None)
-            else:
-                message_label.width = text_width + dp(20)
-                message_label.text_size = (text_width + dp(20), None)
-            
-            balloon.width = message_label.width + dp(24)
-        
-        # Apenas binds necessários - SEM balloon.bind!
-        message_label.bind(text=update_label_size)
-        Window.bind(size=update_label_size)
-        
-        # Chama imediatamente
-        update_label_size()
-        
-        balloon.add_widget(message_label)
-        self.add_widget(balloon)
+
+        self.balloon.add_widget(self.label)
+        self.add_widget(self.balloon)
+
+        Clock.schedule_once(self.update_layout, 0)
+        self.bind(width=lambda *_: Clock.schedule_once(self.update_layout, 0))
+
+    def update_layout(self, *_):
+        adjust_balloon(self, self.label, self.balloon)
 
 
-class MessageLeft(BoxLayout):
-    """Balão de mensagem alinhado à esquerda (mensagens recebidas)"""
-    
-    def __init__(self, text="Eu já pensei em fazer gastronomia, mas não obrigada!", **kwargs):
+class MessageLeft(MDBoxLayout):
+    def __init__(self, text="", **kwargs):
         super().__init__(**kwargs)
-        self.orientation = 'horizontal'
+
+        self.orientation = "horizontal"
+        self.size_hint_x = 1   # 🔥 OBRIGATÓRIO
         self.size_hint_y = None
         self.adaptive_height = True
-        self.spacing = dp(8)
-        self.padding = [dp(8), 0, dp(20), 0]  # Menos margem para textos maiores
-        
-        balloon = MDBoxLayout(
-            orientation='vertical',
-            theme_bg_color='Custom',
-            md_bg_color=get_color_from_hex('#F5F5F5'),  # Cinza bem claro
-            padding=[dp(12), dp(8), dp(12), dp(8)],
-            radius=[dp(18), dp(18), dp(18), dp(4)],
-            size_hint_x=None,
-            adaptive_height=True
-        )
-        
-        message_label = MDLabel(
-            text=text,
-            font_style="Body",
-            role="large",
+        self.padding = [dp(8), dp(4), dp(40), dp(4)]
+
+        self.balloon = MDBoxLayout(
             adaptive_height=True,
-            size_hint_y=None,
             size_hint_x=None,
+            padding=[dp(12), dp(8), dp(12), dp(8)],
+            md_bg_color=get_color_from_hex("#F5F5F5"),
+            theme_bg_color="Custom",
+            radius=[dp(18), dp(18), dp(18), dp(4)],
         )
-        
-        # Calcular largura ideal baseada no texto
-        def update_label_size(*args):
-            # Largura máxima bem generosa
-            if Window.width < dp(600):  # Mobile
-                max_width = Window.width * 0.85 - dp(56)
-            else:  # Tablet/Desktop
-                max_width = min(Window.width * 0.7, dp(600))
-            
-            message_label.texture_update()
-            text_width = message_label.texture_size[0]
-            
-            # Sem largura mínima - totalmente fluido
-            if text_width > max_width:
-                message_label.width = max_width
-                message_label.text_size = (max_width, None)
-            else:
-                message_label.width = text_width + dp(20)
-                message_label.text_size = (text_width + dp(20), None)
-            
-            balloon.width = message_label.width + dp(24)
-        
-        # Apenas binds necessários - SEM balloon.bind!
-        message_label.bind(text=update_label_size)
-        Window.bind(size=update_label_size)
-        
-        # Chama imediatamente
-        update_label_size()
-        
-        balloon.add_widget(message_label)
-        self.add_widget(balloon)
-        
-        spacer = Widget(size_hint_x=1)
-        self.add_widget(spacer)
-        
+
+        self.label = MDLabel(
+            text=text,
+            adaptive_height=True,
+            size_hint_x=None,
+            halign="left",
+        )
+
+        self.balloon.add_widget(self.label)
+        self.add_widget(self.balloon)
+        self.add_widget(Widget(size_hint_x=1))
+
+        Clock.schedule_once(self.update_layout, 0)
+        self.bind(width=lambda *_: Clock.schedule_once(self.update_layout, 0))
+
+    def update_layout(self, *_):
+        adjust_balloon(self, self.label, self.balloon)
+
 
 # ==================== TELA DE CHAT ====================
 
